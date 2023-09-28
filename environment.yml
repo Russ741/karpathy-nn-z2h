@@ -1,6 +1,8 @@
 name: karpathy-nn-z2h
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - jupyter
   - python=3.10
+  - pytorch=1.13
