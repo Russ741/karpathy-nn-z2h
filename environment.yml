@@ -1,0 +1,6 @@
+name: karpathy-nn-z2h
+channels:
+  - defaults
+dependencies:
+  - jupyter
+  - python=3.10
