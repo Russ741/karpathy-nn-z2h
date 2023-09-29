@@ -6,3 +6,8 @@ jupyter notebook
 
 Navigate to http://localhost:8888/notebooks/02-building-makemore/02-building_makemore.ipynb
 ```
+
+To update the conda environment when the environment.yml file is updated:
+```
+conda env update -f environment.yml
+```
