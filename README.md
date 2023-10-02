@@ -1,8 +1,3 @@
-To load this worksheet in Google Colab:
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/02-building-makemore/02-building_makemore.ipynb)
-
-
 To use the worksheet locally:
 ```console
 git clone git@github.com:Russ741/karpathy-nn-z2h.git
@@ -18,3 +13,9 @@ To update the conda environment when the environment.yml file is updated:
 ```
 conda env update -f environment.yml
 ```
+
+To load this worksheet in Google Colab:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/02-building-makemore/02-building_makemore.ipynb)
+
+**WARNING - Colab doesn't properly hide the spoilers!**
