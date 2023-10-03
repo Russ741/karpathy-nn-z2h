@@ -4,6 +4,7 @@ git clone git@github.com:Russ741/karpathy-nn-z2h.git
 cd karpathy-nn-z2h
 conda env create -f environment.yml
 conda activate karpathy-nn-z2h
+pre-commit install
 jupyter notebook
 ```
 
