@@ -9,3 +9,5 @@ dependencies:
   - jupyter
   - python=3.10
   - pytorch=1.13
+  - jupytext
+  - pre-commit
