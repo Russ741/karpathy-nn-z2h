@@ -13,11 +13,36 @@
 #     name: python3
 # ---
 
+# %% [markdown] deletable=false editable=false
+# ### Preamble: Load data
+#
+# Objective: Load a list of words from the [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file into a list variable named ```words```.
+
 # %%
+import requests
 
 def load_words():
-    words = open("../names.txt").read().splitlines()
+    words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
+    words = requests.get(words_url).text.splitlines()
     return words
+
+# %% deletable=false editable=false
+def test_words():
+    words = load_words()
+    if not isinstance(words, list):
+        print(f"Expected words to be a list")
+        return
+    if (len_words := len(words)) != (expected_words := 32033):
+        print(f"Expected {expected_words} elements in words, found {len_words} elements")
+        return
+    if (zeroth_word := words[0]) != (expected_zeroth := "emma"):
+        print(f"Expected zeroth word in words to be '{expected_zeroth}', was '{zeroth_word}'")
+        return
+    if (final_word := words[-1]) != (expected_final := "zzyzx"):
+        print(f"Expected final word in words to be '{expected_final}', was '{final_word}'")
+        return
+    print("words looks good. Onwards!")
+test_words()
 
 # %%
 
