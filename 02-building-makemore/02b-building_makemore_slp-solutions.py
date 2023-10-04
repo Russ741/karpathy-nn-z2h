@@ -182,8 +182,9 @@ test_initialize_w_b()
 
 # %%
 
+# TODO: Pass in the second arg for one-hot encoding
 def forward_prop(x, W, b):
-    one_hot = torch.nn.functional.one_hot(x).double()
+    one_hot = torch.nn.functional.one_hot(x, len(W)).double()
     output = torch.matmul(one_hot, W) + b
 
     softmax = output.exp()
@@ -193,18 +194,31 @@ def forward_prop(x, W, b):
 
 # %% deletable=false editable=false
 def test_forward_prop():
-    if (y_hat_len := len(y_hat)) != (expected_y_hat_len := len(y)):
-        print(f"Expected y_hat to have {expected_y_hat_len} rows, had {y_hat_len}")
-        return
-    if (cols := len(y_hat[0])) != (expected_cols := len(stoi)):
-        print(f"Expected y_hat to have {expected_cols} columns, had {cols}")
-        return
-    for row_idx in range(y_hat_len):
-        if abs((sum := y_hat[row_idx].sum()) - 1.0) > 0.00001:
-            print(f"Expected y_hat[{row_idx}] to sum to 1.0, summed to {sum}")
-            return
+    x = torch.tensor([
+        1,
+        0,
+    ])
+
+    W = torch.tensor([
+        [0.1, 0.9, 0.2, 0.01],
+        [0.04, 0.2, 1.6, 0.25],
+        [0.02, 0.03, 0.7, 0.01],
+    ], dtype=torch.float64)
+
+    b = torch.tensor([
+        0.01, 0.02, 0.03, 0.04
+    ], dtype=torch.float64)
+
+    expected_y_hat = torch.tensor([
+        [0.1203, 0.1426, 0.5841, 0.1530],
+        [0.1881, 0.4228, 0.2120, 0.1771],
+    ], dtype=torch.float64)
+
+    y_hat = forward_prop(x, W, b)
+
+    if not torch.isclose(expected_y_hat, y_hat, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected y_hat for test case to be \n{expected_y_hat}\n, was \n{y_hat}")
     print("forward_prop looks good. Onwards!")
-y_hat = forward_prop(x, W, b)
 test_forward_prop()
 
 # %%
@@ -235,7 +249,6 @@ def test_calculate_loss():
         print(f"Expected loss for second example to be {expected_loss}, was {loss}")
         return
     print("calculate_loss looks good. Onwards!")
-calculated_loss = calculate_loss(y_hat, y)
 test_calculate_loss()
 
 # %%
@@ -258,6 +271,14 @@ def test_descend_gradient():
         [0.0, -2.0],
         [4.0, 1.0]
     ])
+    b = torch.tensor([
+        1.0,
+        2.0,
+    ])
+    b.grad = torch.tensor([
+        -1.0,
+        0.5,
+    ])
     new_w, new_b = descend_gradient(W, b, 3.0)
     expected_new_w = torch.tensor([
         [7.0, -1.0],
@@ -266,6 +287,13 @@ def test_descend_gradient():
     ])
     if not new_w.equal(expected_new_w):
         print(f"Expected new W for test case to be \n{expected_new_w}\n, is \n{new_w}")
+        return
+    expected_new_b = torch.tensor([
+        4.0,
+        0.5,
+    ])
+    if not new_b.equal(expected_new_b):
+        print(f"Expected new b for test case to be \n{expected_new_b}\n, is \n{new_b}")
         return
     print("descend_gradient looks good. Onward!")
 test_descend_gradient()
