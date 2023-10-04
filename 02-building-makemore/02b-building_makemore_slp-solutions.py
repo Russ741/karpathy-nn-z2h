@@ -245,6 +245,31 @@ def descend_gradient(W, b, learning_rate):
     b.data -= learning_rate * b.grad
     return W, b
 
+# %% deletable=false editable=false
+
+def test_descend_gradient():
+    W = torch.tensor([
+        [1.0, 2.0,],
+        [3.0, -4.0],
+        [-5.0, 6.0],
+    ])
+    W.grad = torch.tensor([
+        [-2.0, 1.0],
+        [0.0, -2.0],
+        [4.0, 1.0]
+    ])
+    new_w, new_b = descend_gradient(W, b, 3.0)
+    expected_new_w = torch.tensor([
+        [7.0, -1.0],
+        [3.0, 2.0],
+        [-17.0, 3.0]
+    ])
+    if not new_w.equal(expected_new_w):
+        print(f"Expected new W for test case to be \n{expected_new_w}\n, is \n{new_w}")
+        return
+    print("descend_gradient looks good. Onward!")
+test_descend_gradient()
+
 # %%
 
 def main():
