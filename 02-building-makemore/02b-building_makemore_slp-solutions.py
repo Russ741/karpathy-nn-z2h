@@ -191,12 +191,52 @@ def forward_prop(x, W, b):
 
     return softmax
 
+# %% deletable=false editable=false
+def test_forward_prop():
+    if (y_hat_len := len(y_hat)) != (expected_y_hat_len := len(y)):
+        print(f"Expected y_hat to have {expected_y_hat_len} rows, had {y_hat_len}")
+        return
+    if (cols := len(y_hat[0])) != (expected_cols := len(stoi)):
+        print(f"Expected y_hat to have {expected_cols} columns, had {cols}")
+        return
+    for row_idx in range(y_hat_len):
+        if abs((sum := y_hat[row_idx].sum()) - 1.0) > 0.00001:
+            print(f"Expected y_hat[{row_idx}] to sum to 1.0, summed to {sum}")
+            return
+    print("forward_prop looks good. Onwards!")
+y_hat = forward_prop(x, W, b)
+test_forward_prop()
+
 # %%
 
 def calculate_loss(y_hat, y):
     match_probabilities = y_hat[torch.arange(len(y)), y]
     neg_log_likelihood = -match_probabilities.log().mean()
     return neg_log_likelihood
+
+# %% deletable=false editable=false
+from math import exp
+
+def test_calculate_loss():
+    y = torch.tensor([2], dtype=torch.int64)
+    y_hat = torch.tensor([
+        [0.0, 0.0, 1.0, 0.0]
+    ])
+    if abs((loss := calculate_loss(y_hat, y))) > 0.00001:
+        print(f"Expected loss for first example to be 0.0, was {loss}")
+        return
+
+    y = torch.tensor([2, 0], dtype=torch.int64)
+    y_hat = torch.tensor([
+        [0.09, 0.09, exp(-0.5), 0.09],
+        [exp(-0.1), 0.01, 0.02, 0.03]
+    ])
+    if abs((loss := calculate_loss(y_hat, y)) - (expected_loss := 0.3)) > 0.00001:
+        print(f"Expected loss for second example to be {expected_loss}, was {loss}")
+        return
+    print("calculate_loss looks good. Onwards!")
+calculated_loss = calculate_loss(y_hat, y)
+test_calculate_loss()
 
 # %%
 
