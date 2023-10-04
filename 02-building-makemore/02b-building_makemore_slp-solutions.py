@@ -188,7 +188,7 @@ def main():
     itos = get_itos(stoi)
     x, y = get_x_and_y(bigrams, stoi)
     W, b = initialize_w_b(stoi)
-    for i in range(1, 1001, 1):
+    for i in range(1, 101, 1):
         y_hat = forward_prop(x,W,b)
         loss = calculate_loss(y_hat, y)
         if i % 10 == 0:
@@ -201,3 +201,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# %%
