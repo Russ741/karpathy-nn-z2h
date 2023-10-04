@@ -154,6 +154,32 @@ def initialize_w_b(stoi):
 
     return W, b
 
+# %% deletable=false editable=false
+def test_initialize_w_b():
+    if (w_len := len(W)) != (expected_w_len := 27):
+        print(f"Expected W to have {expected_w_len} rows, had {w_len}")
+        return
+    for row_idx in range(w_len):
+        if (row_len := len(W[row_idx])) != (expected_row_len := 27):
+            print(f"Expected W[{row_idx}] to have {expected_row_len} columns, had {row_len}")
+            return
+        for col_idx in range(row_len):
+            if (val := W[row_idx][col_idx]) == 0.0:
+                print(f"Expected W[{row_idx}][{col_idx}] to be non-zero.")
+                return
+    if not W.requires_grad:
+        print("W must be marked with requires_grad so its grad property will be populated by backpropagation for use in gradient descent.")
+        return
+    if not b.requires_grad:
+        print("b must be marked with requires_grad so its grad property will be populated by backpropagation for use in gradient descent.")
+        return
+    if (b_shape := b.shape) != (expected_b_shape := (1, 27)):
+        print(f"Expected b to have shape {expected_b_shape}, had shape {b_shape}")
+        return
+    print("initialize_w_b looks good. Onwards!")
+W, b = initialize_w_b(stoi)
+test_initialize_w_b()
+
 # %%
 
 def forward_prop(x, W, b):
