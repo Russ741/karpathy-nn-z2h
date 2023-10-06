@@ -336,6 +336,23 @@ test_descend_gradient()
 
 # %%
 
+def train_model(x, y, W, b, learning_rate):
+    y_hat = forward_prop(x,W,b)
+    loss = calculate_loss(y_hat, y)
+    W.grad = None
+    b.grad = None
+    loss.backward()
+    W, b = descend_gradient(W, b, 10.0)
+    return loss.item()
+
+# %% deletable=false editable=false
+
+def test_train_model():
+    # TODO: Implement.
+    pass
+
+# %%
+
 def main():
     words = load_words()
     bigrams = generate_bigrams(words)
@@ -344,15 +361,9 @@ def main():
     x, y = get_x_and_y(bigrams, stoi)
     W, b = initialize_w_b(stoi)
     for i in range(1, 101, 1):
-        y_hat = forward_prop(x,W,b)
-        loss = calculate_loss(y_hat, y)
+        loss = train_model(x, y, W, b, 10.0)
         if i % 10 == 0:
-            print(f"Round {i} loss: {loss.item()}")
-        W.grad = None
-        b.grad = None
-        loss.backward()
-        W, b = descend_gradient(W, b, 10.0)
-
+            print(f"Round {i} loss: {loss}")
 
 if __name__ == "__main__":
     main()
