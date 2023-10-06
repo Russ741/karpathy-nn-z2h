@@ -219,7 +219,6 @@ test_initialize_w_b()
 
 # %%
 
-# TODO: Pass in the second arg for one-hot encoding
 def forward_prop(x, W, b):
     one_hot = torch.nn.functional.one_hot(x, len(W)).double()
     output = torch.matmul(one_hot, W) + b
