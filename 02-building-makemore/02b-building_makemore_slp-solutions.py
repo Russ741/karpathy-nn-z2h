@@ -254,6 +254,7 @@ def test_forward_prop():
 
     if not torch.isclose(expected_y_hat, y_hat, rtol = 0.0, atol = 0.0001).all():
         print(f"Expected y_hat for test case to be \n{expected_y_hat}\n, was \n{y_hat}")
+        return
     print("forward_prop looks good. Onwards!")
 test_forward_prop()
 
