@@ -349,8 +349,48 @@ def train_model(x, y, W, b, learning_rate):
 # %% deletable=false editable=false
 
 def test_train_model():
-    # TODO: Implement.
-    pass
+    x = torch.tensor([
+        0,
+        1,
+        2,
+    ])
+    y = torch.tensor([
+        1,
+        2,
+        0,
+    ])
+    W = torch.tensor([
+        [1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0],
+    ], dtype=torch.float64, requires_grad=True)
+    b = torch.tensor([
+        0.1,
+        0.2,
+        0.3,
+    ], dtype=torch.float64, requires_grad=True)
+
+    loss = train_model(x, y, W, b, 2.0)
+
+    expected_W = torch.tensor([
+        [0.7996, 1.4452, 0.7552],
+        [0.7996, 0.7785, 1.4219],
+        [1.4663, 0.7785, 0.7552]
+    ], dtype=torch.float64)
+    if not torch.isclose(expected_W, W, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected W for test case to be \n{expected_W}\n, was \n{W}")
+        return
+
+    expected_b = torch.tensor([
+        0.1654,
+        0.2022,
+        0.2323
+    ], dtype=torch.float64)
+    if not torch.isclose(expected_b, b, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected b for test case to be \n{expected_b}\n, was \n{b}")
+        return
+    print("train_model looks good. Onward!")
+test_train_model()
 
 # %%
 
