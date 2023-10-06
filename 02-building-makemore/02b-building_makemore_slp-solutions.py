@@ -342,7 +342,7 @@ def train_model(x, y, W, b, learning_rate):
     W.grad = None
     b.grad = None
     loss.backward()
-    W, b = descend_gradient(W, b, 10.0)
+    W, b = descend_gradient(W, b, learning_rate)
     return loss.item()
 
 # %% deletable=false editable=false
