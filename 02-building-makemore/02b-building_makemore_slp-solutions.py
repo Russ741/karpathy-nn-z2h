@@ -56,22 +56,22 @@ def generate_bigrams(words):
     return bigrams
 
 # %% deletable=false editable=false
-def test_bigrams():
-    if not isinstance(generated_bigrams, list):
+def test_generate_bigrams():
+    bigrams = generate_bigrams(loaded_words)
+    if not isinstance(bigrams, list):
         print(f"Expected bigrams to be a list")
         return
-    if (start_m_ct := generated_bigrams.count(('.', 'm'))) != (expected_start_m_ct := 2538):
+    if (start_m_ct := bigrams.count(('.', 'm'))) != (expected_start_m_ct := 2538):
         print(f"Expected {expected_start_m_ct} ('a', 'b') bigrams, found {start_m_ct}")
         return
-    if (ab_ct := generated_bigrams.count(('a', 'b'))) != (expected_ab_ct := 541):
+    if (ab_ct := bigrams.count(('a', 'b'))) != (expected_ab_ct := 541):
         print(f"Expected {expected_ab_ct} ('a', 'b') bigrams, found {ab_ct}")
         return
-    if (s_end_ct := generated_bigrams.count(('s', '.'))) != (expected_s_end_ct := 1169):
+    if (s_end_ct := bigrams.count(('s', '.'))) != (expected_s_end_ct := 1169):
         print(f"Expected {expected_s_end_ct} ('s', '.') bigrams, found {s_end_ct}")
         return
     print("generate_bigrams looks good. Onwards!")
-generated_bigrams = generate_bigrams(loaded_words)
-test_bigrams()
+test_generate_bigrams()
 
 # %%
 
@@ -86,17 +86,32 @@ def get_stoi(bigrams):
 # %% deletable=false editable=false
 import string
 
-def test_stoi():
+def test_get_stoi():
+    bigrams = [
+        ('.', 'h'),
+        ('h', 'i'),
+        ('i', '.'),
+        ('.', 'b'),
+        ('b', 'y'),
+        ('y', 'e'),
+        ('e', '.'),
+    ]
+    expected_s = sorted(['.', 'h', 'i', 'b', 'y', 'e'])
+    stoi = get_stoi(bigrams)
     if not isinstance(stoi, dict):
         print(f"Expected stoi to be a dict")
         return
-    for c in string.ascii_lowercase:
-        if not c in stoi:
-            print(f"Expected {c} to be in stoi")
-            return
+    s = sorted(stoi.keys())
+    if s != expected_s:
+        print(f"Expected stoi keys to be {expected_s} when sorted, were {s}")
+        return
+    expected_i = list(range(len(s)))
+    i = sorted(stoi.values())
+    if i != expected_i:
+        print(f"Expected stoi values to be {expected_i} when sorted, were {i}")
+        return
     print("get_stoi looks good. Onwards!")
-stoi = get_stoi(generated_bigrams)
-test_stoi()
+test_get_stoi()
 
 # %%
 
@@ -105,17 +120,20 @@ def get_itos(stoi):
     return itos
 
 # %% deletable=false editable=false
-def test_itos():
+import string
+
+def test_get_itos():
+    stoi = {elem:idx for idx, elem in enumerate(string.ascii_lowercase + ".")}
+    itos = get_itos(stoi)
     if not isinstance(itos, dict):
         print(f"Expected stoi to be a dict")
         return
-    for c in string.ascii_lowercase:
+    for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
         if (expected_c := itos[c_i]) != c:
             print(f"Expected itos[{c_i}] to be {expected_c}, was {c}")
     print("get_itos looks good. Onwards!")
-itos = get_itos(stoi)
-test_itos()
+test_get_itos()
 
 # %%
 
@@ -128,21 +146,38 @@ def get_x_and_y(bigrams, stoi):
     return x, y
 
 # %% deletable=false editable=false
-def test_x_and_y():
+def test_get_x_and_y():
+    bigrams = [
+        ('.', 'h'),
+        ('h', 'i'),
+        ('i', '.'),
+        ('.', 'b'),
+        ('b', 'y'),
+        ('y', 'e'),
+        ('e', '.'),
+    ]
+    stoi = {
+        '.': 0,
+        'h': 1,
+        'i': 2,
+        'b': 3,
+        'y': 4,
+        'e': 5,
+    }
+    x, y = get_x_and_y(bigrams, stoi)
     if (x0 := x[0]) != (expected_x0 := 0):
         print(f"Expected x[0] to be {expected_x0}, was {x0}")
         return
-    if (y0 := y[0]) != (expected_y0 := 5):
+    if (y0 := y[0]) != (expected_y0 := 1):
         print(f"Expected y[0] to be {expected_y0}, was {y0}")
         return
-    if (x_sfe := x[-2]) != (expected_x_sfe := 26):
+    if (x_sfe := x[-2]) != (expected_x_sfe := 4):
         print(f"Expected x[-2] to be {expected_x_sfe}, was {x_sfe}")
         return
-    if (y_sfe := y[-2]) != (expected_y_sfe := 24):
+    if (y_sfe := y[-2]) != (expected_y_sfe := 5):
         print(f"Expected y[-2] to be {expected_y_sfe}, was {y_sfe}")
     print("get_x_and_y looks good. Onwards!")
-x, y = get_x_and_y(generated_bigrams, stoi)
-test_x_and_y()
+test_get_x_and_y()
 
 # %%
 
@@ -156,12 +191,15 @@ def initialize_w_b(stoi):
 
 # %% deletable=false editable=false
 def test_initialize_w_b():
-    if (w_len := len(W)) != (expected_w_len := 27):
-        print(f"Expected W to have {expected_w_len} rows, had {w_len}")
+    stoi = {'q': 0, 'w': 1, 'e': 2, 'r': 3}
+    expected_s_ct = 4
+    W, b = initialize_w_b(stoi)
+    if (w_len := len(W)) != expected_s_ct:
+        print(f"Expected W to have {expected_s_ct} rows, had {w_len}")
         return
     for row_idx in range(w_len):
-        if (row_len := len(W[row_idx])) != (expected_row_len := 27):
-            print(f"Expected W[{row_idx}] to have {expected_row_len} columns, had {row_len}")
+        if (row_len := len(W[row_idx])) != expected_s_ct:
+            print(f"Expected W[{row_idx}] to have {expected_s_ct} columns, had {row_len}")
             return
         for col_idx in range(row_len):
             if (val := W[row_idx][col_idx]) == 0.0:
@@ -173,11 +211,10 @@ def test_initialize_w_b():
     if not b.requires_grad:
         print("b must be marked with requires_grad so its grad property will be populated by backpropagation for use in gradient descent.")
         return
-    if (b_shape := b.shape) != (expected_b_shape := (1, 27)):
+    if (b_shape := b.shape) != (expected_b_shape := (1, expected_s_ct)):
         print(f"Expected b to have shape {expected_b_shape}, had shape {b_shape}")
         return
     print("initialize_w_b looks good. Onwards!")
-W, b = initialize_w_b(stoi)
 test_initialize_w_b()
 
 # %%
