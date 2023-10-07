@@ -13,11 +13,6 @@
 #     name: python3
 # ---
 
-# %% deletable=false editable=false
-
-# Import some assertions for the test cases.
-from utils import expect_close
-
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
@@ -257,7 +252,9 @@ def test_forward_prop():
 
     y_hat = forward_prop(x, W, b)
 
-    expect_close("y_hat", expected_y_hat, y_hat)
+    if not torch.isclose(expected_y_hat, y_hat, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected y_hat for test case to be \n{expected_y_hat}\n, was \n{y_hat}")
+        return
     print("forward_prop looks good. Onwards!")
 test_forward_prop()
 
@@ -325,7 +322,9 @@ def test_descend_gradient():
         [3.0, 2.0],
         [-17.0, 3.0]
     ])
-    expect_close("new_w", expected_new_w, new_w)
+    if not new_w.equal(expected_new_w):
+        print(f"Expected new W for test case to be \n{expected_new_w}\n, is \n{new_w}")
+        return
     expected_new_b = torch.tensor([
         4.0,
         0.5,
@@ -378,14 +377,18 @@ def test_train_model():
         [0.7996, 0.7785, 1.4219],
         [1.4663, 0.7785, 0.7552]
     ], dtype=torch.float64)
-    expect_close("W", expected_W, W)
+    if not torch.isclose(expected_W, W, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected W for test case to be \n{expected_W}\n, was \n{W}")
+        return
 
     expected_b = torch.tensor([
         0.1654,
         0.2022,
         0.2323
     ], dtype=torch.float64)
-    expect_close("b", expected_b, b)
+    if not torch.isclose(expected_b, b, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected b for test case to be \n{expected_b}\n, was \n{b}")
+        return
     print("train_model looks good. Onward!")
 test_train_model()
 
