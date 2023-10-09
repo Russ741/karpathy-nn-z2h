@@ -45,7 +45,6 @@ loaded_words = load_words()
 test_words()
 
 # %%
-
 def generate_bigrams(words):
     bigrams = []
     for word in words:
@@ -74,7 +73,6 @@ def test_generate_bigrams():
 test_generate_bigrams()
 
 # %%
-
 def get_stoi(bigrams):
     chars = set()
     for bigram in bigrams:
@@ -114,7 +112,6 @@ def test_get_stoi():
 test_get_stoi()
 
 # %%
-
 def get_itos(stoi):
     itos = {stoi[c]:c for c in stoi}
     return itos
@@ -136,7 +133,6 @@ def test_get_itos():
 test_get_itos()
 
 # %%
-
 import torch
 
 def get_x_and_y(bigrams, stoi):
@@ -180,7 +176,6 @@ def test_get_x_and_y():
 test_get_x_and_y()
 
 # %%
-
 import torch
 def initialize_w_b(stoi):
     stoi_n = len(stoi)
@@ -218,7 +213,6 @@ def test_initialize_w_b():
 test_initialize_w_b()
 
 # %%
-
 def forward_prop(x, W, b):
     one_hot = torch.nn.functional.one_hot(x, len(W)).double()
     output = torch.matmul(one_hot, W) + b
@@ -259,7 +253,6 @@ def test_forward_prop():
 test_forward_prop()
 
 # %%
-
 def calculate_loss(y_hat, y):
     match_probabilities = y_hat[torch.arange(len(y)), y]
     neg_log_likelihood = -match_probabilities.log().mean()
@@ -289,14 +282,12 @@ def test_calculate_loss():
 test_calculate_loss()
 
 # %%
-
 def descend_gradient(W, b, learning_rate):
     W.data -= learning_rate * W.grad
     b.data -= learning_rate * b.grad
     return W, b
 
 # %% deletable=false editable=false
-
 def test_descend_gradient():
     W = torch.tensor([
         [1.0, 2.0,],
@@ -336,7 +327,6 @@ def test_descend_gradient():
 test_descend_gradient()
 
 # %%
-
 def train_model(x, y, W, b, learning_rate):
     y_hat = forward_prop(x,W,b)
     loss = calculate_loss(y_hat, y)
@@ -347,7 +337,6 @@ def train_model(x, y, W, b, learning_rate):
     return loss.item()
 
 # %% deletable=false editable=false
-
 def test_train_model():
     x = torch.tensor([
         0,
@@ -452,7 +441,6 @@ test_generate_word()
 # * uses the model to generate some made-up names
 
 # %%
-
 def train_model_and_generate_words():
     bigrams = generate_bigrams(loaded_words)
     stoi = get_stoi(bigrams)
