@@ -442,21 +442,29 @@ def test_generate_word():
     print(f"generate_word looks good. Onward!")
 test_generate_word()
 
+# %% [markdown] deletable=false editable=false
+# ### Finale: Put it all together
+#
+# Objective: Write (and call) a function that:
+# * generates the bigrams and character maps
+# * repeatedly trains the model until its loss is acceptably small
+#   * For reference, the "perfect" loss of the probability table approach is approximately 2.4241
+# * uses the model to generate some made-up names
+
 # %%
 
-def main():
-    words = load_words()
-    bigrams = generate_bigrams(words)
+def train_model_and_generate_words():
+    bigrams = generate_bigrams(loaded_words)
     stoi = get_stoi(bigrams)
     itos = get_itos(stoi)
     x, y = get_x_and_y(bigrams, stoi)
     W, b = initialize_w_b(stoi)
     for i in range(1, 101, 1):
         loss = train_model(x, y, W, b, 10.0)
-        if i % 10 == 0:
-            print(f"Round {i} loss: {loss}")
-
-if __name__ == "__main__":
-    main()
+    print(f"Final loss is {loss}")
+    gen = torch.Generator()
+    for i in range(10):
+        print(generate_word(W, b, stoi, itos, gen))
+train_model_and_generate_words()
 
 # %%
