@@ -273,6 +273,19 @@ def test_initialize_w_b():
     print("initialize_w_b looks good. Onwards!")
 test_initialize_w_b()
 
+# %% [markdown] deletable=false editable=false
+# ### Step 5: Forward propagation
+#
+# Objective: Write a function that takes the following arguments:
+# * a pytorch.Tensor ```x``` of training or testing inputs
+# * pytorch.Tensors ```W``` and ```b``` representing the parameters of the model
+#
+# And returns:
+# * a pytorch.Tensor ```y_hat``` of the model's predicted outputs for each input in x
+#   * The predicted outputs for a given sample should sum to 1.0
+#   * The shape of ```y_hat``` should be (```len(x)```, ```len(W)```)
+#     * Note that ```len(W)``` represents the number of different characters in the word list
+
 # %%
 def forward_prop(x, W, b):
     one_hot = torch.nn.functional.one_hot(x, len(W)).double()
@@ -313,6 +326,15 @@ def test_forward_prop():
     print("forward_prop looks good. Onwards!")
 test_forward_prop()
 
+# %% [markdown] deletable=false editable=false
+# ### Step 6: Loss calculation
+# Objective: Write a function that takes the following arguments:
+# * a pytorch.Tensor ```y_hat``` of predicted outputs for a particular set of inputs
+# * a pytorch.Tensor ```y``` of actual outputs for the same set of inputs
+#
+# And returns:
+# * a floating-point value representing the model's negative log likelihood loss for that set of inputs
+
 # %%
 def calculate_loss(y_hat, y):
     match_probabilities = y_hat[torch.arange(len(y)), y]
@@ -341,6 +363,16 @@ def test_calculate_loss():
         return
     print("calculate_loss looks good. Onwards!")
 test_calculate_loss()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 7: Gradient descent
+# Objective: Write a function that takes the following arguments:
+# * pytorch.Tensors ```W``` and ```b``` representing the parameters of the model
+# * a floating-point value ```learning_rate``` representing the overall size of adjustment to make to the parameters
+#
+# And returns:
+# * the updated pytorch.Tensors ```W``` and ```b```
+#   * Note: Updating the parameters in-place is desirable, but for ease of testing, please return them regardless.
 
 # %%
 def descend_gradient(W, b, learning_rate):
@@ -386,6 +418,20 @@ def test_descend_gradient():
         return
     print("descend_gradient looks good. Onward!")
 test_descend_gradient()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 8: Train model
+# Objective: Write a function that takes the following arguments:
+# * pytorch.Tensors ```x``` and ```y``` as described in Step 4
+# * pytorch.Tensors ```W``` and ```b``` as described in Step 5
+# * a floating-point value ```learning_rate``` representing the overall size of adjustment to make to the parameters
+#
+# Updates the values of W and b to fit the data slightly better
+#
+# And returns:
+# * the loss as defined in Step 6
+#
+# Implementation note: this function should make use of several of the functions you've previously implemented.
 
 # %%
 def train_model(x, y, W, b, learning_rate):
