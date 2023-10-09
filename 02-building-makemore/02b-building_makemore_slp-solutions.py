@@ -84,6 +84,7 @@ test_generate_bigrams()
 #
 # Objective: Write a function that takes the following arguments:
 # * a list of char, char tuples representing all of the bigrams in a word list
+#
 # And returns:
 # * a dict (```stoi```) where
 #   * the key is a character from ```words``` (including '.' for start/end),
@@ -141,6 +142,7 @@ test_get_stoi()
 #
 # Objective: Write a function that takes the following arguments:
 # * a dict (```stoi```) as defined in step 2
+#
 # And returns:
 # * a dict (```itos```) where ```itos``` contains the same key-value pairs as ```stoi``` but with keys and values swapped.
 #
@@ -173,6 +175,7 @@ test_get_itos()
 # Objective: Write a function that takes the following arguments:
 # * a list ```bigrams``` as defined in step 1, and
 # * a dict ```stoi``` as defined in step 2
+#
 # And returns:
 # * a one-dimensional torch.Tensor ```x``` with all of the first characters in the tuples in ```bigrams```
 # * a one-dimensional torch.Tensor ```y``` with all of the second characters in the tuples in ```bigrams```
@@ -220,6 +223,16 @@ def test_get_x_and_y():
         print(f"Expected y[-2] to be {expected_y_sfe}, was {y_sfe}")
     print("get_x_and_y looks good. Onwards!")
 test_get_x_and_y()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 5: Provide initial values for the model parameters
+#
+# Objective: Write a function that takes the following arguments:
+# * a dict ```stoi``` as defined in step 2
+#   * the length of ```stoi``` will be referred to as ```stoi_n```
+#
+# And returns:
+# * a pytorch.Tensor of shape (stoi_n, stoi_n) where each
 
 # %%
 import torch
