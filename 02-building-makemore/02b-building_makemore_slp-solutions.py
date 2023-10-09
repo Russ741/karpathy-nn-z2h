@@ -44,6 +44,13 @@ def test_words():
 loaded_words = load_words()
 test_words()
 
+# %% [markdown] deletable=false editable=false
+# ### Step 1: Generate bigrams
+#
+# Objective: Populate the variable ```bigrams``` with a list of bigrams (2-element tuples) of adjacent characters in ```words```.
+#
+# Treat the start and end of each word as the character '.'
+
 # %%
 def generate_bigrams(words):
     bigrams = []
@@ -71,6 +78,24 @@ def test_generate_bigrams():
         return
     print("generate_bigrams looks good. Onwards!")
 test_generate_bigrams()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 2: Map characters to indices
+#
+# Objective: Write a function that takes the following arguments:
+# * a list of char, char tuples representing all of the bigrams in a word list
+# And returns:
+# * a dict (```stoi```) where
+#   * the key is a character from ```words``` (including '.' for start/end),
+#   * the value is a unique integer, and
+#   * all the values are in the range from 0 to ```len(stoi) - 1``` (no gaps)
+#
+# We'll use these unique integers as an index to represent the characters in a Tensor in later steps
+#
+# Note that for this list of words, the same value of ```stoi``` could be generated without looking at the words at all,
+# but simply by using all the lowercase letters and a period. This approach would be more efficient for this exercise,
+# but will not generalize well conceptually to more complex models in future exercises.
+#
 
 # %%
 def get_stoi(bigrams):
@@ -111,6 +136,16 @@ def test_get_stoi():
     print("get_stoi looks good. Onwards!")
 test_get_stoi()
 
+# %% [markdown] deletable=false editable=false
+# ### Step 3: Map indices to characters
+#
+# Objective: Write a function that takes the following arguments:
+# * a dict (```stoi```) as defined in step 2
+# And returns:
+# * a dict (```itos```) where ```itos``` contains the same key-value pairs as ```stoi``` but with keys and values swapped.
+#
+# E.g. if ```stoi == {'.' : 0, 'b' : 1, 'z', 2}```, then ```itos == {0 : '.', 1 : 'b', 2 : 'z'}```
+
 # %%
 def get_itos(stoi):
     itos = {stoi[c]:c for c in stoi}
@@ -131,6 +166,17 @@ def test_get_itos():
             print(f"Expected itos[{c_i}] to be {expected_c}, was {c}")
     print("get_itos looks good. Onwards!")
 test_get_itos()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 4: Split bigrams into inputs and outputs
+#
+# Objective: Write a function that takes the following arguments:
+# * a list ```bigrams``` as defined in step 1, and
+# * a dict ```stoi``` as defined in step 2
+# And returns:
+# * a one-dimensional torch.Tensor ```x``` with all of the first characters in the tuples in ```bigrams```
+# * a one-dimensional torch.Tensor ```y``` with all of the second characters in the tuples in ```bigrams```
+# * Note: Both output tensors should be the same length as ```bigrams```
 
 # %%
 import torch
