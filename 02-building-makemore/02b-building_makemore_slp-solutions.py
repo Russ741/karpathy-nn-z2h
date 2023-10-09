@@ -232,7 +232,9 @@ test_get_x_and_y()
 #   * the length of ```stoi``` will be referred to as ```stoi_n```
 #
 # And returns:
-# * a pytorch.Tensor of shape (stoi_n, stoi_n) where each
+# * a pytorch.Tensor ```W``` of shape (```stoi_n```, ```stoi_n```) where each element is randomly generated
+# * a pytorch.Tensor ```b``` of shape (1, ```stoi_n```)
+#   * The elements of ```b``` can be zero
 
 # %%
 import torch
