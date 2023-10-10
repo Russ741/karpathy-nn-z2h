@@ -24,28 +24,18 @@
 # Objective: Load a list of words from the [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file into a list variable named ```words```.
 
 # %%
-words = []  # TODO: Add code to load names.txt into words.
+# To load names.txt from the makemore GitHub page:
+import requests
 
+words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
+words = requests.get(words_url).text.splitlines()
 
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution** (load names.txt from the makemore GitHub page):
-# ```python
-# import requests
-#
-# words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
-# words = requests.get(words_url).text.splitlines()
-# ```
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution** (load names.txt from a local file):
-#
-# ```python
+# To load names.txt from a local file:
 # # curl https://raw.githubusercontent.com/karpathy/makemore/master/names.txt > names.txt
 #
 # # read() gets the file as one long string with line breaks in it
 # # splitlines() divides the whole-file string into a list of strings and removes the line breaks
 # words = open("names.txt").read().splitlines()
-# ```
 
 # %% deletable=false editable=false
 def test_words():
@@ -73,18 +63,11 @@ test_words()
 
 # %%
 bigrams = []
-# TODO: Populate bigrams using words.
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# for word in words:
-#     bigrams.append(('.', word[0]))
-#     for pos in range(len(word) - 1):
-#         bigrams.append((word[pos], word[pos + 1]))
-#     bigrams.append((word[-1], '.'))
-# ```
+for word in words:
+    bigrams.append(('.', word[0]))
+    for pos in range(len(word) - 1):
+        bigrams.append((word[pos], word[pos + 1]))
+    bigrams.append((word[-1], '.'))
 
 # %% deletable=false editable=false
 def test_bigrams():
@@ -112,18 +95,11 @@ test_bigrams()
 
 # %%
 stoi = {}
-# TODO: Populate stoi with character to index pairs.
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# chars = set()
-# for bigram in bigrams:
-#     chars.add(bigram[0])
-#     chars.add(bigram[1])
-# stoi = { v:k for (k, v) in enumerate(sorted(chars))}
-# ```
+chars = set()
+for bigram in bigrams:
+    chars.add(bigram[0])
+    chars.add(bigram[1])
+stoi = { v:k for (k, v) in enumerate(sorted(chars))}
 
 # %% deletable=false editable=false
 import string
@@ -133,7 +109,7 @@ def test_stoi():
         print(f"Expected stoi to be a dict")
         return
     for c in string.ascii_lowercase:
-        if not c in stoi: 
+        if not c in stoi:
             print(f"Expected {c} to be in stoi")
             return
     print("stoi looks good. Onwards!")
@@ -146,14 +122,7 @@ test_stoi()
 
 # %%
 itos = {}
-### TODO: Populate itos with the reverse mappings of stoi.
-
-# %% [markdown] jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# itos = {stoi[c]:c for c in stoi}
-# ```
+itos = {stoi[c]:c for c in stoi}
 
 # %% [markdown] deletable=false editable=false
 # ### Step 4: Count occurrences of each bigram
@@ -167,17 +136,10 @@ itos = {}
 import torch
 
 N = torch.zeros(len(stoi), len(stoi), dtype=torch.int32)
-### TODO: Fill in N with the counts of each bigram.
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# for bigram in bigrams:
-#     i0 = stoi[bigram[0]]
-#     i1 = stoi[bigram[1]]
-#     N[i0][i1] += 1
-# ```
+for bigram in bigrams:
+    i0 = stoi[bigram[0]]
+    i1 = stoi[bigram[1]]
+    N[i0][i1] += 1
 
 # %% [markdown]
 # ### Step 5: Build probability distribution of bigrams
@@ -190,14 +152,8 @@ N = torch.zeros(len(stoi), len(stoi), dtype=torch.int32)
 # %%
 P = torch.zeros(len(stoi), len(stoi), dtype=torch.float64)
 # TODO: Fill in P with probability distributions for bigrams.
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# N_sum = N.sum(1, keepdim=True)
-# P = N / N_sum
-# ```
+N_sum = N.sum(1, keepdim=True)
+P = N / N_sum
 
 # %% deletable=false editable=false
 def test_P():
@@ -223,17 +179,7 @@ test_P()
 
 # %%
 def bigram_probability(bigram):
-    # TODO: Return the probability that a bigram starting with the first character would end with the second.
-    pass    # Remove this when the function is implemented.
-
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# def bigram_probability(bigram):
-#     return P[stoi[bigram[0]]][stoi[bigram[1]]]
-# ```
+    return P[stoi[bigram[0]]][stoi[bigram[1]]]
 
 # %% deletable=false editable=false
 def test_bigram_probability():
@@ -261,20 +207,10 @@ test_bigram_probability()
 import math
 
 def calculate_loss(probability_func, bigram_list):
-    # TODO: Calculate the (mean) negative log likelihood of all the bigrams in bigram_list.
-    pass    # TODO: Remove this when the function is implemented.
-
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# def calculate_loss(probability_func, bigram_list):
-#     probabilities = list(map(probability_func, bigram_list))
-#     log_probabilities = list(map(math.log, probabilities))
-#     negative_log_likelihood = - sum(log_probabilities) / len(log_probabilities)
-#     return negative_log_likelihood
-# ```
+    probabilities = list(map(probability_func, bigram_list))
+    log_probabilities = list(map(math.log, probabilities))
+    negative_log_likelihood = - sum(log_probabilities) / len(log_probabilities)
+    return negative_log_likelihood
 
 # %% deletable=false editable=false
 def test_calculate_loss():
@@ -298,15 +234,7 @@ test_calculate_loss()
 # Use the function from step #7 to calculate the bigram probability function's loss when given all of the bigrams in ```words```
 
 # %%
-loss_for_words = 0.0    # TODO: Calculate the actual value of the loss for the bigrams in words
-
-
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-#
-# ```python
-# loss_for_words = calculate_loss(bigram_probability, bigrams)
-# ```
+loss_for_words = calculate_loss(bigram_probability, bigrams)
 
 # %% deletable=false editable=false
 def test_loss_for_words():
@@ -327,25 +255,17 @@ test_loss_for_words()
 # And returns:
 # * a word (string) generated by repeatedly sampling the probability distribution to determine the next character in the string
 
-# %% [markdown] deletable=false editable=false jupyter={"source_hidden": true}
-# **Solution**
-# ```python
-# def generate_word(probabilities, generator):
-#     current_letter_index = stoi['.']
-#     word = ""
-#     while True:
-#         current_letter_index = torch.multinomial(probabilities[current_letter_index], 1, generator=generator).item()
-#         current_letter_index
-#         if current_letter_index == stoi['.']:
-#             break
-#         word += itos[current_letter_index]
-#     return word
-# ```
-
 # %%
 def generate_word(probabilities, generator):
-    # TODO: Generate and return a word using the probability distribution given.
-    pass    # TODO: Remove this when the function is implemented.
+    current_letter_index = stoi['.']
+    word = ""
+    while True:
+        current_letter_index = torch.multinomial(probabilities[current_letter_index], 1, generator=generator).item()
+        current_letter_index
+        if current_letter_index == stoi['.']:
+            break
+        word += itos[current_letter_index]
+    return word
 
 
 # %%
@@ -357,3 +277,5 @@ def test_generate_word():
         return
     print("generate_word looks good. Onwards!")
 test_generate_word()
+
+# %%
