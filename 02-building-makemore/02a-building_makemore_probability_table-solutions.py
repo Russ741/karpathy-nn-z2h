@@ -164,7 +164,6 @@ for bigram in bigrams:
 # %%
 # Solution code
 P = torch.zeros(len(stoi), len(stoi), dtype=torch.float64)
-# TODO: Fill in P with probability distributions for bigrams.
 N_sum = N.sum(1, keepdim=True)
 P = N / N_sum
 # End solution code
