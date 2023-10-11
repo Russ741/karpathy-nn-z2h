@@ -116,6 +116,24 @@ test_stoi()
 itos = {}
 # TODO: Implement solution here
 
+# %% deletable=false editable=false
+def test_itos():
+    if not isinstance(itos, dict):
+        print(f"Expected itos to be a dict")
+        return
+    if (len_itos := len(itos)) != (expected_len := len(stoi)):
+        print(f"Expected length to be {expected_len}, was {len_itos}")
+        return
+    for k,v in stoi.items():
+        if v not in itos:
+            print(f"Expected {v} to be a key in itos")
+            return
+        if (itos_v := itos[v]) != (expected_itos_v := k):
+            print(f"Expected itos[{v}] to be {expected_itos_v}, was {itos_v}")
+            return
+    print("itos looks good. Onwards!")
+test_itos()
+
 # %% [markdown] deletable=false editable=false
 # ### Step 4: Count occurrences of each bigram
 #
@@ -128,6 +146,23 @@ itos = {}
 import torch
 
 # TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_N():
+    if (N_shape := N.shape) != (expected_N_shape := (27, 27)):
+        print(f"Expected shape of N to be {expected_N_shape}, was {N_shape}")
+        return
+    if (N_sum := N.sum()) != (expected_N_sum := 228146):
+        print(f"Expected the sum of elements in N to be {expected_N_sum}, was {N_sum}")
+        return
+    if (N_start_m := N[stoi['.']][stoi['m']]) != (expected_N_start_m := 2538):
+        print(f"Expected N for ('.', 'm') to be {expected_N_start_m}, was {N_start_m}")
+        return
+    if (N_m_end := N[stoi['m']][stoi['.']]) != (expected_N_m_end := 516):
+        print(f"Expected N for ('m', '.') to be {expected_N_m_end}, was {N_m_end}")
+        return
+    print("N looks good. Onwards!")
+test_N()
 
 # %% [markdown]
 # ### Step 5: Build probability distribution of bigrams
