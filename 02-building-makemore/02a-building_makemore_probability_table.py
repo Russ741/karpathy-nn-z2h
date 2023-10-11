@@ -14,9 +14,20 @@
 # ---
 
 # %% [markdown] deletable=false editable=false
-# Exercises for Andrej Karpathy's [Neural Networks: Zero To Hero](https://karpathy.ai/zero-to-hero.html) videos.
 #
-# This notebook is for Part 2: [The spelled-out intro to language modeling: building makemore](https://www.youtube.com/watch?v=PaCmpygFfXo)
+# # Worksheet 2a - Probability Table
+#
+# This is the second in a series of companion worksheets for for Andrej Karpathy's [Neural Networks: Zero To Hero](https://karpathy.ai/zero-to-hero.html) videos.
+#
+# It corresponds to roughly the first half of the second video in the series, named "[The spelled-out intro to language modeling: building makemore](https://www.youtube.com/watch?v=PaCmpygFfXo)".
+#
+# The first worksheet in the series is provided by Andrej, and can be found [here](https://colab.research.google.com/drive/1FPTx1RXtBfc4MaTkf7viZZD4U2F9gtKN?usp=sharing).
+#
+# The rest of the worksheets are listed in the README [here](https://github.com/Russ741/karpathy-nn-z2h/).
+#
+# The overall objective of this worksheet is to write code that generates a word that is similar to a set of example words it is trained on.
+#
+# Note that this worksheet uses a probability table, *not* neural networks like subsequent neural networks.
 
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data

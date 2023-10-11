@@ -14,6 +14,20 @@
 # ---
 
 # %% [markdown] deletable=false editable=false
+#
+# # Worksheet 2b - Single-Layer Perceptron
+#
+# This is the third in a series of companion worksheets for for Andrej Karpathy's [Neural Networks: Zero To Hero](https://karpathy.ai/zero-to-hero.html) videos.
+#
+# It corresponds to roughly the second half of the second video in the series, named "[The spelled-out intro to language modeling: building makemore](https://www.youtube.com/watch?v=PaCmpygFfXo)".
+#
+# The rest of the worksheets are listed in the README [here](https://github.com/Russ741/karpathy-nn-z2h/).
+#
+# The overall objective of this worksheet is to write code that generates a word that is similar to a set of example words it is trained on.
+# It does so using a single-layer neural network.
+
+
+# %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
 # Objective: Load a list of words from the [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file into a list variable named ```words```.
