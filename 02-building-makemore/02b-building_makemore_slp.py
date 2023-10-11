@@ -177,6 +177,8 @@ test_get_itos()
 # * Note: Both output tensors should be the same length as ```bigrams```
 
 # %%
+import torch
+
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -226,6 +228,8 @@ test_get_x_and_y()
 #   * The elements of ```b``` can be zero
 
 # %%
+import torch
+
 # TODO: Implement solution here
 
 # %% deletable=false editable=false

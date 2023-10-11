@@ -155,9 +155,9 @@ itos = {stoi[c]:c for c in stoi}
 # * the value is the number of times that bigram occurs (represented as an integer)
 
 # %%
-# Solution code
 import torch
 
+# Solution code
 N = torch.zeros(len(stoi), len(stoi), dtype=torch.int32)
 for bigram in bigrams:
     i0 = stoi[bigram[0]]

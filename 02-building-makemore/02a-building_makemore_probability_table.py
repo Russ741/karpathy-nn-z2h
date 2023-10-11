@@ -125,6 +125,8 @@ itos = {}
 # * the value is the number of times that bigram occurs (represented as an integer)
 
 # %%
+import torch
+
 # TODO: Implement solution here
 
 # %% [markdown]

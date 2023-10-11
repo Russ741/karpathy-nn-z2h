@@ -205,9 +205,9 @@ test_get_itos()
 # * Note: Both output tensors should be the same length as ```bigrams```
 
 # %%
-# Solution code
 import torch
 
+# Solution code
 def get_x_and_y(bigrams, stoi):
     x = torch.tensor(list(map(lambda bigram : stoi[bigram[0]], bigrams)))
     y = torch.tensor(list(map(lambda bigram : stoi[bigram[-1]], bigrams)))
@@ -262,8 +262,9 @@ test_get_x_and_y()
 #   * The elements of ```b``` can be zero
 
 # %%
-# Solution code
 import torch
+
+# Solution code
 def initialize_w_b(stoi):
     stoi_n = len(stoi)
     W = torch.rand((stoi_n,stoi_n), dtype=torch.float64, requires_grad=True)
