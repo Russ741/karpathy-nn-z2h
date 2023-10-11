@@ -185,6 +185,9 @@ for bigram in bigrams:
 
 # %% deletable=false editable=false
 def test_N():
+    if torch.is_floating_point(N):
+        print(f"Expected N to be a tensor of integral type, was of floating point type.")
+        return
     if (N_shape := N.shape) != (expected_N_shape := (27, 27)):
         print(f"Expected shape of N to be {expected_N_shape}, was {N_shape}")
         return
