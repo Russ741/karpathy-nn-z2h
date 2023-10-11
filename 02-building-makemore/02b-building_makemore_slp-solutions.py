@@ -30,8 +30,15 @@
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
-# Objective: Load a list of words from the the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
-# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt)) into a list variable named ```words```.
+# Objective: Write a function that:
+#  * Loads the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
+# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt))
+#  * Returns a list of strings
+#    * Each string should be equal to the word from the corresponding line of names.txt
+#    * The strings should not include line-break characters
+#
+# Note: In practice, the order of the strings in the returned list does not matter, but for the
+# test to pass, they should be in the same order in the list as in words.txt.
 
 # %%
 # Solution code
