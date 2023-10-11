@@ -30,7 +30,8 @@
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
-# Objective: Load a list of words from the [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file into a list variable named ```words```.
+# Objective: Load a list of words from the the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
+# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt)) into a list variable named ```words```.
 
 # %%
 # Solution code

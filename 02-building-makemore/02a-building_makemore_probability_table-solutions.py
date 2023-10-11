@@ -32,7 +32,8 @@
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
-# Objective: Load a list of words from the [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file into a list variable named ```words```.
+# Objective: Load a list of words from the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
+# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt)) into a list variable named ```words```.
 
 # %%
 # Solution code
@@ -43,7 +44,7 @@ import requests
 words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
 words = requests.get(words_url).text.splitlines()
 
-# To load names.txt from a local file:
+# To load names.txt from a local file after downloading it:
 # # curl https://raw.githubusercontent.com/karpathy/makemore/master/names.txt > names.txt
 #
 # # read() gets the file as one long string with line breaks in it
