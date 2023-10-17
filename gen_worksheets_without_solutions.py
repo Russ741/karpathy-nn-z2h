@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from os import chdir, listdir
 
-WORKSHEET_DIR = "02-building-makemore"
+WORKSHEET_DIR = "worksheets"
 
 chdir(WORKSHEET_DIR)
 filenames = listdir()
