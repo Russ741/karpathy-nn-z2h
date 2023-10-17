@@ -34,7 +34,7 @@ for filename in filenames:
             elif not is_solution:
                 outfile.write(line)
 
-COLAB_PREFIX = f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/{WORKSHEET_DIR}/"
+COLAB_PREFIX = f"[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/{WORKSHEET_DIR}"
 COLAB_SUFFIX = ")"
 
 print("Worksheet | Colab | .ipynb | Colab (w/solutions) | .ipynb (w/solutions)")
