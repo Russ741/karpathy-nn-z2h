@@ -1,6 +1,6 @@
 To load this worksheet in Google Colab:
 
-Worksheet | Colab | .ipynb | Colab (w/solutions) | .ipynb (w/solutions)
+Worksheet | Colab | .py | Colab (w/solutions) | .py (w/solutions)
 --- | --- | --- | --- | ---
 02a-building_makemore_probability_table | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/worksheets/02a-building_makemore_probability_table.ipynb) | [link](worksheets/02a-building_makemore_probability_table.py) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/worksheets/02a-building_makemore_probability_table-solutions.ipynb) | [link](worksheets/02a-building_makemore_probability_table-solutions.py)
 02b-building_makemore_slp | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/worksheets/02b-building_makemore_slp.ipynb) | [link](worksheets/02b-building_makemore_slp.py) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Russ741/karpathy-nn-z2h/blob/main/worksheets/02b-building_makemore_slp-solutions.ipynb) | [link](worksheets/02b-building_makemore_slp-solutions.py)
@@ -15,7 +15,7 @@ pre-commit install
 jupyter notebook
 ```
 
-Then navigate to http://localhost:8888/notebooks/02-building-makemore/02-building_makemore.ipynb
+Then open Jupyter in your browser using the link it printed out in the console, and navigate to the desired worksheet.
 
 To update the conda environment when the environment.yml file is updated:
 ```
