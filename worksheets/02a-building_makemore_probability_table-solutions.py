@@ -240,7 +240,7 @@ test_P()
 
 
 # %% [markdown] deletable=false editable=false
-# ### Step #6: Write a bigram probability calculation function
+# ### Step 6: Write a bigram probability calculation function
 #
 # This is slightly different from the steps that the Karpathy video follows, but will make it easier for this worksheet to verify your code.
 #
@@ -268,7 +268,7 @@ def test_bigram_probability():
 test_bigram_probability()
 
 # %% [markdown] deletable=false editable=false
-# ### Step #7: Write a negative log likelihood loss function
+# ### Step 7: Write a negative log likelihood loss function
 #
 # Write a ```calculate_loss``` function that takes the following arguments:
 # * the name of the bigram probability function written in step 6
