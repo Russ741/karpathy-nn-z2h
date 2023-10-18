@@ -291,7 +291,44 @@ def test_get_C():
 test_get_C()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Convert X to tensor vector
+# ### Step : Generate vector embeddings of X
+#
+# Video: [0:13:07](https://youtu.be/TCH_1BHY58I?t=787)
+
+# %%
+def get_emb(X, C):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_vector_embedding():
+    X = torch.tensor([
+        [1, 2],
+        [2, 1],
+        [0, 1],
+    ])
+    ZERO = [0.1, 0.2, 0.3]
+    ONE = [0.4, 0.5, 0.6]
+    TWO = [0.7, 0.8, 0.9]
+    C = torch.tensor([
+        ZERO,
+        ONE,
+        TWO,
+    ])
+
+    emb = get_emb(X, C)
+
+    expected_emb = torch.tensor([
+        [ONE, TWO],
+        [TWO, ONE],
+        [ZERO, ONE],
+    ])
+    if not emb.equal(expected_emb):
+        print(f"Expected emb to be \n{expected_emb}\n, was \n{emb}")
+        return
+    print("get_vector_embedding looks good. Onwards!")
+test_get_vector_embedding()
+
+# TODO: Add a step in here to reshape the vector embeddings
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Initialize hidden layer coefficients
