@@ -42,6 +42,8 @@
 # Notes:
 # * You can reuse your work from the previous worksheet for this if you like.
 # * The test_words block below will save the loaded words as loaded_words for you to reuse later
+#
+# Video: [0:09:10](https://youtu.be/TCH_1BHY58I?t=550)
 
 # %%
 # The sample solution uses this library; if your code doesn't, feel free to remove it.
@@ -86,6 +88,8 @@ test_words()
 # Note that for this list of words, the same value of ```stoi``` could be generated without looking at the words at all,
 # but simply by using all the lowercase letters and a period. This approach would be more efficient for this exercise,
 # but will not generalize well conceptually to more complex models in future exercises.
+#
+# Video: [0:09:22](https://youtu.be/TCH_1BHY58I?t=562)
 
 # %%
 def get_stoi(words):
@@ -131,6 +135,8 @@ test_get_stoi()
 # * a dict (```itos```) where ```itos``` contains the same key-value pairs as ```stoi``` but with keys and values swapped.
 #
 # E.g. if ```stoi == {'.' : 0, 'b' : 1, 'z', 2}```, then ```itos == {0 : '.', 1 : 'b', 2 : 'z'}```
+#
+# Video: [0:09:22](https://youtu.be/TCH_1BHY58I?t=562)
 
 # %%
 def get_itos(stoi):
@@ -154,10 +160,135 @@ test_get_itos()
 
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Generate X and Y
+# ### Step 3: Generate inputs ```X``` and outputs ```Y```
+#
+# Write a function that takes the following arguments:
+# * a list of strings (```words``` from the preamble)
+# * a dict of characters to integers (```stoi``` from step 2)
+# * an integer (```block_size```) that specifies how many characters to take into account when predicting the next one
+#
+# And returns:
+# * a two-dimensional torch.Tensor ```X``` with each sequence of characters of length block_size from the words in ```words```
+# * a one-dimensional torch.Tensor ```Y``` with the character that follows each sequence in ```x```
+#
+# Video: [0:09:35](https://youtu.be/TCH_1BHY58I?t=575)
+
+# %%
+import torch
+
+def get_X_and_Y(words, stoi, block_size):
+    X = []
+    Y = []
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_X_and_Y():
+    words = [
+        "hi",
+        "bye",
+    ]
+    stoi = {
+        '.': 0,
+        'h': 1,
+        'i': 2,
+        'b': 3,
+        'y': 4,
+        'e': 5,
+    }
+    block_size = 3
+
+    (X, Y) = get_X_and_Y(words, stoi, block_size)
+
+    if not torch.is_tensor(X):
+        print(f"Expected X to be a tensor, was {type(X)}")
+        return
+    if not torch.is_tensor(Y):
+        print(f"Expected Y to be a tensor, was {type(Y)}")
+        return
+    expected_X = torch.tensor([
+        [0, 0, 0],
+        [0, 0, 1],
+        [0, 1, 2],
+        [1, 2, 0],
+        [2, 0, 0],
+        [0, 0, 0],
+        [0, 0, 3],
+        [0, 3, 4],
+        [3, 4, 5],
+        [4, 5, 0],
+        [5, 0, 0],
+    ])
+    expected_Y = torch.tensor([
+        1,
+        2,
+        0,
+        0,
+        0,
+        3,
+        4,
+        5,
+        0,
+        0,
+        0,
+    ])
+    if (shape_X := X.shape) != (expected_shape_X := expected_X.shape):
+        print(f"Expected shape of X for test case to be {expected_shape_X}, was {shape_X}")
+        return
+    if not X.equal(expected_X):
+        print(f"Expected X for test case to be {expected_X}, was {X}")
+        return
+    if not Y.equal(expected_Y):
+        print(f"Expected Y for test case to be {expected_Y}, was {Y}")
+        return
+    print("get_x_and_y looks good. Onwards!")
+test_get_X_and_Y()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Initialize vector embedding lookup table
+# ### Step 4: Initialize vector embedding lookup table ```C```
+#
+# Write a function that takes the following arguments:
+# * An integer (```indices```) representing the number of indices in ```stoi``` to embed
+# * An integer (```embed_dimensions```) representing the number of dimensions the embedded vectors will have
+# * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
+#
+# And returns:
+# * a ```torch.Tensor``` of ```float64``` (```C```) representing the random initial vector for each index.
+#
+# Video: [0:12:19](https://youtu.be/TCH_1BHY58I?t=739)
+
+# %%
+import torch
+
+def get_C(indices, embed_dimensions, gen):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_C():
+    indices = 7
+    embed_dimensions = 4
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    C = get_C(indices, embed_dimensions, gen)
+    if not torch.is_tensor(C):
+        print(f"Expected C to be a tensor, was {type(C)}")
+        return
+    if not torch.is_floating_point(C):
+        print(f"Expected C to be a tensor of floating point.")
+        return
+    if (shape_C := C.shape) != (expected_shape_C := (indices, embed_dimensions)):
+        print(f"Expected shape of X for test case to be {expected_shape_C}, was {shape_C}")
+        return
+    for i in range(len(C)):
+        for j in range(len(C)):
+            if i == j:
+                continue
+            if C[i].equal(C[j]):
+                print(f"Rows {i} and {j} of C are too similar.")
+                print(f"{C[i]=}")
+                print(f"{C[j]=}")
+                return
+    print("get_C looks good. Onwards!")
+test_get_C()
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Convert X to tensor vector
