@@ -415,14 +415,62 @@ def test_initialize_W_b():
     if (W_shape := W.shape) != (expected_W_shape := (input_ct, neuron_ct)):
         print(f"Expected W shape to be {expected_W_shape}, was {W_shape}")
         return
-    if (b_shape := b.shape) != (expected_b_shape := (neuron_ct)):
+    # The comma is required to make expected_b_shape into a single-element tuple
+    if (b_shape := b.shape) != (expected_b_shape := (neuron_ct,)):
         print(f"Expected b shape to be {expected_b_shape}, was {b_shape}")
         return
     print("W and b look good. Onwards!")
 test_initialize_W_b()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Forward propagate through hidden layer
+# ### Step 7: Forward propagate through hidden layer
+#
+# Write a function that takes the following arguments:
+# * a two-dimensional ```torch.Tensor``` ```emb``` as defined in step 5
+#   * This is the input to the hidden layer
+# * a two-dimensional ```torch.Tensor``` ```W``` as defined in step 6
+#   * This is the hidden layer's weights
+# * a one-dimensional ```torch.Tensor``` ```b``` as defined in step 6
+#   * This is the hidden layer's biases
+#
+# And returns:
+# * a one-dimensional ```torch.Tensor``` ```h```
+#   * This is the output of the hidden layer after applying a tanh activation function
+#
+# Video: [0:19:14](https://youtu.be/TCH_1BHY58I?t=1155) and [0:27:57](https://youtu.be/TCH_1BHY58I?t=1677)
+
+# %%
+
+def get_h(emb, W, b):
+# Solution code
+    return torch.tanh(emb @ W + b)
+# End solution code
+
+# %% deletable=false editable=false
+def test_get_h():
+    emb = torch.tensor([
+        [0.1, 0.2],
+        [-.3, 0.4],
+        [.05, -.06],
+    ], dtype=torch.float64)
+    W = torch.tensor([
+        [0.7, 0.8, -0.9, -0.1],
+        [0.6, 0.5, 0.4, 0.3],
+    ], dtype=torch.float64)
+    b = torch.tensor([
+        .09, -.01, .011, -.012
+    ], dtype=torch.float64)
+    h = get_h(emb, W, b)
+    expected_h = torch.tensor([
+        [ 2.7291e-01,  1.6838e-01,  1.0000e-03,  3.7982e-02],
+        [ 1.1943e-01, -4.9958e-02,  4.1447e-01,  1.3713e-01],
+        [ 8.8766e-02,  8.6736e-18, -5.7935e-02, -3.4986e-02],
+    ], dtype=torch.float64)
+    if not torch.isclose(expected_h, h, rtol = 0.0, atol = 0.0001).all():
+        print(f"Expected h for test case to be \n{expected_h}\n, was \n{h}")
+        return
+    print("get_h looks good. Onwards!")
+test_get_h()
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Initialize output layer coefficients
