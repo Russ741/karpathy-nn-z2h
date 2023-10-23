@@ -319,12 +319,24 @@ test_get_C()
 # %% [markdown] deletable=false editable=false
 # ### Step 5: Generate vector embeddings of X
 #
-# Video: [0:13:07](https://youtu.be/TCH_1BHY58I?t=787)
+# Write a function that takes the following arguments:
+# * a two-dimensional torch.Tensor ```X``` as defined in step 3
+# * a two-dimensional torch.Tensor ```C``` as defined in step 4
+#
+# And returns:
+# * a **two**-dimensional torch.Tensor ```emb``` where each row is the concatenated vector embeddings of the indices of the corresponding row in X
+#   * Note the slight difference from the video, where emb is *three*-dimensional
+#
+# Note that the vector embeddings in a row in C theoretically do not need to match the order of the indices in the row in X;
+# they only need to be consistent with the other rows in C.
+# For this worksheet, though, if the order does differ, the test case will fail.
+#
+# Video: [0:13:07](https://youtu.be/TCH_1BHY58I?t=787) and [0:19:10](https://youtu.be/TCH_1BHY58I?t=1150)
 
 # %%
 def get_emb(X, C):
 # Solution code
-    return C[X]
+    return C[X].reshape(len(X), -1)
 # End solution code
 
 # %% deletable=false editable=false
@@ -346,17 +358,15 @@ def test_get_vector_embedding():
     emb = get_emb(X, C)
 
     expected_emb = torch.tensor([
-        [ONE, TWO],
-        [TWO, ONE],
-        [ZERO, ONE],
+        ONE + TWO,
+        TWO + ONE,
+        ZERO + ONE,
     ])
     if not emb.equal(expected_emb):
         print(f"Expected emb to be \n{expected_emb}\n, was \n{emb}")
         return
     print("get_vector_embedding looks good. Onwards!")
 test_get_vector_embedding()
-
-# TODO: Add a step in here to reshape the vector embeddings
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Initialize hidden layer coefficients
