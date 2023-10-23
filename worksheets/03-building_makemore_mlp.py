@@ -341,7 +341,52 @@ def test_get_vector_embedding():
 test_get_vector_embedding()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Initialize hidden layer coefficients
+# ### Step 6: Initialize hidden layer coefficients
+#
+# Write a function that takes the following arguments:
+# * the number of inputs (```input_ct```) to each neuron in the hidden layer
+#   * Equal to the number of cells in each row of emb
+#   * In the video, this is given the value 6
+# * the number of neurons (```neuron_ct```) to include in the hidden layer
+#   * In the video, this is given the value 100
+#
+# And returns:
+# * a two-dimensional ```torch.Tensor``` ```W``` of shape (```input_ct```, ```neuron_ct```) of type ```torch.float64```
+#   * each element of ```W``` should be randomly generated
+# * a one-dimensional pytorch.Tensor ```b``` of length ```neuron_ct```
+#   * the elements of ```b``` can be zero
+
+# %%
+import torch
+
+def initialize_W_b(input_ct, neuron_ct):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_initialize_W_b():
+    input_ct = 3
+    neuron_ct = 5
+    W, b = initialize_W_b(input_ct, neuron_ct)
+    if not torch.is_tensor(W):
+        print("Expected W to be a tensor")
+        return
+    if not torch.is_tensor(b):
+        print("Expected B to be a tensor")
+        return
+    if not W.is_floating_point():
+        print("Expected W to be a tensor of floating point numbers")
+        return
+    if not b.is_floating_point():
+        print("Expected b to be a tensor of floating point numbers")
+        return
+    if (W_shape := W.shape) != (expected_W_shape := (input_ct, neuron_ct)):
+        print(f"Expected W shape to be {expected_W_shape}, was {W_shape}")
+        return
+    if (b_shape := b.shape) != (expected_b_shape := (neuron_ct)):
+        print(f"Expected b shape to be {expected_b_shape}, was {b_shape}")
+        return
+    print("W and b look good. Onwards!")
+test_initialize_W_b()
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Forward propagate through hidden layer
