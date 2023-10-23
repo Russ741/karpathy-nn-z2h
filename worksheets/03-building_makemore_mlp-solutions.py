@@ -302,7 +302,7 @@ def test_get_C():
         print(f"Expected C to be a tensor of floating point.")
         return
     if (shape_C := C.shape) != (expected_shape_C := (indices, embed_dimensions)):
-        print(f"Expected shape of X for test case to be {expected_shape_C}, was {shape_C}")
+        print(f"Expected shape of C for test case to be {expected_shape_C}, was {shape_C}")
         return
     for i in range(len(C)):
         for j in range(len(C)):
