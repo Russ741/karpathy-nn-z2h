@@ -522,8 +522,10 @@ def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
         x = torch.tensor([idxes])
         emb = get_emb(x, C)
         probability_distribution = forward_prop(emb, W1, b1, W2, b2)
+        print(f"{probability_distribution=}")
         sample = torch.multinomial(probability_distribution, 1, generator=gen).item()
         chr = itos[sample]
+        print(f"{chr=}")
         if chr == '.':
             break
         word += chr
