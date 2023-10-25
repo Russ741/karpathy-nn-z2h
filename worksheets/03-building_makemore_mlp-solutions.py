@@ -500,7 +500,8 @@ def descend_gradient(W, b, learning_rate):
     b.data -= learning_rate * b.grad
     return W, b
 
-def train_model(emb, Y, C, W1, b1, W2, b2, learning_rate):
+def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
+    emb = get_emb(X, C)
     Y_hat = forward_prop(emb, W1, b1, W2, b2)
     loss = get_loss(Y_hat, Y)
     C.grad = None
@@ -543,14 +544,13 @@ X, Y = get_X_and_Y(loaded_words, stoi, block_size)
 embeddings = 2
 gen = torch.Generator()
 C = get_C(idx_ct, embeddings, gen)
-emb = get_emb(X, C)
 hidden_neuron_ct = 100
-W1, b1 = initialize_W_b(len(emb[0]), hidden_neuron_ct)
+W1, b1 = initialize_W_b(block_size * embeddings, hidden_neuron_ct)
 W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
 learning_rate = 2.5
 
 for i in range(1, 101, 1):
-    loss = train_model(emb, Y, C, W1, b1, W2, b2, learning_rate)
+    loss = train_model(X, Y, C, W1, b1, W2, b2, learning_rate)
 
 print(f"Final loss is {loss}")
 
