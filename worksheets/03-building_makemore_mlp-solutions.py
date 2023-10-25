@@ -556,6 +556,9 @@ print(f"Final loss is {loss}")
 for i in range(10):
     print(generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen))
 
+# %%
+
+print(f"{b2=}")
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Calculate loss
