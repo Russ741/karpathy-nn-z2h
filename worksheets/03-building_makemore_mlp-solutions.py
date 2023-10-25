@@ -473,10 +473,85 @@ def test_get_h():
 test_get_h()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Initialize output layer coefficients
-
-# %% [markdown] deletable=false editable=false
 # ### Step : Forward propagate through output layer
+
+# %%
+def get_logits(h, W2, b2):
+    return h @ W2 + b2
+
+def get_prob(logits):
+    counts = torch.exp(logits)
+    return counts / counts.sum(dim=1, keepdim=True)
+
+def forward_prop(emb, W1, b1, W2, b2):
+    h = get_h(emb, W1, b1)
+    logits = get_logits(h, W2, b2)
+    y_hat = get_prob(logits)
+
+    return y_hat
+
+def get_loss(Y_hat, Y):
+    match_probabilities = Y_hat[torch.arange(len(Y)), Y]
+    neg_log_likelihood = -match_probabilities.log().mean()
+    return neg_log_likelihood
+
+def descend_gradient(W, b, learning_rate):
+    W.data -= learning_rate * W.grad
+    b.data -= learning_rate * b.grad
+    return W, b
+
+def train_model(emb, Y, W1, b1, W2, b2, learning_rate):
+    Y_hat = forward_prop(emb, W1, b1, W2, b2)
+    loss = get_loss(Y_hat, Y)
+    W1.grad = None
+    b1.grad = None
+    W2.grad = None
+    b2.grad = None
+    loss.backward()
+    W2, b2 = descend_gradient(W2, b2, learning_rate)
+    W1, b1 = descend_gradient(W1, b1, learning_rate)
+    return loss.item()
+
+def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
+    chr = '.'
+    word = ""
+    while True:
+        block = ('.' * block_size + word)[-3:]
+        idxes = [stoi[c] for c in block]
+        x = torch.tensor([idxes])
+        emb = get_emb(x, C)
+        probability_distribution = forward_prop(emb, W1, b1, W2, b2)
+        sample = torch.multinomial(probability_distribution, 1, generator=gen).item()
+        chr = itos[sample]
+        if chr == '.':
+            break
+        word += chr
+    return word
+
+def train_model_and_generate_words():
+    stoi = get_stoi(loaded_words)
+    idx_ct = len(stoi)
+    itos = get_itos(stoi)
+    block_size = 3
+    X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+    embeddings = 2
+    gen = torch.Generator()
+    C = get_C(idx_ct, embeddings, gen)
+    emb = get_emb(X, C)
+    hidden_neuron_ct = 100
+    W1, b1 = initialize_W_b(len(emb[0]), hidden_neuron_ct)
+    W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
+    learning_rate = 2.5
+
+    for i in range(1, 101, 1):
+        loss = train_model(emb, Y, W1, b1, W2, b2, learning_rate)
+
+    print(f"Final loss is {loss}")
+
+    for i in range(10):
+        print(generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen))
+
+train_model_and_generate_words()
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Calculate loss
