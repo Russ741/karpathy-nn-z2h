@@ -285,7 +285,7 @@ import torch
 
 def get_C(indices, embed_dimensions, gen):
 # Solution code
-    return torch.rand((indices, embed_dimensions), dtype=torch.float64, generator=gen)
+    return torch.rand((indices, embed_dimensions), dtype=torch.float64, generator=gen, requires_grad=True)
 # End solution code
 
 # %% deletable=false editable=false
@@ -500,14 +500,16 @@ def descend_gradient(W, b, learning_rate):
     b.data -= learning_rate * b.grad
     return W, b
 
-def train_model(emb, Y, W1, b1, W2, b2, learning_rate):
+def train_model(emb, Y, C, W1, b1, W2, b2, learning_rate):
     Y_hat = forward_prop(emb, W1, b1, W2, b2)
     loss = get_loss(Y_hat, Y)
+    C.grad = None
     W1.grad = None
     b1.grad = None
     W2.grad = None
     b2.grad = None
     loss.backward()
+    C.data -= learning_rate * C.grad
     W2, b2 = descend_gradient(W2, b2, learning_rate)
     W1, b1 = descend_gradient(W1, b1, learning_rate)
     return loss.item()
@@ -548,7 +550,7 @@ W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
 learning_rate = 2.5
 
 for i in range(1, 101, 1):
-    loss = train_model(emb, Y, W1, b1, W2, b2, learning_rate)
+    loss = train_model(emb, Y, C, W1, b1, W2, b2, learning_rate)
 
 print(f"Final loss is {loss}")
 
