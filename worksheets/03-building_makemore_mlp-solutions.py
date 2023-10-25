@@ -517,6 +517,7 @@ def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
     word = ""
     while True:
         block = ('.' * block_size + word)[-3:]
+        print(f"{block=}")
         idxes = [stoi[c] for c in block]
         x = torch.tensor([idxes])
         emb = get_emb(x, C)
@@ -528,30 +529,31 @@ def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
         word += chr
     return word
 
-def train_model_and_generate_words():
-    stoi = get_stoi(loaded_words)
-    idx_ct = len(stoi)
-    itos = get_itos(stoi)
-    block_size = 3
-    X, Y = get_X_and_Y(loaded_words, stoi, block_size)
-    embeddings = 2
-    gen = torch.Generator()
-    C = get_C(idx_ct, embeddings, gen)
-    emb = get_emb(X, C)
-    hidden_neuron_ct = 100
-    W1, b1 = initialize_W_b(len(emb[0]), hidden_neuron_ct)
-    W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
-    learning_rate = 2.5
+# %%
 
-    for i in range(1, 101, 1):
-        loss = train_model(emb, Y, W1, b1, W2, b2, learning_rate)
+stoi = get_stoi(loaded_words)
+idx_ct = len(stoi)
+itos = get_itos(stoi)
+block_size = 3
+X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+embeddings = 2
+gen = torch.Generator()
+C = get_C(idx_ct, embeddings, gen)
+emb = get_emb(X, C)
+hidden_neuron_ct = 100
+W1, b1 = initialize_W_b(len(emb[0]), hidden_neuron_ct)
+W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
+learning_rate = 2.5
 
-    print(f"Final loss is {loss}")
+for i in range(1, 101, 1):
+    loss = train_model(emb, Y, W1, b1, W2, b2, learning_rate)
 
-    for i in range(10):
-        print(generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen))
+print(f"Final loss is {loss}")
 
-train_model_and_generate_words()
+# %%
+for i in range(10):
+    print(generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen))
+
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Calculate loss
