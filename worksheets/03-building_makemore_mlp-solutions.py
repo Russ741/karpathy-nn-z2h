@@ -520,15 +520,12 @@ def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
     word = ""
     while True:
         block = ('.' * block_size + word)[-3:]
-        print(f"{block=}")
         idxes = [stoi[c] for c in block]
         x = torch.tensor([idxes])
         emb = get_emb(x, C)
         probability_distribution = forward_prop(emb, W1, b1, W2, b2)
-        print(f"{probability_distribution=}")
         sample = torch.multinomial(probability_distribution, 1, generator=gen).item()
         chr = itos[sample]
-        print(f"{chr=}")
         if chr == '.':
             break
         word += chr
@@ -547,10 +544,12 @@ C = get_C(idx_ct, embeddings, gen)
 hidden_neuron_ct = 100
 W1, b1 = initialize_W_b(block_size * embeddings, hidden_neuron_ct)
 W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
-learning_rate = 2.5
+learning_rate = .5
 
-for i in range(1, 101, 1):
+for i in range(1, 301, 1):
     loss = train_model(X, Y, C, W1, b1, W2, b2, learning_rate)
+    if i == 1 or i % 10 == 0:
+        print(f"{i}: {loss}")
 
 print(f"Final loss is {loss}")
 
@@ -560,7 +559,12 @@ for i in range(10):
 
 # %%
 
-print(f"{b2=}")
+emb = get_emb(torch.tensor([[0,0,0]]), C)
+probs = forward_prop(emb, W1, b1, W2, b2)[0]
+prob_map = {letter : probs[idx].item() for letter, idx in stoi.items()}
+prob_map = sorted(prob_map.items(), key = lambda kv: (kv[1], kv[0]))
+for k, v in prob_map.items:
+    print(f"{key}: {value}")
 
 # %% [markdown] deletable=false editable=false
 # ### Step : Calculate loss
