@@ -341,20 +341,23 @@ def test_get_vector_embedding():
 test_get_vector_embedding()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 6: Initialize hidden layer coefficients
+# ### Step 6: Initialize weight and bias coefficients
 #
 # Write a function that takes the following arguments:
-# * the number of inputs (```input_ct```) to each neuron in the hidden layer
-#   * Equal to the number of cells in each row of emb
-#   * In the video, this is given the value 6
-# * the number of neurons (```neuron_ct```) to include in the hidden layer
-#   * In the video, this is given the value 100
+# * the number of inputs (```input_ct```) to each neuron in the current layer
+#   * For the hidden layer, this is equal to the number of cells in each row of emb
+#   * For the output layer, this is equal to the number of neurons in the previous (hidden) layer
+# * the number of neurons (```neuron_ct```) to include in the current layer
+#   * Karpathy chooses to have 100 neurons for the hidden layer
+#   * The output layer should have one neuron for each possible result
 #
 # And returns:
 # * a two-dimensional ```torch.Tensor``` ```W``` of shape (```input_ct```, ```neuron_ct```) of type ```torch.float64```
 #   * each element of ```W``` should be randomly generated
 # * a one-dimensional pytorch.Tensor ```b``` of length ```neuron_ct```
 #   * the elements of ```b``` can be zero
+#
+# Video: [0:29:17](https://youtu.be/TCH_1BHY58I?t=1757)
 
 # %%
 import torch
@@ -395,9 +398,9 @@ test_initialize_W_b()
 # Write a function that takes the following arguments:
 # * a two-dimensional ```torch.Tensor``` ```emb``` as defined in step 5
 #   * This is the input to the hidden layer
-# * a two-dimensional ```torch.Tensor``` ```W``` as defined in step 6
+# * a two-dimensional ```torch.Tensor``` ```W1``` as defined in step 6
 #   * This is the hidden layer's weights
-# * a one-dimensional ```torch.Tensor``` ```b``` as defined in step 6
+# * a one-dimensional ```torch.Tensor``` ```b1``` as defined in step 6
 #   * This is the hidden layer's biases
 #
 # And returns:
@@ -438,21 +441,135 @@ def test_get_h():
 test_get_h()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Initialize output layer coefficients
+# ### Step 8: Calculate output layer outputs before activation
+#
+# Write a function that takes the following arguments:
+# * a two-dimensional ```torch.Tensor``` ```W2``` as defined in step 6
+#   * This is the output layer's weights
+# * a one-dimensional ```torch.Tensor``` ```b2``` as defined in step 6
+#   * This is the output layer's biases
+#
+# And returns:
+# * a one-dimensional ```torch.Tensor``` ```logits```
+#   * This is the output of the output layer before applying an activation function
+#
+# Video: [0:29:15](https://youtu.be/TCH_1BHY58I?t=1755)
+
+# %%
+def get_logits(h, W2, b2):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_logits():
+    pass
+test_get_logits()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Forward propagate through output layer
+# ### Step 9: Calculate output softmax activation
+
+# %%
+def get_prob(logits):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_prob():
+    pass
+test_get_prob()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Calculate loss
+# ### Step 10: Forward propagate from vector embeddings
+
+# %%
+def forward_prop(emb, W1, b1, W2, b2):
+    h = get_h(emb, W1, b1)
+    logits = get_logits(h, W2, b2)
+    y_hat = get_prob(logits)
+
+    return y_hat
+
+# %% deletable=false editable=false
+def test_forward_prop():
+    pass
+test_forward_prop()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Gradient descent
+# ### Step 11: Loss calculation
+
+# %%
+def get_loss(Y_hat, Y):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_get_loss():
+    pass
+test_get_loss()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Train model
+# ### Step 12: Gradient descent
+
+# %%
+def descend_gradient(W, b, learning_rate):
+# TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_descend_gradient():
+    pass
+test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
-# ### Step : Generate words
+# ### Step 13: Train model
 
+# %%
+def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
+# TODO: Implement solution here
 
+# %% deletable=false editable=false
+def test_train_model():
+    pass
+test_train_model()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 13: Generate a word
+
+# %%
+def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
+    chr = '.'
+    word = ""
+    while True:
+        block = ('.' * block_size + word)[-3:]
+        idxes = [stoi[c] for c in block]
+        x = torch.tensor([idxes])
+        emb = get_emb(x, C)
+        probability_distribution = forward_prop(emb, W1, b1, W2, b2)
+        sample = torch.multinomial(probability_distribution, 1, generator=gen).item()
+        chr = itos[sample]
+        if chr == '.':
+            break
+        word += chr
+    return word
+
+# %% deletable=false editable=false
+def test_generate_word():
+    pass
+test_generate_word()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 14: Train the model
+
+# %%
+
+# TODO: Implement solution here
+
+# %% [markdown] deletable=false editable=false
+# ### Step 15: Generate words
+
+# %%
+# TODO: Implement solution here
+
+# %% [markdown] deletable=false editable=false
+# ### Bonus: Calculate probability of an empty word
+
+# %%
+# TODO: Implement solution here
+
+# %%
