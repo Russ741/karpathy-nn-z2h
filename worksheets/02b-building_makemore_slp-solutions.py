@@ -39,6 +39,11 @@
 #
 # Note: In practice, the order of the strings in the returned list does not matter, but for the
 # test to pass, they should be in the same order in the list as in words.txt.
+#
+# Hint: In the video, Karpathy has a local copy of words.txt.<br>
+# One way to fetch words.txt is to use a function from the [requests](https://pypi.org/project/requests/) library.
+#
+# Video: [0:03:03](https://youtu.be/PaCmpygFfXo?t=183)
 
 # %%
 # Solution code
