@@ -410,7 +410,6 @@ test_initialize_W_b()
 # Video: [0:19:14](https://youtu.be/TCH_1BHY58I?t=1155) and [0:27:57](https://youtu.be/TCH_1BHY58I?t=1677)
 
 # %%
-
 def get_h(emb, W, b):
 # TODO: Implement solution here
 
@@ -557,7 +556,6 @@ test_generate_word()
 # ### Step 15: Train the model repeatedly
 
 # %%
-
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false

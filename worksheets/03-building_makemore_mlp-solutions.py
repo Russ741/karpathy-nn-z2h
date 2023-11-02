@@ -443,7 +443,6 @@ test_initialize_W_b()
 # Video: [0:19:14](https://youtu.be/TCH_1BHY58I?t=1155) and [0:27:57](https://youtu.be/TCH_1BHY58I?t=1677)
 
 # %%
-
 def get_h(emb, W, b):
 # Solution code
     return torch.tanh(emb @ W + b)
@@ -619,7 +618,6 @@ test_generate_word()
 # ### Step 15: Train the model repeatedly
 
 # %%
-
 # Solution code
 stoi = get_stoi(loaded_words)
 idx_ct = len(stoi)
