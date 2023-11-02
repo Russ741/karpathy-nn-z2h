@@ -653,13 +653,22 @@ for i in range(10):
 # ### Bonus: Calculate probability of an empty word
 
 # %%
+def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
 # Solution code
-emb = get_emb(torch.tensor([[0,0,0]]), C)
-probs = forward_prop(emb, W1, b1, W2, b2)[0]
-prob_map = {letter : probs[idx].item() for letter, idx in stoi.items()}
-prob_map = sorted(prob_map.items(), key = lambda kv: (kv[1], kv[0]))
-for k, v in prob_map:
-    print(f"{k}: {v:.5f}")
+    emb = get_emb(torch.tensor([[0,0,0]]), C)
+    probs = forward_prop(emb, W1, b1, W2, b2)[0]
+    prob_empty = probs[stoi['.']]
+
+    # Strictly optional: print the probability map
+    prob_map = {letter : probs[idx].item() for letter, idx in stoi.items()}
+    prob_map = sorted(prob_map.items(), key = lambda kv: (kv[1], kv[0]))
+    for k, v in prob_map:
+        print(f"{k}: {v:.5f}")
+
+    return prob_empty
 # End solution code
 
+# %% deletable=false editable=false
+prob_empty = get_empty_word_prob(C, W1, b1, W2, b2, stoi)
+print(f"The probability of this model generating an empty word is {prob_empty}.")
 # %%

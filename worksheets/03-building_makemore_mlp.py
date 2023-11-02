@@ -568,6 +568,10 @@ test_generate_word()
 # ### Bonus: Calculate probability of an empty word
 
 # %%
+def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
 # TODO: Implement solution here
 
+# %% deletable=false editable=false
+prob_empty = get_empty_word_prob(C, W1, b1, W2, b2, stoi)
+print(f"The probability of this model generating an empty word is {prob_empty}.")
 # %%
