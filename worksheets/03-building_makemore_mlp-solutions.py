@@ -565,7 +565,7 @@ def test_descend_gradient():
 test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Train model
+# ### Step 13: Train model once
 
 # %%
 def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
@@ -591,7 +591,7 @@ def test_train_model():
 test_train_model()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Generate a word
+# ### Step 14: Generate a word
 
 # %%
 def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
@@ -616,7 +616,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Train the model
+# ### Step 15: Train the model repeatedly
 
 # %%
 
