@@ -506,9 +506,11 @@ def test_generate_word():
 
     W = torch.zeros((stoi_n, stoi_n), dtype=torch.float64)
     b = torch.zeros((1, stoi_n), dtype=torch.float64)
+    # These weights result in a probability distribution where the desired next letter is roughly
+    # 1000x as likely as the others.
     for i in range(stoi_n - 1):
-        W[i][i+1] = 1.0
-    W[stoi_n - 1][0] = 1.0
+        W[i][i+1] = 10.0
+    W[stoi_n - 1][0] = 10.0
 
     gen = torch.Generator()
     gen.manual_seed(2147476727)
