@@ -164,7 +164,7 @@ def test_get_itos():
     stoi = {elem:idx for idx, elem in enumerate(string.ascii_lowercase + ".")}
     itos = get_itos(stoi)
     if not isinstance(itos, dict):
-        print(f"Expected stoi to be a dict")
+        print(f"Expected itos to be a dict")
         return
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
