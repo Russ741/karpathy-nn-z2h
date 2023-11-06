@@ -357,8 +357,11 @@ def generate_word(probabilities, generator):
 def test_generate_word():
     generator = torch.Generator()
     generator.manual_seed(2147483645)
-    if (word := generate_word(P, generator)) != (expected_word := "machina"):
-        print(f"Generated word was {word}, expected {expected_word}")
+    # Colab with pytorch 2 produces different samples with the same seed than local Jupyter Lab/Notebook
+    # Check for both
+    expected_words = ("machina", "drlen")
+    if not (word := generate_word(P, generator)) in expected_words:
+        print(f"Generated word was {word}, expected one of {expected_words}")
         return
     print("generate_word looks good. Onwards!")
 test_generate_word()
