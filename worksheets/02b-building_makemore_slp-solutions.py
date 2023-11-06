@@ -26,6 +26,26 @@
 # The overall objective of this worksheet is to write code that generates a word that is similar to a set of example words it is trained on.
 # It does so using a single-layer neural network.
 
+# %% [markdown] deletable=false editable=false
+# ### Prerequisite: Load worksheet utilities
+#
+# The following cell imports [utility functions](https://github.com/Russ741/karpathy-nn-z2h/blob/main/worksheets/worksheet_utils.py) that this worksheet depends on.
+# If the file isn't already locally available (e.g. for Colab), it downloads it from GitHub.
+
+# %% deletable=false editable=false
+try:
+  from worksheet_utils import *
+except ModuleNotFoundError:
+  import requests
+
+  utils_url = "https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py"
+  utils_local_filename = "worksheet_utils.py"
+
+  response = requests.get(utils_url)
+  with open(utils_local_filename, mode='wb') as localfile:
+    localfile.write(response.content)
+
+  from worksheet_utils import *
 
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
@@ -60,15 +80,9 @@ def test_words():
     if not isinstance(loaded_words, list):
         print(f"Expected words to be a list")
         return
-    if (len_words := len(loaded_words)) != (expected_words := 32033):
-        print(f"Expected {expected_words} elements in words, found {len_words} elements")
-        return
-    if (zeroth_word := loaded_words[0]) != (expected_zeroth := "emma"):
-        print(f"Expected zeroth word in words to be '{expected_zeroth}', was '{zeroth_word}'")
-        return
-    if (final_word := loaded_words[-1]) != (expected_final := "zzyzx"):
-        print(f"Expected final word in words to be '{expected_final}', was '{final_word}'")
-        return
+    expect_eq("len(loaded_words)", len(loaded_words), 32033)
+    expect_eq("loaded_words[0]", loaded_words[0], "emma")
+    expect_eq("loaded_words[-1]", loaded_words[-1], "zzyzx")
     print("load_words looks good. Onwards!")
 loaded_words = load_words()
 test_words()
@@ -100,15 +114,9 @@ def test_generate_bigrams():
     if not isinstance(bigrams, list):
         print(f"Expected bigrams to be a list")
         return
-    if (start_m_ct := bigrams.count(('.', 'm'))) != (expected_start_m_ct := 2538):
-        print(f"Expected {expected_start_m_ct} ('a', 'b') bigrams, found {start_m_ct}")
-        return
-    if (ab_ct := bigrams.count(('a', 'b'))) != (expected_ab_ct := 541):
-        print(f"Expected {expected_ab_ct} ('a', 'b') bigrams, found {ab_ct}")
-        return
-    if (s_end_ct := bigrams.count(('s', '.'))) != (expected_s_end_ct := 1169):
-        print(f"Expected {expected_s_end_ct} ('s', '.') bigrams, found {s_end_ct}")
-        return
+    expect_eq("count of ('.', 'm') bigrams", bigrams.count(('.', 'm')), 2538)
+    expect_eq("count of ('a', 'b') bigrams", bigrams.count(('a', 'b')), 541)
+    expect_eq("count of ('s', '.') bigrams", bigrams.count(('s', '.')), 1169)
     print("generate_bigrams looks good. Onwards!")
 test_generate_bigrams()
 
@@ -162,14 +170,10 @@ def test_get_stoi():
         print(f"Expected stoi to be a dict")
         return
     s = sorted(stoi.keys())
-    if s != expected_s:
-        print(f"Expected stoi keys to be {expected_s} when sorted, were {s}")
-        return
+    expect_eq("stoi keys when sorted", s, expected_s)
     expected_i = list(range(len(s)))
     i = sorted(stoi.values())
-    if i != expected_i:
-        print(f"Expected stoi values to be {expected_i} when sorted, were {i}")
-        return
+    expect_eq("stoi values when sorted", i, expected_i)
     print("get_stoi looks good. Onwards!")
 test_get_stoi()
 
@@ -204,8 +208,7 @@ def test_get_itos():
         return
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
-        if (expected_c := itos[c_i]) != c:
-            print(f"Expected itos[{c_i}] to be {expected_c}, was {c}")
+        expect_eq(f"itos[{c_i}]", itos[c_i], c)
     print("get_itos looks good. Onwards!")
 test_get_itos()
 
@@ -254,17 +257,10 @@ def test_get_x_and_y():
         'e': 5,
     }
     x, y = get_x_and_y(bigrams, stoi)
-    if (x0 := x[0]) != (expected_x0 := 0):
-        print(f"Expected x[0] to be {expected_x0}, was {x0}")
-        return
-    if (y0 := y[0]) != (expected_y0 := 1):
-        print(f"Expected y[0] to be {expected_y0}, was {y0}")
-        return
-    if (x_sfe := x[-2]) != (expected_x_sfe := 4):
-        print(f"Expected x[-2] to be {expected_x_sfe}, was {x_sfe}")
-        return
-    if (y_sfe := y[-2]) != (expected_y_sfe := 5):
-        print(f"Expected y[-2] to be {expected_y_sfe}, was {y_sfe}")
+    expect_eq("x[0]", x[0], 0)
+    expect_eq("y[0]", y[0], 1)
+    expect_eq("x[-2]", x[-2], 4)
+    expect_eq("y[-2]", y[-2], 5)
     print("get_x_and_y looks good. Onwards!")
 test_get_x_and_y()
 
@@ -302,26 +298,16 @@ def test_initialize_w_b():
     gen = torch.Generator()
     gen.manual_seed(12345)
     W, b = initialize_w_b(stoi, gen)
-    if (w_len := len(W)) != expected_s_ct:
-        print(f"Expected W to have {expected_s_ct} rows, had {w_len}")
-        return
-    for row_idx in range(w_len):
-        if (row_len := len(W[row_idx])) != expected_s_ct:
-            print(f"Expected W[{row_idx}] to have {expected_s_ct} columns, had {row_len}")
-            return
-        for col_idx in range(row_len):
+    expect_eq("len(W)", len(W), expected_s_ct)
+    for row_idx in range(len(W)):
+        expect_eq(f"len(W[{row_idx}])", len(W[row_idx]), expected_s_ct)
+        for col_idx in range(len(W[row_idx])):
             if (val := W[row_idx][col_idx]) == 0.0:
                 print(f"Expected W[{row_idx}][{col_idx}] to be non-zero.")
                 return
-    if not W.requires_grad:
-        print("W must be marked with requires_grad so its grad property will be populated by backpropagation for use in gradient descent.")
-        return
-    if not b.requires_grad:
-        print("b must be marked with requires_grad so its grad property will be populated by backpropagation for use in gradient descent.")
-        return
-    if (b_shape := b.shape) != (expected_b_shape := (1, expected_s_ct)):
-        print(f"Expected b to have shape {expected_b_shape}, had shape {b_shape}")
-        return
+    expect_eq("W.requires_grad", W.requires_grad, True)
+    expect_eq("b.requires_grad", b.requires_grad, True)
+    expect_eq("b.shape", b.shape, (1, expected_s_ct))
     print("initialize_w_b looks good. Onwards!")
 test_initialize_w_b()
 
@@ -608,9 +594,7 @@ def test_generate_word():
 
     gen = torch.Generator()
     gen.manual_seed(2147476727)
-    if (word := generate_word(W, b, stoi, itos, gen)) != (expected_word := "onward"):
-        print(f"Expected word for test case to be {expected_word}, was {word}")
-        return
+    expect_eq("generate_word result for test case", generate_word(W, b, stoi, itos, gen), "onward")
     print(f"generate_word looks good. Onward!")
 test_generate_word()
 

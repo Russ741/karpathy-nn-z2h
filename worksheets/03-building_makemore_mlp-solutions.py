@@ -26,6 +26,26 @@
 # The overall objective of this worksheet is to write code that generates a word that is similar to a set of example words it is trained on.
 # It does so using a multi-layer neural network.
 
+# %% [markdown] deletable=false editable=false
+# ### Prerequisite: Load worksheet utilities
+#
+# The following cell imports [utility functions](https://github.com/Russ741/karpathy-nn-z2h/blob/main/worksheets/worksheet_utils.py) that this worksheet depends on.
+# If the file isn't already locally available (e.g. for Colab), it downloads it from GitHub.
+
+# %% deletable=false editable=false
+try:
+  from worksheet_utils import *
+except ModuleNotFoundError:
+  import requests
+
+  utils_url = "https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py"
+  utils_local_filename = "worksheet_utils.py"
+
+  response = requests.get(utils_url)
+  with open(utils_local_filename, mode='wb') as localfile:
+    localfile.write(response.content)
+
+  from worksheet_utils import *
 
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
@@ -61,16 +81,9 @@ def test_words():
     if not isinstance(loaded_words, list):
         print(f"Expected words to be a list")
         return
-    if (len_words := len(loaded_words)) != (expected_words := 32033):
-        print(f"Expected {expected_words} elements in words, found {len_words} elements")
-        return
-    sorted_words = sorted(loaded_words)
-    if (zeroth_word := sorted_words[0]) != (expected_zeroth := "aaban"):
-        print(f"Expected zeroth word in words to be '{expected_zeroth}', was '{zeroth_word}'")
-        return
-    if (final_word := sorted_words[-1]) != (expected_final := "zzyzx"):
-        print(f"Expected final word in words to be '{expected_final}', was '{final_word}'")
-        return
+    expect_eq("len(loaded_words)", len(loaded_words), 32033)
+    expect_eq("loaded_words[0]", loaded_words[0], "emma")
+    expect_eq("loaded_words[-1]", loaded_words[-1], "zzyzx")
     print("load_words looks good. Onwards!")
 loaded_words = load_words()
 test_words()
@@ -126,14 +139,10 @@ def test_get_stoi():
         print(f"Expected stoi to be a dict")
         return
     s = sorted(stoi.keys())
-    if s != expected_s:
-        print(f"Expected stoi keys to be {expected_s} when sorted, were {s}")
-        return
+    expect_eq("stoi keys when sorted", s, expected_s)
     expected_i = list(range(len(s)))
     i = sorted(stoi.values())
-    if i != expected_i:
-        print(f"Expected stoi values to be {expected_i} when sorted, were {i}")
-        return
+    expect_eq("stoi values when sorted", i, expected_i)
     print("get_stoi looks good. Onwards!")
 test_get_stoi()
 
@@ -168,8 +177,7 @@ def test_get_itos():
         return
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
-        if (expected_c := itos[c_i]) != c:
-            print(f"Expected itos[{c_i}] to be {expected_c}, was {c}")
+        expect_eq(f"itos[{c_i}]", itos[c_i], c)
     print("get_itos looks good. Onwards!")
 test_get_itos()
 
@@ -247,6 +255,7 @@ def test_get_X_and_Y():
         5,
         0,
     ])
+    expect_eq("X.shape", X.shape, expected_X.shape)
     if (shape_X := X.shape) != (expected_shape_X := expected_X.shape):
         print(f"Expected shape of X for test case to be {expected_shape_X}, was {shape_X}")
         return
@@ -293,9 +302,7 @@ def test_get_C():
     if not torch.is_floating_point(C):
         print(f"Expected C to be a tensor of floating point.")
         return
-    if (shape_C := C.shape) != (expected_shape_C := (indices, embed_dimensions)):
-        print(f"Expected shape of C for test case to be {expected_shape_C}, was {shape_C}")
-        return
+    expect_eq("C.shape", C.shape, (indices, embed_dimensions))
     for i in range(len(C)):
         for j in range(len(C)):
             if i == j:
@@ -410,13 +417,9 @@ def test_initialize_W_b():
     if not b.is_floating_point():
         print("Expected b to be a tensor of floating point numbers")
         return
-    if (W_shape := W.shape) != (expected_W_shape := (input_ct, neuron_ct)):
-        print(f"Expected W shape to be {expected_W_shape}, was {W_shape}")
-        return
+    expect_eq("W.shape", W.shape, (input_ct, neuron_ct))
     # The comma is required to make expected_b_shape into a single-element tuple
-    if (b_shape := b.shape) != (expected_b_shape := (neuron_ct,)):
-        print(f"Expected b shape to be {expected_b_shape}, was {b_shape}")
-        return
+    expect_eq("b.shape", b.shape, (neuron_ct,))
     print("W and b look good. Onwards!")
 test_initialize_W_b()
 

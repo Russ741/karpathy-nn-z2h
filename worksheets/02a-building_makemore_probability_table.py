@@ -30,6 +30,27 @@
 # Note that this worksheet uses a probability table, *not* neural networks like subsequent neural networks.
 
 # %% [markdown] deletable=false editable=false
+# ### Prerequisite: Load worksheet utilities
+#
+# The following cell imports [utility functions](https://github.com/Russ741/karpathy-nn-z2h/blob/main/worksheets/worksheet_utils.py) that this worksheet depends on.
+# If the file isn't already locally available (e.g. for Colab), it downloads it from GitHub.
+
+# %% deletable=false editable=false
+try:
+  from worksheet_utils import *
+except ModuleNotFoundError:
+  import requests
+
+  utils_url = "https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py"
+  utils_local_filename = "worksheet_utils.py"
+
+  response = requests.get(utils_url)
+  with open(utils_local_filename, mode='wb') as localfile:
+    localfile.write(response.content)
+
+  from worksheet_utils import *
+
+# %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
 # Objective: Load a list of words from the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
@@ -43,15 +64,9 @@ def test_words():
     if not isinstance(words, list):
         print(f"Expected words to be a list")
         return
-    if (len_words := len(words)) != (expected_words := 32033):
-        print(f"Expected {expected_words} elements in words, found {len_words} elements")
-        return
-    if (zeroth_word := words[0]) != (expected_zeroth := "emma"):
-        print(f"Expected zeroth word in words to be '{expected_zeroth}', was '{zeroth_word}'")
-        return
-    if (final_word := words[-1]) != (expected_final := "zzyzx"):
-        print(f"Expected final word in words to be '{expected_final}', was '{final_word}'")
-        return
+    expect_eq("len(words)", len(words), 32033)
+    expect_eq("words[0]", words[0], "emma")
+    expect_eq("words[-1]", words[-1], "zzyzx")
     print("words looks good. Onwards!")
 test_words()
 
@@ -72,15 +87,9 @@ def test_bigrams():
     if not isinstance(bigrams, list):
         print(f"Expected bigrams to be a list")
         return
-    if (start_m_ct := bigrams.count(('.', 'm'))) != (expected_start_m_ct := 2538):
-        print(f"Expected {expected_start_m_ct} ('a', 'b') bigrams, found {start_m_ct}")
-        return
-    if (ab_ct := bigrams.count(('a', 'b'))) != (expected_ab_ct := 541):
-        print(f"Expected {expected_ab_ct} ('a', 'b') bigrams, found {ab_ct}")
-        return
-    if (s_end_ct := bigrams.count(('s', '.'))) != (expected_s_end_ct := 1169):
-        print(f"Expected {expected_s_end_ct} ('s', '.') bigrams, found {s_end_ct}")
-        return
+    expect_eq("count of ('.', 'm') bigrams", bigrams.count(('.', 'm')), 2538)
+    expect_eq("count of ('a', 'b') bigrams", bigrams.count(('a', 'b')), 541)
+    expect_eq("count of ('s', '.') bigrams", bigrams.count(('s', '.')), 1169)
     print("bigrams looks good. Onwards!")
 test_bigrams()
 
@@ -130,13 +139,12 @@ def test_itos():
     if (len_itos := len(itos)) != (expected_len := len(stoi)):
         print(f"Expected length to be {expected_len}, was {len_itos}")
         return
+    expect_eq("len(itos)", len(itos), len(stoi))
     for k,v in stoi.items():
         if v not in itos:
             print(f"Expected {v} to be a key in itos")
             return
-        if (itos_v := itos[v]) != (expected_itos_v := k):
-            print(f"Expected itos[{v}] to be {expected_itos_v}, was {itos_v}")
-            return
+        expect_eq(f"itos[{v}]", itos[v], k)
     print("itos looks good. Onwards!")
 test_itos()
 
@@ -160,18 +168,10 @@ def test_N():
     if torch.is_floating_point(N):
         print(f"Expected N to be a tensor of integral type, was of floating point type.")
         return
-    if (N_shape := N.shape) != (expected_N_shape := (27, 27)):
-        print(f"Expected shape of N to be {expected_N_shape}, was {N_shape}")
-        return
-    if (N_sum := N.sum()) != (expected_N_sum := 228146):
-        print(f"Expected the sum of elements in N to be {expected_N_sum}, was {N_sum}")
-        return
-    if (N_start_m := N[stoi['.']][stoi['m']]) != (expected_N_start_m := 2538):
-        print(f"Expected N for ('.', 'm') to be {expected_N_start_m}, was {N_start_m}")
-        return
-    if (N_m_end := N[stoi['m']][stoi['.']]) != (expected_N_m_end := 516):
-        print(f"Expected N for ('m', '.') to be {expected_N_m_end}, was {N_m_end}")
-        return
+    expect_eq("N.shape", N.shape, (27, 27))
+    expect_eq("N.sum()", N.sum(), 228146)
+    expect_eq("N for ('.', 'm')", N[stoi['.']][stoi['m']], 2538)
+    expect_eq("N for ('m', '.')", N[stoi['m']][stoi['.']], 516)
     print("N looks good. Onwards!")
 test_N()
 
