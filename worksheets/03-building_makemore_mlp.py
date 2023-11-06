@@ -209,26 +209,18 @@ def test_get_X_and_Y():
         [0, 0, 0],
         [0, 0, 1],
         [0, 1, 2],
-        [1, 2, 0],
-        [2, 0, 0],
         [0, 0, 0],
         [0, 0, 3],
         [0, 3, 4],
         [3, 4, 5],
-        [4, 5, 0],
-        [5, 0, 0],
     ])
     expected_Y = torch.tensor([
         1,
         2,
         0,
-        0,
-        0,
         3,
         4,
         5,
-        0,
-        0,
         0,
     ])
     if (shape_X := X.shape) != (expected_shape_X := expected_X.shape):
