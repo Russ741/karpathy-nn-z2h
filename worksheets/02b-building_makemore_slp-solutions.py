@@ -274,6 +274,7 @@ test_get_x_and_y()
 # Objective: Write a function that takes the following arguments:
 # * a dict ```stoi``` as defined in step 2
 #   * the length of ```stoi``` will be referred to as ```stoi_n```
+# * a ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
 # * a pytorch.Tensor ```W``` of shape (```stoi_n```, ```stoi_n```) where each element is randomly generated
@@ -286,10 +287,10 @@ test_get_x_and_y()
 import torch
 
 # Solution code
-def initialize_w_b(stoi):
+def initialize_w_b(stoi, gen):
     stoi_n = len(stoi)
-    W = torch.rand((stoi_n,stoi_n), dtype=torch.float64, requires_grad=True)
-    b = torch.zeros((1,stoi_n),dtype=torch.float64, requires_grad=True)
+    W = torch.rand((stoi_n,stoi_n), generator=gen, dtype=torch.float64, requires_grad=True)
+    b = torch.zeros((1,stoi_n), dtype=torch.float64, requires_grad=True)
 
     return W, b
 # End solution code
@@ -298,7 +299,9 @@ def initialize_w_b(stoi):
 def test_initialize_w_b():
     stoi = {'q': 0, 'w': 1, 'e': 2, 'r': 3}
     expected_s_ct = 4
-    W, b = initialize_w_b(stoi)
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    W, b = initialize_w_b(stoi, gen)
     if (w_len := len(W)) != expected_s_ct:
         print(f"Expected W to have {expected_s_ct} rows, had {w_len}")
         return
@@ -627,11 +630,11 @@ def train_model_and_generate_words():
     stoi = get_stoi(bigrams)
     itos = get_itos(stoi)
     x, y = get_x_and_y(bigrams, stoi)
-    W, b = initialize_w_b(stoi)
+    gen = torch.Generator()
+    W, b = initialize_w_b(stoi, gen)
     for i in range(1, 101, 1):
         loss = train_model(x, y, W, b, 10.0)
     print(f"Final loss is {loss}")
-    gen = torch.Generator()
     for i in range(10):
         print(generate_word(W, b, stoi, itos, gen))
 train_model_and_generate_words()

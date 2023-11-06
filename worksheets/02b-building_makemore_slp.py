@@ -240,6 +240,7 @@ test_get_x_and_y()
 # Objective: Write a function that takes the following arguments:
 # * a dict ```stoi``` as defined in step 2
 #   * the length of ```stoi``` will be referred to as ```stoi_n```
+# * a ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
 # * a pytorch.Tensor ```W``` of shape (```stoi_n```, ```stoi_n```) where each element is randomly generated
@@ -257,7 +258,9 @@ import torch
 def test_initialize_w_b():
     stoi = {'q': 0, 'w': 1, 'e': 2, 'r': 3}
     expected_s_ct = 4
-    W, b = initialize_w_b(stoi)
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    W, b = initialize_w_b(stoi, gen)
     if (w_len := len(W)) != expected_s_ct:
         print(f"Expected W to have {expected_s_ct} rows, had {w_len}")
         return

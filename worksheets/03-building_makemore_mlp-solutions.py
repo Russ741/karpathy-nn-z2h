@@ -285,7 +285,7 @@ import torch
 
 def get_C(indices, embed_dimensions, gen):
 # Solution code
-    return torch.rand((indices, embed_dimensions), dtype=torch.float64, generator=gen, requires_grad=True)
+    return torch.rand((indices, embed_dimensions), generator=gen, dtype=torch.float64, requires_grad=True)
 # End solution code
 
 # %% deletable=false editable=false
@@ -378,6 +378,7 @@ test_get_vector_embedding()
 # * the number of neurons (```neuron_ct```) to include in the current layer
 #   * Karpathy chooses to have 100 neurons for the hidden layer
 #   * The output layer should have one neuron for each possible result
+# * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
 # * a two-dimensional ```torch.Tensor``` ```W``` of shape (```input_ct```, ```neuron_ct```) of type ```torch.float64```
@@ -390,9 +391,9 @@ test_get_vector_embedding()
 # %%
 import torch
 
-def initialize_W_b(input_ct, neuron_ct):
+def initialize_W_b(input_ct, neuron_ct, gen):
 # Solution code
-    W = torch.rand((input_ct, neuron_ct), dtype=torch.float64, requires_grad=True)
+    W = torch.rand((input_ct, neuron_ct), generator=gen, dtype=torch.float64, requires_grad=True)
     b = torch.zeros(neuron_ct, dtype=torch.float64, requires_grad=True)
 
     return W, b
@@ -402,7 +403,9 @@ def initialize_W_b(input_ct, neuron_ct):
 def test_initialize_W_b():
     input_ct = 3
     neuron_ct = 5
-    W, b = initialize_W_b(input_ct, neuron_ct)
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    W, b = initialize_W_b(input_ct, neuron_ct, gen)
     if not torch.is_tensor(W):
         print("Expected W to be a tensor")
         return
@@ -628,8 +631,8 @@ embeddings = 2
 gen = torch.Generator()
 C = get_C(idx_ct, embeddings, gen)
 hidden_neuron_ct = 100
-W1, b1 = initialize_W_b(block_size * embeddings, hidden_neuron_ct)
-W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct)
+W1, b1 = initialize_W_b(block_size * embeddings, hidden_neuron_ct, gen)
+W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct, gen)
 learning_rate = .5
 
 for i in range(1, 301, 1):
@@ -671,4 +674,5 @@ def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
 # %% deletable=false editable=false
 prob_empty = get_empty_word_prob(C, W1, b1, W2, b2, stoi)
 print(f"The probability of this model generating an empty word is {prob_empty}.")
+
 # %%

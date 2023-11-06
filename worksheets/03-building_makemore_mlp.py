@@ -350,6 +350,7 @@ test_get_vector_embedding()
 # * the number of neurons (```neuron_ct```) to include in the current layer
 #   * Karpathy chooses to have 100 neurons for the hidden layer
 #   * The output layer should have one neuron for each possible result
+# * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
 # * a two-dimensional ```torch.Tensor``` ```W``` of shape (```input_ct```, ```neuron_ct```) of type ```torch.float64```
@@ -362,14 +363,16 @@ test_get_vector_embedding()
 # %%
 import torch
 
-def initialize_W_b(input_ct, neuron_ct):
+def initialize_W_b(input_ct, neuron_ct, gen):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
 def test_initialize_W_b():
     input_ct = 3
     neuron_ct = 5
-    W, b = initialize_W_b(input_ct, neuron_ct)
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    W, b = initialize_W_b(input_ct, neuron_ct, gen)
     if not torch.is_tensor(W):
         print("Expected W to be a tensor")
         return
@@ -574,4 +577,5 @@ def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
 # %% deletable=false editable=false
 prob_empty = get_empty_word_prob(C, W1, b1, W2, b2, stoi)
 print(f"The probability of this model generating an empty word is {prob_empty}.")
+
 # %%
