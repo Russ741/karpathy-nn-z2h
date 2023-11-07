@@ -80,6 +80,7 @@ test_words()
 # Video: [0:06:24](https://youtu.be/PaCmpygFfXo?t=384) and [0:21:55](https://youtu.be/PaCmpygFfXo?t=1315)
 
 # %%
+bigrams = []
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -211,6 +212,7 @@ test_P()
 # * a floating-point number from 0.0 to 1.0 that represents the probability of the second character following the first character
 
 # %%
+def bigram_probability(bigram):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -238,6 +240,10 @@ test_bigram_probability()
 # Video: [0:50:47](https://youtu.be/PaCmpygFfXo?t=3047)
 
 # %%
+# The sample solution uses this library; if your code doesn't, feel free to remove it.
+import math
+
+def calculate_loss(probability_func, bigram_list):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -287,6 +293,7 @@ test_loss_for_words()
 # Video: [0:26:28](https://youtu.be/PaCmpygFfXo?t=1588)
 
 # %%
+def generate_word(probabilities, generator):
 # TODO: Implement solution here
 
 # %%

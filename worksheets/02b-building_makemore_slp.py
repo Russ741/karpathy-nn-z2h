@@ -66,6 +66,9 @@ except ModuleNotFoundError:
 # Video: [0:03:03](https://youtu.be/PaCmpygFfXo?t=183)
 
 # %%
+import requests
+
+def load_words():
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -90,6 +93,7 @@ test_words()
 # Video: [0:06:24](https://youtu.be/PaCmpygFfXo?t=384) and [0:21:55](https://youtu.be/PaCmpygFfXo?t=1315)
 
 # %%
+def generate_bigrams(words):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -125,6 +129,7 @@ test_generate_bigrams()
 # Video: [0:15:40](https://youtu.be/PaCmpygFfXo?t=940)
 
 # %%
+def get_stoi(bigrams):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -167,6 +172,7 @@ test_get_stoi()
 # Video: [0:18:49](https://youtu.be/PaCmpygFfXo?t=1129)
 
 # %%
+def get_itos(stoi):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -201,6 +207,7 @@ test_get_itos()
 # %%
 import torch
 
+def get_x_and_y(bigrams, stoi):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -248,6 +255,7 @@ test_get_x_and_y()
 # %%
 import torch
 
+def initialize_w_b(stoi, gen):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -286,6 +294,7 @@ test_initialize_w_b()
 # Video: [1:15:12](https://youtu.be/PaCmpygFfXo?t=4512)
 
 # %%
+def forward_prop(x, W, b):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -327,6 +336,7 @@ test_forward_prop()
 #
 # Video: [1:35:49](https://youtu.be/PaCmpygFfXo&t=5749)
 # %%
+def calculate_loss(y_hat, y):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -365,6 +375,7 @@ test_calculate_loss()
 # Video: [1:41:26](https://youtu.be/PaCmpygFfXo?t=6086)
 
 # %%
+def descend_gradient(W, b, learning_rate):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -422,6 +433,7 @@ test_descend_gradient()
 # Video: [1:42:55](https://youtu.be/PaCmpygFfXo?t=6175)
 
 # %%
+def train_model(x, y, W, b, learning_rate):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -481,6 +493,7 @@ test_train_model()
 # Video: [1:54:31](https://youtu.be/PaCmpygFfXo?t=6871)
 
 # %%
+def generate_word(W, b, stoi, itos, gen):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false

@@ -95,8 +95,8 @@ test_words()
 # Video: [0:06:24](https://youtu.be/PaCmpygFfXo?t=384) and [0:21:55](https://youtu.be/PaCmpygFfXo?t=1315)
 
 # %%
-# Solution code
 bigrams = []
+# Solution code
 for word in words:
     bigrams.append(('.', word[0]))
     for pos in range(len(word) - 1):
@@ -251,8 +251,8 @@ test_P()
 # * a floating-point number from 0.0 to 1.0 that represents the probability of the second character following the first character
 
 # %%
-# Solution code
 def bigram_probability(bigram):
+# Solution code
     return P[stoi[bigram[0]]][stoi[bigram[1]]]
 # End solution code
 
@@ -281,10 +281,11 @@ test_bigram_probability()
 # Video: [0:50:47](https://youtu.be/PaCmpygFfXo?t=3047)
 
 # %%
-# Solution code
+# The sample solution uses this library; if your code doesn't, feel free to remove it.
 import math
 
 def calculate_loss(probability_func, bigram_list):
+# Solution code
     probabilities = list(map(probability_func, bigram_list))
     log_probabilities = list(map(math.log, probabilities))
     negative_log_likelihood = - sum(log_probabilities) / len(log_probabilities)
@@ -340,8 +341,8 @@ test_loss_for_words()
 # Video: [0:26:28](https://youtu.be/PaCmpygFfXo?t=1588)
 
 # %%
-# Solution code
 def generate_word(probabilities, generator):
+# Solution code
     current_letter_index = stoi['.']
     word = ""
     while True:

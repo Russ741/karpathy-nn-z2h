@@ -66,10 +66,10 @@ except ModuleNotFoundError:
 # Video: [0:03:03](https://youtu.be/PaCmpygFfXo?t=183)
 
 # %%
-# Solution code
 import requests
 
 def load_words():
+# Solution code
     words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
     words = requests.get(words_url).text.splitlines()
     return words
@@ -97,8 +97,8 @@ test_words()
 # Video: [0:06:24](https://youtu.be/PaCmpygFfXo?t=384) and [0:21:55](https://youtu.be/PaCmpygFfXo?t=1315)
 
 # %%
-# Solution code
 def generate_bigrams(words):
+# Solution code
     bigrams = []
     for word in words:
         bigrams.append(('.', word[0]))
@@ -141,8 +141,8 @@ test_generate_bigrams()
 # Video: [0:15:40](https://youtu.be/PaCmpygFfXo?t=940)
 
 # %%
-# Solution code
 def get_stoi(bigrams):
+# Solution code
     chars = set()
     for bigram in bigrams:
         chars.add(bigram[0])
@@ -191,8 +191,8 @@ test_get_stoi()
 # Video: [0:18:49](https://youtu.be/PaCmpygFfXo?t=1129)
 
 # %%
-# Solution code
 def get_itos(stoi):
+# Solution code
     itos = {stoi[c]:c for c in stoi}
     return itos
 # End solution code
@@ -229,8 +229,8 @@ test_get_itos()
 # %%
 import torch
 
-# Solution code
 def get_x_and_y(bigrams, stoi):
+# Solution code
     x = torch.tensor(list(map(lambda bigram : stoi[bigram[0]], bigrams)))
     y = torch.tensor(list(map(lambda bigram : stoi[bigram[-1]], bigrams)))
 
@@ -282,8 +282,8 @@ test_get_x_and_y()
 # %%
 import torch
 
-# Solution code
 def initialize_w_b(stoi, gen):
+# Solution code
     stoi_n = len(stoi)
     W = torch.rand((stoi_n,stoi_n), generator=gen, dtype=torch.float64, requires_grad=True)
     b = torch.zeros((1,stoi_n), dtype=torch.float64, requires_grad=True)
@@ -327,8 +327,8 @@ test_initialize_w_b()
 # Video: [1:15:12](https://youtu.be/PaCmpygFfXo?t=4512)
 
 # %%
-# Solution code
 def forward_prop(x, W, b):
+# Solution code
     one_hot = torch.nn.functional.one_hot(x, len(W)).double()
     output = torch.matmul(one_hot, W) + b
 
@@ -377,8 +377,8 @@ test_forward_prop()
 #
 # Video: [1:35:49](https://youtu.be/PaCmpygFfXo&t=5749)
 # %%
-# Solution code
 def calculate_loss(y_hat, y):
+# Solution code
     match_probabilities = y_hat[torch.arange(len(y)), y]
     neg_log_likelihood = -match_probabilities.log().mean()
     return neg_log_likelihood
@@ -420,8 +420,8 @@ test_calculate_loss()
 # Video: [1:41:26](https://youtu.be/PaCmpygFfXo?t=6086)
 
 # %%
-# Solution code
 def descend_gradient(W, b, learning_rate):
+# Solution code
     W.data -= learning_rate * W.grad
     b.data -= learning_rate * b.grad
     return W, b
@@ -482,8 +482,8 @@ test_descend_gradient()
 # Video: [1:42:55](https://youtu.be/PaCmpygFfXo?t=6175)
 
 # %%
-# Solution code
 def train_model(x, y, W, b, learning_rate):
+# Solution code
     y_hat = forward_prop(x,W,b)
     loss = calculate_loss(y_hat, y)
     W.grad = None
@@ -550,8 +550,8 @@ test_train_model()
 # Video: [1:54:31](https://youtu.be/PaCmpygFfXo?t=6871)
 
 # %%
-# Solution code
 def generate_word(W, b, stoi, itos, gen):
+# Solution code
     chr = '.'
     word = ""
     while True:
