@@ -479,7 +479,28 @@ def get_logits(h, W2, b2):
 
 # %% deletable=false editable=false
 def test_get_logits():
-    pass
+    h = torch.tensor([
+        [1.0, 2.0],
+        [3.0, 4.0],
+        [5.0, 6.0]
+    ])
+    W2 = torch.tensor([
+        [10.0, 10.1, 11.0, 19.9],
+        [100.0, -101.1, 0.0, 98.7],
+    ])
+    b2 = torch.tensor([
+        3.0, 5.0, 11.0, 13.0,
+    ])
+
+    logits = get_logits(h, W2, b2)
+
+    expected_logits = torch.tensor([
+        [ 213.0, -187.1,   22.0,  230.3],
+        [ 433.0, -369.1,   44.0,  467.5],
+        [ 653.0, -551.1,   66.0,  704.7],
+    ])
+    expect_tensor_close("logits", logits, expected_logits)
+    print("get_logits looks good. Onward!")
 test_get_logits()
 
 # %% [markdown] deletable=false editable=false
@@ -493,8 +514,22 @@ def get_prob(logits):
 # End solution code
 
 # %% deletable=false editable=false
+from math import log
+
 def test_get_prob():
-    pass
+    logits = torch.tensor([
+        [log(1), log(2), log(3), log(4)],
+        [ 0.123,  0.123,  0.123,  0.123],
+    ])
+
+    prob = get_prob(logits)
+
+    expected_prob = torch.tensor([
+        [ 0.1,  0.2,  0.3,  0.4],
+        [0.25, 0.25, 0.25, 0.25]
+    ])
+    expect_tensor_close("prob for test case", prob, expected_prob)
+    print("get_prob looks good. Onward!")
 test_get_prob()
 
 # %% [markdown] deletable=false editable=false
@@ -510,7 +545,38 @@ def forward_prop(emb, W1, b1, W2, b2):
 
 # %% deletable=false editable=false
 def test_forward_prop():
-    pass
+    emb = torch.tensor([
+        [ 1.2,  2.1],
+        [-0.5, -0.7],
+        [ 0.0,  0.5247],
+        [-4.0, 3.1]
+    ])
+    W1 = torch.tensor([
+        [2.3, 0.9, 0.7],
+        [-3.2, 0.8, 1.3],
+    ])
+    b1 = torch.tensor([
+        0.2, 1.1, -0.1
+    ])
+    W2 = torch.tensor([
+        [ 3.4,  4.5],
+        [ 0.6,  0.5],
+        [-1.2,  2.2]
+    ])
+    b2 = torch.tensor([
+        0.3, -0.4,
+    ])
+
+    y_hat = forward_prop(emb, W1, b1, W2, b2)
+
+    expected_y_hat = torch.tensor([
+        [0.1832, 0.8168],
+        [0.9396, 0.0604],
+        [0.5000, 0.5000],
+        [0.2770, 0.7230],
+    ])
+    expect_tensor_close("y_hat", y_hat, expected_y_hat)
+    print("forward_prop looks good. Onward!")
 test_forward_prop()
 
 # %% [markdown] deletable=false editable=false
