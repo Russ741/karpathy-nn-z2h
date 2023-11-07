@@ -207,12 +207,6 @@ def test_get_X_and_Y():
 
     (X, Y) = get_X_and_Y(words, stoi, block_size)
 
-    if not torch.is_tensor(X):
-        print(f"Expected X to be a tensor, was {type(X)}")
-        return
-    if not torch.is_tensor(Y):
-        print(f"Expected Y to be a tensor, was {type(Y)}")
-        return
     expected_X = torch.tensor([
         [0, 0, 0],
         [0, 0, 1],
@@ -231,16 +225,8 @@ def test_get_X_and_Y():
         5,
         0,
     ])
-    expect_eq("X.shape", X.shape, expected_X.shape)
-    if (shape_X := X.shape) != (expected_shape_X := expected_X.shape):
-        print(f"Expected shape of X for test case to be {expected_shape_X}, was {shape_X}")
-        return
-    if not X.equal(expected_X):
-        print(f"Expected X for test case to be {expected_X}, was {X}")
-        return
-    if not Y.equal(expected_Y):
-        print(f"Expected Y for test case to be {expected_Y}, was {Y}")
-        return
+    expect_tensor_close("X for test case", X, expected_X)
+    expect_tensor_close("Y for test case", Y, expected_Y)
     print("get_x_and_y looks good. Onwards!")
 test_get_X_and_Y()
 
@@ -333,9 +319,7 @@ def test_get_vector_embedding():
         TWO + ONE,
         ZERO + ONE,
     ])
-    if not emb.equal(expected_emb):
-        print(f"Expected emb to be \n{expected_emb}\n, was \n{emb}")
-        return
+    expect_tensor_close("emb", emb, expected_emb)
     print("get_vector_embedding looks good. Onwards!")
 test_get_vector_embedding()
 
@@ -425,15 +409,15 @@ def test_get_h():
     b = torch.tensor([
         .09, -.01, .011, -.012
     ], dtype=torch.float64)
+
     h = get_h(emb, W, b)
+
     expected_h = torch.tensor([
         [ 2.7291e-01,  1.6838e-01,  1.0000e-03,  3.7982e-02],
         [ 1.1943e-01, -4.9958e-02,  4.1447e-01,  1.3713e-01],
         [ 8.8766e-02,  8.6736e-18, -5.7935e-02, -3.4986e-02],
     ], dtype=torch.float64)
-    if not torch.isclose(expected_h, h, rtol = 0.0, atol = 0.0001).all():
-        print(f"Expected h for test case to be \n{expected_h}\n, was \n{h}")
-        return
+    expect_tensor_close("h for test case", h, expected_h)
     print("get_h looks good. Onwards!")
 test_get_h()
 

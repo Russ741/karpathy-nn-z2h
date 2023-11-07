@@ -312,9 +312,7 @@ def test_forward_prop():
 
     y_hat = forward_prop(x, W, b)
 
-    if not torch.isclose(expected_y_hat, y_hat, rtol = 0.0, atol = 0.0001).all():
-        print(f"Expected y_hat for test case to be \n{expected_y_hat}\n, was \n{y_hat}")
-        return
+    expect_tensor_close("y_hat for test case", y_hat, expected_y_hat)
     print("forward_prop looks good. Onwards!")
 test_forward_prop()
 
@@ -389,22 +387,21 @@ def test_descend_gradient():
         -1.0,
         0.5,
     ])
+
     new_w, new_b = descend_gradient(W, b, 3.0)
+
     expected_new_w = torch.tensor([
         [7.0, -1.0],
         [3.0, 2.0],
         [-17.0, 3.0]
     ])
-    if not new_w.equal(expected_new_w):
-        print(f"Expected new W for test case to be \n{expected_new_w}\n, is \n{new_w}")
-        return
+    expect_tensor_close("new W for test case", new_w, expected_new_w)
+
     expected_new_b = torch.tensor([
         4.0,
         0.5,
     ])
-    if not new_b.equal(expected_new_b):
-        print(f"Expected new b for test case to be \n{expected_new_b}\n, is \n{new_b}")
-        return
+    expect_tensor_close("new b for test case", new_b, expected_new_b)
     print("descend_gradient looks good. Onward!")
 test_descend_gradient()
 
@@ -457,18 +454,14 @@ def test_train_model():
         [0.7996, 0.7785, 1.4219],
         [1.4663, 0.7785, 0.7552]
     ], dtype=torch.float64)
-    if not torch.isclose(expected_W, W, rtol = 0.0, atol = 0.0001).all():
-        print(f"Expected W for test case to be \n{expected_W}\n, was \n{W}")
-        return
+    expect_tensor_close("W for test case", W, expected_W)
 
     expected_b = torch.tensor([
         0.1654,
         0.2022,
         0.2323
     ], dtype=torch.float64)
-    if not torch.isclose(expected_b, b, rtol = 0.0, atol = 0.0001).all():
-        print(f"Expected b for test case to be \n{expected_b}\n, was \n{b}")
-        return
+    expect_tensor_close("b for test case", b, expected_b)
     print("train_model looks good. Onward!")
 test_train_model()
 
