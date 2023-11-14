@@ -339,8 +339,7 @@ def test_generate_word():
     # Check for both
     expected_words = ("machina", "drlen")
     if not (word := generate_word(P, generator)) in expected_words:
-        print(f"Generated word was {word}, expected one of {expected_words}")
-        return
+        raise Exception(f"Generated word was {word}, expected one of {expected_words}")
     print("generate_word looks good. Onwards!")
 test_generate_word()
 
