@@ -110,8 +110,7 @@ def test_stoi():
     expect_type("stoi", stoi, dict)
     for c in string.ascii_lowercase:
         if not c in stoi:
-            print(f"Expected {c} to be in stoi")
-            return
+            raise Exception(f"Expected {c} to be in stoi")
     print("stoi looks good. Onwards!")
 test_stoi()
 

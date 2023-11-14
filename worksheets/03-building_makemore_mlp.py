@@ -260,10 +260,7 @@ def test_get_C():
             if i == j:
                 continue
             if C[i].equal(C[j]):
-                print(f"Rows {i} and {j} of C are too similar.")
-                print(f"{C[i]=}")
-                print(f"{C[j]=}")
-                return
+                raise Exception(f"Rows {i} and {j} of C are too similar.\n{C[i]=}\n{C[j]=}")
     print("get_C looks good. Onwards!")
 test_get_C()
 

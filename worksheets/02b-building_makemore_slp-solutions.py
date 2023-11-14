@@ -295,8 +295,7 @@ def test_initialize_w_b():
         expect_eq(f"len(W[{row_idx}])", len(W[row_idx]), expected_s_ct)
         for col_idx in range(len(W[row_idx])):
             if (val := W[row_idx][col_idx]) == 0.0:
-                print(f"Expected W[{row_idx}][{col_idx}] to be non-zero.")
-                return
+                raise Exception(f"Expected W[{row_idx}][{col_idx}] to be non-zero.")
     expect_eq("W.requires_grad", W.requires_grad, True)
     expect_eq("b.requires_grad", b.requires_grad, True)
     expect_eq("b.shape", b.shape, (1, expected_s_ct))
