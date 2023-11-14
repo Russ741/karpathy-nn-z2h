@@ -131,10 +131,7 @@ def test_itos():
     expect_type("itos", itos, dict)
     expect_eq("len(itos)", len(itos), len(stoi))
     for k,v in stoi.items():
-        if v not in itos:
-            print(f"Expected {v} to be a key in itos")
-            return
-        expect_eq(f"itos[{v}]", itos[v], k)
+        expect_eq(f"itos.get({v})", itos.get(v), k)
     print("itos looks good. Onwards!")
 test_itos()
 

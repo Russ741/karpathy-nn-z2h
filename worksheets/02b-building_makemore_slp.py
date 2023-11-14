@@ -178,7 +178,7 @@ def test_get_itos():
     expect_type("itos", itos, dict)
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
-        expect_eq(f"itos[{c_i}]", itos[c_i], c)
+        expect_eq(f"itos.get({c_i})", itos.get(c_i), c)
     print("get_itos looks good. Onwards!")
 test_get_itos()
 
