@@ -158,9 +158,6 @@ itos = {stoi[c]:c for c in stoi}
 # %% deletable=false editable=false
 def test_itos():
     expect_type("itos", itos, dict)
-    if (len_itos := len(itos)) != (expected_len := len(stoi)):
-        print(f"Expected length to be {expected_len}, was {len_itos}")
-        return
     expect_eq("len(itos)", len(itos), len(stoi))
     for k,v in stoi.items():
         if v not in itos:
