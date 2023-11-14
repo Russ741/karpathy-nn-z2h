@@ -153,9 +153,7 @@ import string
 def test_get_itos():
     stoi = {elem:idx for idx, elem in enumerate(string.ascii_lowercase + ".")}
     itos = get_itos(stoi)
-    if not isinstance(itos, dict):
-        print(f"Expected itos to be a dict")
-        return
+    expect_type("itos", itos, dict)
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
         expect_eq(f"itos[{c_i}]", itos[c_i], c)
@@ -252,12 +250,8 @@ def test_get_C():
     gen = torch.Generator()
     gen.manual_seed(12345)
     C = get_C(indices, embed_dimensions, gen)
-    if not torch.is_tensor(C):
-        print(f"Expected C to be a tensor, was {type(C)}")
-        return
-    if not torch.is_floating_point(C):
-        print(f"Expected C to be a tensor of floating point.")
-        return
+    expect_type("C", C, torch.Tensor)
+    expect_eq("C.dtype", C.dtype, torch.float64)
     expect_eq("C.shape", C.shape, (indices, embed_dimensions))
     for i in range(len(C)):
         for j in range(len(C)):
@@ -352,18 +346,10 @@ def test_initialize_W_b():
     gen = torch.Generator()
     gen.manual_seed(12345)
     W, b = initialize_W_b(input_ct, neuron_ct, gen)
-    if not torch.is_tensor(W):
-        print("Expected W to be a tensor")
-        return
-    if not torch.is_tensor(b):
-        print("Expected B to be a tensor")
-        return
-    if not W.is_floating_point():
-        print("Expected W to be a tensor of floating point numbers")
-        return
-    if not b.is_floating_point():
-        print("Expected b to be a tensor of floating point numbers")
-        return
+    expect_type("W", W, torch.Tensor)
+    expect_type("b", b, torch.Tensor)
+    expect_eq("W.dtype", W.dtype, torch.float64)
+    expect_eq("b.dtype", b.dtype, torch.float64)
     expect_eq("W.shape", W.shape, (input_ct, neuron_ct))
     # The comma is required to make expected_b_shape into a single-element tuple
     expect_eq("b.shape", b.shape, (neuron_ct,))

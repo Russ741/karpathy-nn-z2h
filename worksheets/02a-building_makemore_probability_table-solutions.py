@@ -190,9 +190,8 @@ for bigram in bigrams:
 
 # %% deletable=false editable=false
 def test_N():
-    if torch.is_floating_point(N):
-        print(f"Expected N to be a tensor of integral type, was of floating point type.")
-        return
+    expect_type("N", N, torch.Tensor)
+    expect_eq("N.dtype", N.dtype, torch.int32)
     expect_eq("N.shape", N.shape, (27, 27))
     expect_eq("N.sum()", N.sum(), 228146)
     expect_eq("N for ('.', 'm')", N[stoi['.']][stoi['m']], 2538)
