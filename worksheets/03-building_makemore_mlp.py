@@ -548,7 +548,20 @@ def get_loss(Y_hat, Y):
 
 # %% deletable=false editable=false
 def test_get_loss():
-    pass
+    Y_hat = torch.tensor([
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0],
+        [0.4512, 0.44933, 0.0, 0.0],
+        [0.05, 0.05, 0.81873, 0.08127],
+    ])
+    Y = torch.tensor([
+        0,
+        3,
+        1,
+        2,
+    ])
+    neg_log_likelihood = get_loss(Y_hat, Y)
+    expect_close("negative loss likelihood", neg_log_likelihood, 0.25)
 test_get_loss()
 
 # %% [markdown] deletable=false editable=false
