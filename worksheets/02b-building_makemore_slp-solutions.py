@@ -77,9 +77,7 @@ def load_words():
 
 # %% deletable=false editable=false
 def test_words():
-    if not isinstance(loaded_words, list):
-        print(f"Expected words to be a list")
-        return
+    expect_type("loaded_words", loaded_words, list)
     expect_eq("len(loaded_words)", len(loaded_words), 32033)
     expect_eq("loaded_words[0]", loaded_words[0], "emma")
     expect_eq("loaded_words[-1]", loaded_words[-1], "zzyzx")
@@ -111,9 +109,7 @@ def generate_bigrams(words):
 # %% deletable=false editable=false
 def test_generate_bigrams():
     bigrams = generate_bigrams(loaded_words)
-    if not isinstance(bigrams, list):
-        print(f"Expected bigrams to be a list")
-        return
+    expect_type("bigrams", bigrams, list)
     expect_eq("count of ('.', 'm') bigrams", bigrams.count(('.', 'm')), 2538)
     expect_eq("count of ('a', 'b') bigrams", bigrams.count(('a', 'b')), 541)
     expect_eq("count of ('s', '.') bigrams", bigrams.count(('s', '.')), 1169)
@@ -166,9 +162,7 @@ def test_get_stoi():
     ]
     expected_s = sorted(['.', 'h', 'i', 'b', 'y', 'e'])
     stoi = get_stoi(bigrams)
-    if not isinstance(stoi, dict):
-        print(f"Expected stoi to be a dict")
-        return
+    expect_type("stoi", stoi, dict)
     s = sorted(stoi.keys())
     expect_eq("stoi keys when sorted", s, expected_s)
     expected_i = list(range(len(s)))
@@ -203,9 +197,7 @@ import string
 def test_get_itos():
     stoi = {elem:idx for idx, elem in enumerate(string.ascii_lowercase + ".")}
     itos = get_itos(stoi)
-    if not isinstance(itos, dict):
-        print(f"Expected stoi to be a dict")
-        return
+    expect_type("itos", itos, dict)
     for c in string.ascii_lowercase + ".":
         c_i = stoi[c]
         expect_eq(f"itos[{c_i}]", itos[c_i], c)

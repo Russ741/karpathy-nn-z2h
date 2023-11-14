@@ -74,9 +74,7 @@ def load_words():
 
 # %% deletable=false editable=false
 def test_words():
-    if not isinstance(loaded_words, list):
-        print(f"Expected words to be a list")
-        return
+    expect_type("loaded_words", loaded_words, list)
     expect_eq("len(loaded_words)", len(loaded_words), 32033)
     expect_eq("loaded_words[0]", loaded_words[0], "emma")
     expect_eq("loaded_words[-1]", loaded_words[-1], "zzyzx")
@@ -123,9 +121,7 @@ def test_get_stoi():
     ]
     expected_s = sorted(['.', 'h', 'i', 'b', 'y', 'e'])
     stoi = get_stoi(bigrams)
-    if not isinstance(stoi, dict):
-        print(f"Expected stoi to be a dict")
-        return
+    expect_type("stoi", stoi, dict)
     s = sorted(stoi.keys())
     expect_eq("stoi keys when sorted", s, expected_s)
     expected_i = list(range(len(s)))

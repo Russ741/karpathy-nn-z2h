@@ -61,9 +61,7 @@ except ModuleNotFoundError:
 
 # %% deletable=false editable=false
 def test_words():
-    if not isinstance(words, list):
-        print(f"Expected words to be a list")
-        return
+    expect_type("words", words, list)
     expect_eq("len(words)", len(words), 32033)
     expect_eq("words[0]", words[0], "emma")
     expect_eq("words[-1]", words[-1], "zzyzx")
@@ -85,9 +83,7 @@ bigrams = []
 
 # %% deletable=false editable=false
 def test_bigrams():
-    if not isinstance(bigrams, list):
-        print(f"Expected bigrams to be a list")
-        return
+    expect_type("bigrams", bigrams, list)
     expect_eq("count of ('.', 'm') bigrams", bigrams.count(('.', 'm')), 2538)
     expect_eq("count of ('a', 'b') bigrams", bigrams.count(('a', 'b')), 541)
     expect_eq("count of ('s', '.') bigrams", bigrams.count(('s', '.')), 1169)
@@ -111,9 +107,7 @@ stoi = {}
 import string
 
 def test_stoi():
-    if not isinstance(stoi, dict):
-        print(f"Expected stoi to be a dict")
-        return
+    expect_type("stoi", stoi, dict)
     for c in string.ascii_lowercase:
         if not c in stoi:
             print(f"Expected {c} to be in stoi")
@@ -134,9 +128,7 @@ itos = {}
 
 # %% deletable=false editable=false
 def test_itos():
-    if not isinstance(itos, dict):
-        print(f"Expected itos to be a dict")
-        return
+    expect_type("itos", itos, dict)
     if (len_itos := len(itos)) != (expected_len := len(stoi)):
         print(f"Expected length to be {expected_len}, was {len_itos}")
         return

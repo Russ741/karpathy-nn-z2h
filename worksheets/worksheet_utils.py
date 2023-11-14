@@ -15,3 +15,7 @@ def expect_tensor_close(name, actual, expected, atol = 0.0001):
         raise Exception(f"Expected shape of {name} to be {expected.shape}, was {actual.shape}")
     if not torch.isclose(expected, actual, rtol = 0.0, atol = atol).all():
         raise Exception(f"Expected {name} to be \n{expected}\n, was \n{actual}")
+
+def expect_type(name, actual, expected):
+    if not (actual_type := type(actual)) == expected:
+        raise Exception(f"Expected {name} to be of type {expected}, was {actual_type}")
