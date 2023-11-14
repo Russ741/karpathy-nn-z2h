@@ -192,10 +192,8 @@ test_N()
 # %% deletable=false editable=false
 def test_P():
     for row_idx in itos:
-        if abs(1.0 - (row_sum := P[row_idx].sum().item())) > 0.00001:
-            row_c = itos[row_idx]
-            print(f"Expected the sum of row {row_idx} ({row_c}) to be 1.0, was {row_sum}")
-            return
+        row_sum = P[row_idx].sum().item()
+        expect_close(f"sum of P[{row_idx}] (for character '{itos[row_idx]}')", row_sum, 1.0)
     print("P looks good. Onwards!")
 test_P()
 
@@ -217,12 +215,8 @@ def bigram_probability(bigram):
 
 # %% deletable=false editable=false
 def test_bigram_probability():
-    if (prob_start_end := bigram_probability(('.', '.'))) != (expected_start_end := 0.0):
-        print(f"Calculated probability of ('.', '.') is {prob_start_end}, expected {expected_start_end}")
-        return
-    if abs((prob_m_a := bigram_probability(('m', 'a'))) - (expected_m_a := 0.3899)) > 0.001:
-        print(f"Calculated probability of ('m', 'a') is {prob_m_a}, expected {expected_m_a}")
-        return
+    expect_eq("bigram_probability(('.', '.'))", bigram_probability(('.', '.')), 0.0)
+    expect_close("bigram_probability(('m', 'a'))", bigram_probability(('m', 'a')), 0.3899)
     print("bigram_probability looks good. Onwards!")
 test_bigram_probability()
 
@@ -249,16 +243,12 @@ def calculate_loss(probability_func, bigram_list):
 # %% deletable=false editable=false
 def test_calculate_loss():
     bigrams = [('.', 'a'), ('a', 'b'), ('b', '.')]
-    if abs((all_ones := calculate_loss(lambda _ : 1.0, bigrams)) - (expected_all_ones := 0.0)) > 0.0001:
-        print(f"Using a probability_func that always returns 1.0 resulted in {all_ones}, expected {expected_all_ones}")
-        return
+    expect_close("calculate_loss for a probability_func that always returns 1.0", calculate_loss(lambda _ : 1.0, bigrams), 0.0)
     # TODO: Handle zero-probability tuples somehow.
     # if (all_zeroes := calculate_loss(lambda _ : 0.0, bigrams)) != (expected_all_zeroes := math.inf):
     #    print(f"Using a probability_func that always returns 0.0 resulted in {all_zeroes}, expected {expected_all_zeroes} ")
     #    return
-    if abs((using_bp := calculate_loss(bigram_probability, bigrams)) - (expected_using_bp := 3.0881)) > 0.0001:
-        print(f"Using your bigram_probability function resulted in {using_bp}, expected {expected_using_bp}")
-        return
+    expect_close("calculate_loss for bigram_probability", calculate_loss(bigram_probability, bigrams), 3.0881)
     print("calculate_loss looks good. Onwards!")
 test_calculate_loss()
 
@@ -273,9 +263,7 @@ loss_for_words = 0.0
 
 # %% deletable=false editable=false
 def test_loss_for_words():
-    if abs(loss_for_words - (expected_loss := 2.4540)) > 0.0001:
-        print(f"loss_for_words is {loss_for_words}, expected {expected_loss}")
-        return
+    expect_close("loss_for_words", loss_for_words, 2.4540)
     print("loss_for_words looks good. Congratulations!")
 test_loss_for_words()
 

@@ -392,18 +392,14 @@ def test_calculate_loss():
     y_hat = torch.tensor([
         [0.0, 0.0, 1.0, 0.0]
     ])
-    if abs((loss := calculate_loss(y_hat, y))) > 0.00001:
-        print(f"Expected loss for first example to be 0.0, was {loss}")
-        return
+    expect_close("loss for first example", calculate_loss(y_hat, y), 0.0)
 
     y = torch.tensor([2, 0], dtype=torch.int64)
     y_hat = torch.tensor([
         [0.09, 0.09, exp(-0.5), 0.09],
         [exp(-0.1), 0.01, 0.02, 0.03]
     ])
-    if abs((loss := calculate_loss(y_hat, y)) - (expected_loss := 0.3)) > 0.00001:
-        print(f"Expected loss for second example to be {expected_loss}, was {loss}")
-        return
+    expect_close("loss for second example", calculate_loss(y_hat, y), 0.3)
     print("calculate_loss looks good. Onwards!")
 test_calculate_loss()
 
