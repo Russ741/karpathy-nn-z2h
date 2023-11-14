@@ -131,13 +131,15 @@ def test_get_stoi():
         ('y', 'e'),
         ('e', '.'),
     ]
-    expected_s = sorted(['.', 'h', 'i', 'b', 'y', 'e'])
+
     stoi = get_stoi(bigrams)
+
     expect_type("stoi", stoi, dict)
     s = sorted(stoi.keys())
+    expected_s = sorted(['.', 'h', 'i', 'b', 'y', 'e'])
     expect_eq("stoi keys when sorted", s, expected_s)
-    expected_i = list(range(len(s)))
     i = sorted(stoi.values())
+    expected_i = list(range(len(s)))
     expect_eq("stoi values when sorted", i, expected_i)
     print("get_stoi looks good. Onwards!")
 test_get_stoi()
