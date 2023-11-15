@@ -52,7 +52,7 @@ except ModuleNotFoundError:
     with urllib.request.urlopen("https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py") as response:
         with open(utils_local_filename, mode="xb") as utils_file:
             shutil.copyfileobj(response, utils_file)
-            from worksheet_utils import *
+    from worksheet_utils import *
 
 WORDS_PATH = "names.txt"
 if os.path.isfile(WORDS_PATH):
