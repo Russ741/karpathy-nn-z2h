@@ -30,48 +30,52 @@
 # Note that this worksheet uses a probability table, *not* neural networks like subsequent neural networks.
 
 # %% [markdown] deletable=false editable=false
-# ### Prerequisite: Load worksheet utilities
+# ### Prerequisite: Load worksheet utilities and download word list
 #
 # The following cell imports [utility functions](https://github.com/Russ741/karpathy-nn-z2h/blob/main/worksheets/worksheet_utils.py) that this worksheet depends on.
 # If the file isn't already locally available (e.g. for Colab), it downloads it from GitHub.
+#
+# Similarly, if this directory does not already contain names.txt, it downloads it from
+# [the makemore GitHub repository](https://github.com/karpathy/makemore/blob/master/names.txt).
 
 # %% deletable=false editable=false
+import os
+import urllib
+import shutil
+
 try:
-  from worksheet_utils import *
+    from worksheet_utils import *
+    print("worksheet_utils found.")
 except ModuleNotFoundError:
-  import requests
+    utils_local_filename = "worksheet_utils.py"
+    print(f"Downloading worksheet_utils.")
+    with urllib.request.urlopen("https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py") as response:
+        with open(utils_local_filename, mode="xb") as utils_file:
+            shutil.copyfileobj(response, utils_file)
+            from worksheet_utils import *
 
-  utils_url = "https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py"
-  utils_local_filename = "worksheet_utils.py"
-
-  response = requests.get(utils_url)
-  with open(utils_local_filename, mode='wb') as localfile:
-    localfile.write(response.content)
-
-  from worksheet_utils import *
+WORDS_PATH = "names.txt"
+if os.path.isfile(WORDS_PATH):
+    print("word file found.")
+else:
+    print("word file not found, downloading.")
+    with urllib.request.urlopen("https://github.com/karpathy/makemore/raw/master/names.txt") as response:
+        with open(WORDS_PATH, mode="xb") as words_file:
+            shutil.copyfileobj(response, words_file)
 
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
-# Objective: Load a list of words from the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
-# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt)) into a list variable named ```words```.
+# Objective: Load a list of words from the word file at ```WORDS_PATH``` into a list variable named ```words```.
+#
+# Note: In practice, the order of the strings in the returned list does not matter, but for the
+# test to pass, they should be in the same order in the list as in the word file.
+#
+# Video: [0:03:03](https://youtu.be/PaCmpygFfXo?t=183)
 
 # %%
 # Solution code
-
-# To load names.txt from the makemore GitHub page:
-import requests
-
-words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
-words = requests.get(words_url).text.splitlines()
-
-# To load names.txt from a local file after downloading it:
-# # curl https://raw.githubusercontent.com/karpathy/makemore/master/names.txt > names.txt
-#
-# # read() gets the file as one long string with line breaks in it
-# # splitlines() divides the whole-file string into a list of strings and removes the line breaks
-# words = open("names.txt").read().splitlines()
-
+words = open(WORDS_PATH).read().splitlines()
 # End solution code
 
 # %% deletable=false editable=false

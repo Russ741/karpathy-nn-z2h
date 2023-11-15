@@ -1,5 +1,5 @@
 # Karpathy-specific stuff
-names.txt
+worksheets/names.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

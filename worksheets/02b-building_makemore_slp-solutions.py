@@ -27,51 +27,56 @@
 # It does so using a single-layer neural network.
 
 # %% [markdown] deletable=false editable=false
-# ### Prerequisite: Load worksheet utilities
+# ### Prerequisite: Load worksheet utilities and download word list
 #
 # The following cell imports [utility functions](https://github.com/Russ741/karpathy-nn-z2h/blob/main/worksheets/worksheet_utils.py) that this worksheet depends on.
 # If the file isn't already locally available (e.g. for Colab), it downloads it from GitHub.
+#
+# Similarly, if this directory does not already contain names.txt, it downloads it from
+# [the makemore GitHub repository](https://github.com/karpathy/makemore/blob/master/names.txt).
 
 # %% deletable=false editable=false
+import os
+import urllib
+import shutil
+
 try:
-  from worksheet_utils import *
+    from worksheet_utils import *
+    print("worksheet_utils found.")
 except ModuleNotFoundError:
-  import requests
+    utils_local_filename = "worksheet_utils.py"
+    print(f"Downloading worksheet_utils.")
+    with urllib.request.urlopen("https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py") as response:
+        with open(utils_local_filename, mode="xb") as utils_file:
+            shutil.copyfileobj(response, utils_file)
+            from worksheet_utils import *
 
-  utils_url = "https://raw.githubusercontent.com/Russ741/karpathy-nn-z2h/main/worksheets/worksheet_utils.py"
-  utils_local_filename = "worksheet_utils.py"
-
-  response = requests.get(utils_url)
-  with open(utils_local_filename, mode='wb') as localfile:
-    localfile.write(response.content)
-
-  from worksheet_utils import *
+WORDS_PATH = "names.txt"
+if os.path.isfile(WORDS_PATH):
+    print("word file found.")
+else:
+    print("word file not found, downloading.")
+    with urllib.request.urlopen("https://github.com/karpathy/makemore/raw/master/names.txt") as response:
+        with open(WORDS_PATH, mode="xb") as words_file:
+            shutil.copyfileobj(response, words_file)
 
 # %% [markdown] deletable=false editable=false
 # ### Preamble: Load data
 #
 # Objective: Write a function that:
-#  * Loads the remotely-hosted [names.txt](https://github.com/karpathy/makemore/blob/master/names.txt) file
-# ([raw link](https://github.com/karpathy/makemore/raw/master/names.txt))
 #  * Returns a list of strings
-#    * Each string should be equal to the word from the corresponding line of names.txt
+#    * Each string should be equal to the word from the corresponding line of the word file (at ```WORDS_PATH```)
 #    * The strings should not include line-break characters
 #
 # Note: In practice, the order of the strings in the returned list does not matter, but for the
-# test to pass, they should be in the same order in the list as in words.txt.
-#
-# Hint: In the video, Karpathy has a local copy of words.txt.<br>
-# One way to fetch words.txt is to use a function from the [requests](https://pypi.org/project/requests/) library.
+# test to pass, they should be in the same order in the list as in the word file.
 #
 # Video: [0:03:03](https://youtu.be/PaCmpygFfXo?t=183)
 
 # %%
-import requests
-
 def load_words():
 # Solution code
-    words_url = 'https://raw.githubusercontent.com/karpathy/makemore/master/names.txt'
-    words = requests.get(words_url).text.splitlines()
+    words = open(WORDS_PATH).read().splitlines()
     return words
 # End solution code
 
