@@ -606,7 +606,23 @@ def descend_gradient(t, learning_rate):
 
 # %% deletable=false editable=false
 def test_descend_gradient():
-    pass
+    t = torch.tensor([
+        [1.0, 2.0, 3.0],
+        [4.0, 5.0, 6.0]
+    ])
+    t.grad = torch.tensor([
+        [0.5, 0.3, 0.1],
+        [-0.2, -0.4, -0.6]
+    ])
+    learning_rate = 2.0
+
+    descend_gradient(t, learning_rate)
+
+    expected_t = torch.tensor([
+        [0.0, 1.4, 2.8],
+        [4.4, 5.8, 7.2]
+    ])
+    expect_tensor_close("t", t, expected_t)
 test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
