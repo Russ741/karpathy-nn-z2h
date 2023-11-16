@@ -554,7 +554,7 @@ test_get_loss()
 # ### Step 12: Gradient descent
 
 # %%
-def descend_gradient(W, b, learning_rate):
+def descend_gradient(t, learning_rate):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false

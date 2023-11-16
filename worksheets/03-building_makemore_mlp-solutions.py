@@ -598,11 +598,10 @@ test_get_loss()
 # ### Step 12: Gradient descent
 
 # %%
-def descend_gradient(W, b, learning_rate):
+def descend_gradient(t, learning_rate):
 # Solution code
-    W.data -= learning_rate * W.grad
-    b.data -= learning_rate * b.grad
-    return W, b
+    t.data -= learning_rate * t.grad
+    return t
 # End solution code
 
 # %% deletable=false editable=false
@@ -619,15 +618,12 @@ def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
     emb = get_emb(X, C)
     Y_hat = forward_prop(emb, W1, b1, W2, b2)
     loss = get_loss(Y_hat, Y)
-    C.grad = None
-    W1.grad = None
-    b1.grad = None
-    W2.grad = None
-    b2.grad = None
+    parameters = (C, W1, b1, W2, b2)
+    for parameter in parameters:
+        parameter.grad = None
     loss.backward()
-    C.data -= learning_rate * C.grad
-    W2, b2 = descend_gradient(W2, b2, learning_rate)
-    W1, b1 = descend_gradient(W1, b1, learning_rate)
+    for parameter in parameters:
+        descend_gradient(parameter, learning_rate)
     return loss.item()
 # End solution code
 
