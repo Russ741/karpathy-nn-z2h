@@ -592,6 +592,7 @@ def test_get_loss():
     ])
     neg_log_likelihood = get_loss(Y_hat, Y)
     expect_close("negative loss likelihood", neg_log_likelihood, 0.25)
+    print("get_loss looks good. Onward!")
 test_get_loss()
 
 # %% [markdown] deletable=false editable=false
@@ -623,6 +624,7 @@ def test_descend_gradient():
         [4.4, 5.8, 7.2]
     ])
     expect_tensor_close("t", t, expected_t)
+    print("descend_gradient looks good. Onward!")
 test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
