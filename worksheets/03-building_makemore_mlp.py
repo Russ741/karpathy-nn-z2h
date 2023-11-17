@@ -584,13 +584,13 @@ test_descend_gradient()
 # ### Step 13: Train model once
 
 # %%
-def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
+def train_once(X, Y, C, W1, b1, W2, b2, learning_rate):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
-def test_train_model():
+def test_train_once():
     pass
-test_train_model()
+test_train_once()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 14: Generate a word

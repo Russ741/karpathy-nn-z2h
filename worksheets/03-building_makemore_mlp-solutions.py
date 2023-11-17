@@ -631,7 +631,7 @@ test_descend_gradient()
 # ### Step 13: Train model once
 
 # %%
-def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
+def train_once(X, Y, C, W1, b1, W2, b2, learning_rate):
 # Solution code
     emb = get_emb(X, C)
     Y_hat = forward_prop(emb, W1, b1, W2, b2)
@@ -646,9 +646,9 @@ def train_model(X, Y, C, W1, b1, W2, b2, learning_rate):
 # End solution code
 
 # %% deletable=false editable=false
-def test_train_model():
+def test_train_once():
     pass
-test_train_model()
+test_train_once()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 14: Generate a word
@@ -694,7 +694,7 @@ W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct, gen)
 learning_rate = .5
 
 for i in range(1, 301, 1):
-    loss = train_model(X, Y, C, W1, b1, W2, b2, learning_rate)
+    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
     if i == 1 or i % 10 == 0:
         print(f"{i}: {loss}")
 
