@@ -649,7 +649,38 @@ def train_once(X, Y, C, W1, b1, W2, b2, learning_rate):
 
 # %% deletable=false editable=false
 def test_train_once():
-    pass
+    X = torch.tensor([
+        [2, 1, 0, 1],
+        [0, 0, 1, 2],
+    ])
+    Y = torch.tensor([
+        0,
+        1,
+    ])
+    C = torch.tensor([
+        [1.0],
+        [-1.0],
+        [0.5],
+    ], requires_grad=True)
+    W1 = torch.tensor([
+        [1.0],
+        [1.1],
+        [2.1],
+        [-2.9]
+    ], requires_grad=True)
+    b1 = torch.tensor([
+        [0.1],
+    ], requires_grad=True)
+    W2 = torch.tensor([
+        [1.0, 2.0, 3.0]
+    ], requires_grad=True)
+    b2 = torch.tensor([
+        1.0, 0.9, 0.8
+    ], requires_grad=True)
+    learning_rate = 1.0
+    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
+    expect_close("loss", loss, 1.8224)
+    print("train_once looks good. Onward!")
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
