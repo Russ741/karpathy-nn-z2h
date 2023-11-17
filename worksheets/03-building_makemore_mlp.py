@@ -378,7 +378,7 @@ test_initialize_W_b()
 # Video: [0:19:14](https://youtu.be/TCH_1BHY58I?t=1155) and [0:27:57](https://youtu.be/TCH_1BHY58I?t=1677)
 
 # %%
-def get_h(emb, W, b):
+def get_h(emb, W1, b1):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
@@ -388,15 +388,15 @@ def test_get_h():
         [-.3, 0.4],
         [.05, -.06],
     ], dtype=torch.float64)
-    W = torch.tensor([
+    W1 = torch.tensor([
         [0.7, 0.8, -0.9, -0.1],
         [0.6, 0.5, 0.4, 0.3],
     ], dtype=torch.float64)
-    b = torch.tensor([
+    b1 = torch.tensor([
         .09, -.01, .011, -.012
     ], dtype=torch.float64)
 
-    h = get_h(emb, W, b)
+    h = get_h(emb, W1, b1)
 
     expected_h = torch.tensor([
         [ 2.7291e-01,  1.6838e-01,  1.0000e-03,  3.7982e-02],
