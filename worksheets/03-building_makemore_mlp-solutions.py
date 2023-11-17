@@ -412,7 +412,9 @@ test_initialize_W_b()
 # %%
 def get_h(emb, W1, b1):
 # Solution code
-    return torch.tanh(emb @ W1 + b1)
+    output = emb @ W1 + b1
+    activation = torch.tanh(output)
+    return activation
 # End solution code
 
 # %% deletable=false editable=false
