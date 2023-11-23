@@ -792,6 +792,7 @@ test_sample_distribution()
 
 # %%
 def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
+# Solution code
     word = ""
     while True:
         inputs = get_sampling_inputs(block_size, stoi, word)
@@ -802,6 +803,7 @@ def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
             break
         word += sample
     return word
+# End solution code
 
 # %% deletable=false editable=false
 def test_generate_word():

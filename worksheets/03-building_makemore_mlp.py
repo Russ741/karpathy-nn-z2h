@@ -722,16 +722,7 @@ test_sample_distribution()
 
 # %%
 def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
-    word = ""
-    while True:
-        inputs = get_sampling_inputs(block_size, stoi, word)
-        probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
-        sample_idx = sample_distribution(probability_distribution, gen)
-        sample = itos[sample_idx]
-        if sample == '.':
-            break
-        word += sample
-    return word
+# TODO: Implement solution here
 
 # %% deletable=false editable=false
 def test_generate_word():
