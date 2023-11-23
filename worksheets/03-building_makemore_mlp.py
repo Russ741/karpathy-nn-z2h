@@ -700,6 +700,48 @@ test_get_distribution()
 # %%
 def sample_distribution(probability_distribution, gen):
 # TODO: Implement solution here
+
+# %% deletable=false editable=false
+def test_sample_distribution():
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    probability_distribution = torch.tensor([0.6, 0.1, 0.3])
+    count = 10000
+
+    samples = torch.zeros(3)
+    for _ in range(count):
+        samples[sample_distribution(probability_distribution, gen)] += 1
+
+    expected_samples = probability_distribution * count
+    expect_tensor_close("samples", samples, expected_samples, atol = 200)
+    print("sample_distribution looks good. Onward!")
+test_sample_distribution()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 17: Generate a word by sampling
+
+# %%
+def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
+    word = ""
+    while True:
+        inputs = get_sampling_inputs(block_size, stoi, word)
+        probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
+        sample_idx = sample_distribution(probability_distribution, gen)
+        sample = itos[sample_idx]
+        if sample == '.':
+            break
+        word += sample
+    return word
+
+# %% deletable=false editable=false
+def test_generate_word():
+    pass
+test_generate_word()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 18: Train the model repeatedly
+
+# %%
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false

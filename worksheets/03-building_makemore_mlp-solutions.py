@@ -769,7 +769,7 @@ def sample_distribution(probability_distribution, gen):
     num_samples = 1  # we only need one letter
     sample_idx = torch.multinomial(probability_distribution, num_samples, generator=gen).item()
     return sample_idx
-# End solution
+# End solution code
 
 # %% deletable=false editable=false
 def test_sample_distribution():
