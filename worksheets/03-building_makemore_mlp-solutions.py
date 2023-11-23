@@ -684,23 +684,123 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Generate a word
+# ### Step 14: Get inputs to find probabilities for
+
+# %%
+def get_sampling_inputs(block_size, stoi, word):
+# Solution code
+    padded_word = block_size * '.' + word  # Add start-of-word characters in case len(word) < block_size
+    block_letters = padded_word[-block_size:]
+    block_idxes = [stoi[c] for c in block_letters]
+    inputs = torch.tensor([block_idxes])
+    return inputs
+# End solution code
+
+# %% deletable=false editable=false
+def test_get_sampling_inputs():
+    block_size = 4
+    stoi = {
+        '.': 0,
+        'h': 1,
+        'i': 2,
+    }
+    word = "hi"
+
+    inputs = get_sampling_inputs(block_size, stoi, word)
+
+    expect_tensor_close("inputs", inputs, torch.tensor([[0, 0, 1, 2]]))
+    print("get_sampling_inputs looks good. Onward!")
+test_get_sampling_inputs()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 15: Get probability distribution for inputs
+
+# %%
+def get_distribution(C, W1, b1, W2, b2, inputs):
+    emb = get_emb(inputs, C)
+    probability_distribution = forward_prop(emb, W1, b1, W2, b2)
+    return probability_distribution
+
+# %% deletable=false editable=false
+def test_get_distribution():
+    inputs = torch.tensor([
+        [1, 3, 0],
+    ])
+    C = torch.tensor([
+        [ 1.0, 0.1],
+        [-0.9, 0.3],
+        [ 0.2, 0.5],
+        [-0.3, 0.6],
+    ])
+    W1 = torch.tensor([
+        [ 2.3,  0.9],
+        [ 0.7, -0.3],
+        [-0.5,  1.4],
+        [-3.2,  0.8],
+        [ 1.3, -0.6],
+        [ 1.4, -0.2],
+    ])
+    b1 = torch.tensor([
+        0.2, 1.1
+    ])
+    W2 = torch.tensor([
+        [ 3.4,  4.5, -1.8,  0.7],
+        [ 0.6,  0.5,  2.1, -0.9],
+    ])
+    b2 = torch.tensor([
+        0.3, -0.4, 0.2, -0.8
+    ])
+
+    probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
+
+    expected_probability_distribution = torch.tensor([
+        [0.0112, 0.0020, 0.9027, 0.0842],
+    ])
+    expect_tensor_close("probability_distribution", probability_distribution, expected_probability_distribution)
+    print("get_distribution looks good. Onward!")
+test_get_distribution()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 16: Sample probability distribution
+
+# %%
+def sample_distribution(probability_distribution, gen):
+# Solution code
+    num_samples = 1  # we only need one letter
+    sample_idx = torch.multinomial(probability_distribution, num_samples, generator=gen).item()
+    return sample_idx
+# End solution
+
+# %% deletable=false editable=false
+def test_sample_distribution():
+    gen = torch.Generator()
+    gen.manual_seed(12345)
+    probability_distribution = torch.tensor([0.6, 0.1, 0.3])
+    count = 10000
+
+    samples = torch.zeros(3)
+    for _ in range(count):
+        samples[sample_distribution(probability_distribution, gen)] += 1
+
+    expected_samples = probability_distribution * count
+    expect_tensor_close("samples", samples, expected_samples, atol = 200)
+    print("sample_distribution looks good. Onward!")
+test_sample_distribution()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 17: Generate a word by sampling
 
 # %%
 def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
-    chr = '.'
     word = ""
     while True:
-        block = ('.' * block_size + word)[-3:]
-        idxes = [stoi[c] for c in block]
-        x = torch.tensor([idxes])
-        emb = get_emb(x, C)
-        probability_distribution = forward_prop(emb, W1, b1, W2, b2)
-        sample = torch.multinomial(probability_distribution, 1, generator=gen).item()
-        chr = itos[sample]
-        if chr == '.':
+        inputs = get_sampling_inputs(block_size, stoi, word)
+        probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
+        sample_idx = sample_distribution(probability_distribution, gen)
+        sample = itos[sample_idx]
+        if sample == '.':
             break
-        word += chr
+        word += sample
     return word
 
 # %% deletable=false editable=false
@@ -709,7 +809,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Train the model repeatedly
+# ### Step 18: Train the model repeatedly
 
 # %%
 # Solution code
@@ -735,7 +835,7 @@ print(f"Final loss is {loss}")
 # End solution code
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Generate words
+# ### Step 19: Generate words
 
 # %%
 # Solution code
