@@ -393,7 +393,39 @@ def test_initialize_W_b():
 test_initialize_W_b()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 7: Forward propagate through hidden layer
+# ### Step 7: Initialize model
+
+# %%
+def initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen):
+# Solution code
+    C = get_C(idx_ct, embedding_size, gen)
+    W1, b1 = initialize_W_b(block_size * embedding_size, hidden_layer_size, gen)
+    W2, b2 = initialize_W_b(hidden_layer_size, idx_ct, gen)
+    return C, W1, b1, W2, b2
+# End solution code
+
+# %% deletable=false editable=false
+import torch
+
+def test_initialize_model():
+    idx_ct = 5
+    block_size = 4
+    embedding_size = 3
+    hidden_layer_size = 7
+    gen = torch.Generator()
+
+    C, W1, b1, W2, b2 = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
+
+    expect_eq("C.shape", C.shape, (idx_ct, embedding_size))
+    expect_eq("W1.shape", W1.shape, (block_size * embedding_size, hidden_layer_size))
+    expect_eq("b1.shape", b1.shape, (hidden_layer_size,))
+    expect_eq("W2.shape", W2.shape, (hidden_layer_size, idx_ct))
+    expect_eq("b2.shape", b2.shape, (idx_ct,))
+    print("initialize_model looks good. Onward!")
+test_initialize_model()
+
+# %% [markdown] deletable=false editable=false
+# ### Step 8: Forward propagate through hidden layer
 #
 # Write a function that takes the following arguments:
 # * a two-dimensional ```torch.Tensor``` ```emb``` as defined in step 5
@@ -444,7 +476,7 @@ def test_get_h():
 test_get_h()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 8: Calculate output layer outputs before activation
+# ### Step 9: Calculate output layer outputs before activation
 #
 # Write a function that takes the following arguments:
 # * a two-dimensional ```torch.Tensor``` ```W2``` as defined in step 6
@@ -491,7 +523,7 @@ def test_get_logits():
 test_get_logits()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 9: Calculate output softmax activation
+# ### Step 10: Calculate output softmax activation
 
 # %%
 def get_prob(logits):
@@ -520,7 +552,7 @@ def test_get_prob():
 test_get_prob()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 10: Forward propagate from vector embeddings
+# ### Step 11: Forward propagate from vector embeddings
 
 # %%
 def forward_prop(emb, W1, b1, W2, b2):
@@ -567,7 +599,7 @@ def test_forward_prop():
 test_forward_prop()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 11: Loss calculation
+# ### Step 12: Loss calculation
 
 # %%
 def get_loss(Y_hat, Y):
@@ -598,7 +630,7 @@ def test_get_loss():
 test_get_loss()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 12: Gradient descent
+# ### Step 13: Gradient descent
 
 # %%
 def descend_gradient(t, learning_rate):
@@ -630,7 +662,7 @@ def test_descend_gradient():
 test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Train model once
+# ### Step 14: Train model once
 
 # %%
 def train_once(X, Y, C, W1, b1, W2, b2, learning_rate):
@@ -684,7 +716,7 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Get inputs to find probabilities for
+# ### Step 15: Get inputs to find probabilities for
 
 # %%
 def get_sampling_inputs(block_size, stoi, word):
@@ -713,7 +745,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Get probability distribution for inputs
+# ### Step 16: Get probability distribution for inputs
 
 # %%
 def get_distribution(C, W1, b1, W2, b2, inputs):
@@ -761,7 +793,7 @@ def test_get_distribution():
 test_get_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Sample probability distribution
+# ### Step 17: Sample probability distribution
 
 # %%
 def sample_distribution(probability_distribution, gen):
@@ -788,7 +820,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Generate a word by sampling
+# ### Step 18: Generate a word by sampling
 
 # %%
 def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, sample_distribution_func, gen):
@@ -868,21 +900,22 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 18: Train the model repeatedly
+# ### Step 19: Train the model repeatedly
 
 # %%
 # Solution code
 stoi = get_stoi(loaded_words)
-idx_ct = len(stoi)
 itos = get_itos(stoi)
+
+idx_ct = len(stoi)
 block_size = 3
-X, Y = get_X_and_Y(loaded_words, stoi, block_size)
 embedding_size = 2
+hidden_layer_size = 100
 gen = torch.Generator()
-C = get_C(idx_ct, embedding_size, gen)
-hidden_neuron_ct = 100
-W1, b1 = initialize_W_b(block_size * embedding_size, hidden_neuron_ct, gen)
-W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct, gen)
+C, W1, b1, W2, b2 = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
+
+X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+
 learning_rate = .5
 
 for i in range(1, 301, 1):
