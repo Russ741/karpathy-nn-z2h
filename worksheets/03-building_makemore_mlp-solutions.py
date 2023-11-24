@@ -258,33 +258,33 @@ test_get_X_and_Y()
 # ### Step 4: Initialize vector embedding lookup table ```C```
 #
 # Write a function that takes the following arguments:
-# * An integer (```indices```) representing the number of indices in ```stoi``` to embed
-# * An integer (```embed_dimensions```) representing the number of dimensions the embedded vectors will have
+# * An integer (```indices```) representing the number of indices in ```stoi``` to provide embeddings for
+# * An integer (```embedding_size```) representing the length of the embedding vectors will have
 # * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
-# * a ```torch.Tensor``` of ```float64``` (```C```) representing the random initial vector for each index.
+# * a ```torch.Tensor``` of ```float64``` (```C```) representing the initial (random) embedding vectors for each index.
 #
 # Video: [0:12:19](https://youtu.be/TCH_1BHY58I?t=739)
 
 # %%
 import torch
 
-def get_C(indices, embed_dimensions, gen):
+def get_C(indices, embedding_size, gen):
 # Solution code
-    return torch.rand((indices, embed_dimensions), generator=gen, dtype=torch.float64, requires_grad=True)
+    return torch.rand((indices, embedding_size), generator=gen, dtype=torch.float64, requires_grad=True)
 # End solution code
 
 # %% deletable=false editable=false
 def test_get_C():
     indices = 7
-    embed_dimensions = 4
+    embedding_size = 4
     gen = torch.Generator()
     gen.manual_seed(12345)
-    C = get_C(indices, embed_dimensions, gen)
+    C = get_C(indices, embedding_size, gen)
     expect_type("C", C, torch.Tensor)
     expect_eq("C.dtype", C.dtype, torch.float64)
-    expect_eq("C.shape", C.shape, (indices, embed_dimensions))
+    expect_eq("C.shape", C.shape, (indices, embedding_size))
     for i in range(len(C)):
         for j in range(len(C)):
             if i == j:
@@ -877,11 +877,11 @@ idx_ct = len(stoi)
 itos = get_itos(stoi)
 block_size = 3
 X, Y = get_X_and_Y(loaded_words, stoi, block_size)
-embeddings = 2
+embedding_size = 2
 gen = torch.Generator()
-C = get_C(idx_ct, embeddings, gen)
+C = get_C(idx_ct, embedding_size, gen)
 hidden_neuron_ct = 100
-W1, b1 = initialize_W_b(block_size * embeddings, hidden_neuron_ct, gen)
+W1, b1 = initialize_W_b(block_size * embedding_size, hidden_neuron_ct, gen)
 W2, b2 = initialize_W_b(hidden_neuron_ct, idx_ct, gen)
 learning_rate = .5
 

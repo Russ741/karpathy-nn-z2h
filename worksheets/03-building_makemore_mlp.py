@@ -235,31 +235,31 @@ test_get_X_and_Y()
 # ### Step 4: Initialize vector embedding lookup table ```C```
 #
 # Write a function that takes the following arguments:
-# * An integer (```indices```) representing the number of indices in ```stoi``` to embed
-# * An integer (```embed_dimensions```) representing the number of dimensions the embedded vectors will have
+# * An integer (```indices```) representing the number of indices in ```stoi``` to provide embeddings for
+# * An integer (```embedding_size```) representing the length of the embedding vectors will have
 # * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
-# * a ```torch.Tensor``` of ```float64``` (```C```) representing the random initial vector for each index.
+# * a ```torch.Tensor``` of ```float64``` (```C```) representing the initial (random) embedding vectors for each index.
 #
 # Video: [0:12:19](https://youtu.be/TCH_1BHY58I?t=739)
 
 # %%
 import torch
 
-def get_C(indices, embed_dimensions, gen):
+def get_C(indices, embedding_size, gen):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
 def test_get_C():
     indices = 7
-    embed_dimensions = 4
+    embedding_size = 4
     gen = torch.Generator()
     gen.manual_seed(12345)
-    C = get_C(indices, embed_dimensions, gen)
+    C = get_C(indices, embedding_size, gen)
     expect_type("C", C, torch.Tensor)
     expect_eq("C.dtype", C.dtype, torch.float64)
-    expect_eq("C.shape", C.shape, (indices, embed_dimensions))
+    expect_eq("C.shape", C.shape, (indices, embedding_size))
     for i in range(len(C)):
         for j in range(len(C)):
             if i == j:
