@@ -721,12 +721,69 @@ test_sample_distribution()
 # ### Step 17: Generate a word by sampling
 
 # %%
-def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, gen):
+def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, sample_distribution_func, gen):
 # TODO: Implement solution here
 
 # %% deletable=false editable=false
 def test_generate_word():
-    pass
+    stoi = {
+        '.': 0,
+        'a': 1,
+        'd': 2,
+        'n': 3,
+        'o': 4,
+        'r': 5,
+        'w': 6
+    }
+    itos = {v:k for k,v in stoi.items()}
+    block_size = 3
+    C = torch.tensor([
+        [ 1.0,  0.1],
+        [-0.9,  0.3],
+        [ 0.2,  0.5],
+        [-0.3,  0.6],
+        [ 0.6, -0.4],
+        [-0.7, -0.8],
+        [-0.1,  0.9],
+    ])
+    W1 = torch.tensor([
+        [ 1.3,  0.9],
+        [ 0.7, -0.3],
+        [-0.5,  1.4],
+        [-3.2,  0.8],
+        [ 1.3, -0.6],
+        [ 1.4, -0.2],
+    ])
+    b1 = torch.tensor([
+        0.2, 1.1
+    ])
+    W2 = torch.tensor([
+        [ 3.4,  4.5, -1.8,  0.7,  0.4,  0.1, -1.1],
+        [ 0.6,  0.5,  2.1, -0.9,  1.1, -0.3,  0.8],
+    ])
+    b2 = torch.tensor([
+        0.3, -0.4, 0.2, -0.8, 0.0, -0.1, 1.1
+    ])
+
+    target_pos = 0
+    target_seq = [0.98, 0.895, 0.99, 0.18, 0.74, 0.25, 0.0]
+    def mock_sample(probability_distribution, _):
+        nonlocal target_pos
+        target_sum = target_seq[target_pos]
+        prob_sum = 0.0
+        dist_pos = 0
+        while True:
+            prob_sum += probability_distribution[0][dist_pos]
+            if prob_sum >= target_sum:
+                break
+            dist_pos += 1
+        target_pos += 1
+        return dist_pos
+
+    word = generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, mock_sample, None)
+
+    expect_eq("word", word, "onward")
+    print("generate_word looks good. Onward!")
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
