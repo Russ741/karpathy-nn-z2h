@@ -558,20 +558,31 @@ test_get_prob()
 # ### Step 11: Forward propagate from vector embeddings
 
 # %%
-def forward_prop(emb, W1, b1, W2, b2):
-    h = get_h(emb, W1, b1)
-    logits = get_logits(h, W2, b2)
+def forward_prop(X, model):
+    emb = get_emb(X, model.C)
+    h = get_h(emb, model.W1, model.b1)
+    logits = get_logits(h, model.W2, model.b2)
     y_hat = get_prob(logits)
 
     return y_hat
 
 # %% deletable=false editable=false
 def test_forward_prop():
-    emb = torch.tensor([
-        [ 1.2,  2.1],
-        [-0.5, -0.7],
-        [ 0.0,  0.5247],
-        [-4.0, 3.1]
+    X = torch.tensor([
+        [0, 4],
+        [1, 5],
+        [2, 6],
+        [3, 7],
+    ])
+    C = torch.tensor([
+        [1.2],
+        [-0.5],
+        [0.0],
+        [-4.0],
+        [2.1],
+        [-0.7],
+        [0.5247],
+        [3.1],
     ])
     W1 = torch.tensor([
         [2.3, 0.9, 0.7],
@@ -589,7 +600,8 @@ def test_forward_prop():
         0.3, -0.4,
     ])
 
-    y_hat = forward_prop(emb, W1, b1, W2, b2)
+    model = Model(C, W1, b1, W2, b2)
+    y_hat = forward_prop(X, model)
 
     expected_y_hat = torch.tensor([
         [0.1832, 0.8168],
@@ -670,8 +682,7 @@ test_descend_gradient()
 # %%
 def train_once(X, Y, model, learning_rate):
 # Solution code
-    emb = get_emb(X, model.C)
-    Y_hat = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)
+    Y_hat = forward_prop(X, model)
     loss = get_loss(Y_hat, Y)
     for parameter in model:
         parameter.grad = None
@@ -779,8 +790,7 @@ test_get_sampling_inputs()
 
 # %%
 def get_distribution(model, inputs):
-    emb = get_emb(inputs, model.C)
-    probability_distribution = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)
+    probability_distribution = forward_prop(inputs, model)
     return probability_distribution
 
 # %% deletable=false editable=false
@@ -947,8 +957,7 @@ for i in range(10):
 # %%
 def get_empty_word_prob(model, stoi):
 # Solution code
-    emb = get_emb(torch.tensor([[0,0,0]]), model.C)
-    probs = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)[0]
+    probs = forward_prop(torch.tensor([[0,0,0]]), model)[0]
     prob_empty = probs[stoi['.']]
 
     # Strictly optional: print the probability map
