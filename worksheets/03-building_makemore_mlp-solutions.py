@@ -396,12 +396,15 @@ test_initialize_W_b()
 # ### Step 7: Initialize model
 
 # %%
+from collections import namedtuple
+Model = namedtuple('Model', ['C', 'W1', 'b1', 'W2', 'b2'])
+
 def initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen):
 # Solution code
     C = get_C(idx_ct, embedding_size, gen)
     W1, b1 = initialize_W_b(block_size * embedding_size, hidden_layer_size, gen)
     W2, b2 = initialize_W_b(hidden_layer_size, idx_ct, gen)
-    return C, W1, b1, W2, b2
+    return Model(C, W1, b1, W2, b2)
 # End solution code
 
 # %% deletable=false editable=false
@@ -665,16 +668,15 @@ test_descend_gradient()
 # ### Step 14: Train model once
 
 # %%
-def train_once(X, Y, C, W1, b1, W2, b2, learning_rate):
+def train_once(X, Y, model, learning_rate):
 # Solution code
-    emb = get_emb(X, C)
-    Y_hat = forward_prop(emb, W1, b1, W2, b2)
+    emb = get_emb(X, model.C)
+    Y_hat = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)
     loss = get_loss(Y_hat, Y)
-    parameters = (C, W1, b1, W2, b2)
-    for parameter in parameters:
+    for parameter in model:
         parameter.grad = None
     loss.backward()
-    for parameter in parameters:
+    for parameter in model:
         descend_gradient(parameter, learning_rate)
     return loss.item()
 # End solution code
@@ -709,8 +711,9 @@ def test_train_once():
     b2 = torch.tensor([
         1.0, 0.9, 0.8
     ], requires_grad=True)
+    model = Model(C, W1, b1, W2, b2)
     learning_rate = 1.0
-    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
+    loss = train_once(X, Y, model, learning_rate)
     expect_close("loss", loss, 1.8224)
     print("train_once looks good. Onward!")
 test_train_once()
@@ -728,14 +731,14 @@ block_size = 3
 embedding_size = 2
 hidden_layer_size = 100
 gen = torch.Generator()
-C, W1, b1, W2, b2 = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
+model = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
 
 X, Y = get_X_and_Y(loaded_words, stoi, block_size)
 
 learning_rate = .5
 
 for i in range(1, 301, 1):
-    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
+    loss = train_once(X, Y, model, learning_rate)
     if i == 1 or i % 10 == 0:
         print(f"{i}: {loss}")
 
@@ -772,12 +775,12 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Get probability distribution for inputs
+# ### Step 17: Get probability distribution for inputs
 
 # %%
-def get_distribution(C, W1, b1, W2, b2, inputs):
-    emb = get_emb(inputs, C)
-    probability_distribution = forward_prop(emb, W1, b1, W2, b2)
+def get_distribution(model, inputs):
+    emb = get_emb(inputs, model.C)
+    probability_distribution = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)
     return probability_distribution
 
 # %% deletable=false editable=false
@@ -810,7 +813,8 @@ def test_get_distribution():
         0.3, -0.4, 0.2, -0.8
     ])
 
-    probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
+    model = Model(C, W1, b1, W2, b2)
+    probability_distribution = get_distribution(model, inputs)
 
     expected_probability_distribution = torch.tensor([
         [0.0112, 0.0020, 0.9027, 0.0842],
@@ -820,7 +824,7 @@ def test_get_distribution():
 test_get_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Sample probability distribution
+# ### Step 18: Sample probability distribution
 
 # %%
 def sample_distribution(probability_distribution, gen):
@@ -847,15 +851,15 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 18: Generate a word by sampling
+# ### Step 19: Generate a word by sampling
 
 # %%
-def generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, sample_distribution_func, gen):
+def generate_word(model, block_size, stoi, itos, sample_distribution_func, gen):
 # Solution code
     word = ""
     while True:
         inputs = get_sampling_inputs(block_size, stoi, word)
-        probability_distribution = get_distribution(C, W1, b1, W2, b2, inputs)
+        probability_distribution = get_distribution(model, inputs)
         sample_idx = sample_distribution_func(probability_distribution, gen)
         sample = itos[sample_idx]
         if sample == '.':
@@ -905,6 +909,8 @@ def test_generate_word():
         0.3, -0.4, 0.2, -0.8, 0.0, -0.1, 1.1
     ])
 
+    model = Model(C, W1, b1, W2, b2)
+
     target_pos = 0
     target_seq = [0.98, 0.895, 0.99, 0.18, 0.74, 0.25, 0.0]
     def mock_sample(probability_distribution, _):
@@ -920,7 +926,7 @@ def test_generate_word():
         target_pos += 1
         return dist_pos
 
-    word = generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, mock_sample, None)
+    word = generate_word(model, block_size, stoi, itos, mock_sample, None)
 
     expect_eq("word", word, "onward")
     print("generate_word looks good. Onward!")
@@ -932,17 +938,17 @@ test_generate_word()
 # %%
 # Solution code
 for i in range(10):
-    print(generate_word(C, block_size, W1, b1, W2, b2, stoi, itos, sample_distribution, gen))
+    print(generate_word(model, block_size, stoi, itos, sample_distribution, gen))
 # End solution code
 
 # %% [markdown] deletable=false editable=false
 # ### Bonus: Calculate probability of an empty word
 
 # %%
-def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
+def get_empty_word_prob(model, stoi):
 # Solution code
-    emb = get_emb(torch.tensor([[0,0,0]]), C)
-    probs = forward_prop(emb, W1, b1, W2, b2)[0]
+    emb = get_emb(torch.tensor([[0,0,0]]), model.C)
+    probs = forward_prop(emb, model.W1, model.b1, model.W2, model.b2)[0]
     prob_empty = probs[stoi['.']]
 
     # Strictly optional: print the probability map
@@ -955,7 +961,7 @@ def get_empty_word_prob(C, W1, b1, W2, b2, stoi):
 # End solution code
 
 # %% deletable=false editable=false
-prob_empty = get_empty_word_prob(C, W1, b1, W2, b2, stoi)
+prob_empty = get_empty_word_prob(model, stoi)
 print(f"The probability of this model generating an empty word is {prob_empty}.")
 
 # %%
