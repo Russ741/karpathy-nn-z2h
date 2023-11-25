@@ -716,7 +716,34 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Get inputs to find probabilities for
+# ### Step 15: Train the model repeatedly
+
+# %%
+# Solution code
+stoi = get_stoi(loaded_words)
+itos = get_itos(stoi)
+
+idx_ct = len(stoi)
+block_size = 3
+embedding_size = 2
+hidden_layer_size = 100
+gen = torch.Generator()
+C, W1, b1, W2, b2 = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
+
+X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+
+learning_rate = .5
+
+for i in range(1, 301, 1):
+    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
+    if i == 1 or i % 10 == 0:
+        print(f"{i}: {loss}")
+
+print(f"Final loss is {loss}")
+# End solution code
+
+# %% [markdown] deletable=false editable=false
+# ### Step 16: Get inputs to find probabilities for
 
 # %%
 def get_sampling_inputs(block_size, stoi, word):
@@ -900,34 +927,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Train the model repeatedly
-
-# %%
-# Solution code
-stoi = get_stoi(loaded_words)
-itos = get_itos(stoi)
-
-idx_ct = len(stoi)
-block_size = 3
-embedding_size = 2
-hidden_layer_size = 100
-gen = torch.Generator()
-C, W1, b1, W2, b2 = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
-
-X, Y = get_X_and_Y(loaded_words, stoi, block_size)
-
-learning_rate = .5
-
-for i in range(1, 301, 1):
-    loss = train_once(X, Y, C, W1, b1, W2, b2, learning_rate)
-    if i == 1 or i % 10 == 0:
-        print(f"{i}: {loss}")
-
-print(f"Final loss is {loss}")
-# End solution code
-
-# %% [markdown] deletable=false editable=false
-# ### Step 19: Generate words
+# ### Step 20: Generate words
 
 # %%
 # Solution code

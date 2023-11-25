@@ -651,7 +651,13 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Get inputs to find probabilities for
+# ### Step 15: Train the model repeatedly
+
+# %%
+# TODO: Implement solution here
+
+# %% [markdown] deletable=false editable=false
+# ### Step 16: Get inputs to find probabilities for
 
 # %%
 def get_sampling_inputs(block_size, stoi, word):
@@ -814,13 +820,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Train the model repeatedly
-
-# %%
-# TODO: Implement solution here
-
-# %% [markdown] deletable=false editable=false
-# ### Step 19: Generate words
+# ### Step 20: Generate words
 
 # %%
 # TODO: Implement solution here
