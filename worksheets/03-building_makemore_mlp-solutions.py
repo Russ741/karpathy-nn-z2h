@@ -394,6 +394,27 @@ test_initialize_W_b()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 7: Initialize model
+#
+# Write a function that takes the following arguments:
+# * An integer (```idx_ct```) representing the number of indices to provide embeddings for
+# * An integer (```block_size```) that specifies how many characters to take into account when predicting the next one
+# * An integer (```embedding_size```) representing the length of each embedding vector
+# * An integer (```hidden_layer_size```) that specifies the number of neurons in the hidden layer
+# * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
+# And returns:
+# * A Model [namedtuple](https://docs.python.org/3/library/collections.html#collections.namedtuple) (defined below) with the following fields:
+#   * A ```torch.tensor``` (```C```) representing the embedding vector for each index
+#     * See Step 4
+#   * A two-dimensional ```torch.Tensor``` (```W1```) representing the weights of the hidden layer
+#     * See Step 6
+#   * A one-dimensional ```torch.Tensor``` (```b1```) representing the biases of the hidden layer
+#     * See Step 6
+#   * A two-dimensional ```torch.Tensor``` (```W2```) representing the weights of the output layer
+#     * See Step 6
+#   * A one-dimensional ```torch.Tensor``` (```b2```) representing the biases of the output layer
+#     * See Step 6
+#
+# Note: Karpathy does not use a namedtuple for these fields; for equivalent video links, see step 4 and 6.
 
 # %%
 from collections import namedtuple
