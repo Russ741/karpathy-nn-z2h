@@ -284,7 +284,7 @@ test_get_C()
 # they only need to be consistent with the other rows in C.
 # For this worksheet, though, if the order does differ, the test case will fail.
 #
-# Video: [0:13:07](https://youtu.be/TCH_1BHY58I?t=787) and [0:19:10](https://youtu.be/TCH_1BHY58I?t=1150)
+# Video: [0:05:55](https://youtu.be/TCH_1BHY58I?t=355), [0:13:07](https://youtu.be/TCH_1BHY58I?t=787) and [0:19:10](https://youtu.be/TCH_1BHY58I?t=1150)
 
 # %%
 def get_emb(X, C):
