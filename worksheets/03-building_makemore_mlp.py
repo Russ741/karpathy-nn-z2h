@@ -335,7 +335,7 @@ test_get_vector_embedding()
 # * a one-dimensional pytorch.Tensor ```b``` of length ```neuron_ct```
 #   * the elements of ```b``` can be zero
 #
-# Video: [0:29:17](https://youtu.be/TCH_1BHY58I?t=1757)
+# Video: [0:18:37](https://youtu.be/TCH_1BHY58I?t=1117) and [0:29:17](https://youtu.be/TCH_1BHY58I?t=1757)
 
 # %%
 import torch
