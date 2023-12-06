@@ -549,12 +549,21 @@ test_get_logits()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 10: Calculate output softmax activation
-
+#
+# Write a function that takes the following arguments:
+# * a one-dimensional ```torch.Tensor``` ```logits```
+#   * See step 9
+#
+# And returns:
+# * a one-dimensional ```torch.Tensor``` ```prob``` that represents the probability of each index.
+#
+# Video: [0:29:55](https://youtu.be/TCH_1BHY58I?t=1795)
 # %%
 def get_prob(logits):
 # Solution code
     counts = torch.exp(logits)
-    return counts / counts.sum(dim=1, keepdim=True)
+    prob = counts / counts.sum(dim=1, keepdim=True)
+    return prob
 # End solution code
 
 # %% deletable=false editable=false
