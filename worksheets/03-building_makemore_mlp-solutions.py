@@ -401,6 +401,7 @@ test_initialize_W_b()
 # * An integer (```embedding_size```) representing the length of each embedding vector
 # * An integer (```hidden_layer_size```) that specifies the number of neurons in the hidden layer
 # * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
+#
 # And returns:
 # * A Model [namedtuple](https://docs.python.org/3/library/collections.html#collections.namedtuple) (defined below) with the following fields:
 #   * A ```torch.tensor``` (```C```) representing the embedding vector for each index
