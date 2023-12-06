@@ -236,7 +236,7 @@ test_get_X_and_Y()
 #
 # Write a function that takes the following arguments:
 # * An integer (```indices```) representing the number of indices in ```stoi``` to provide embeddings for
-# * An integer (```embedding_size```) representing the length of the embedding vectors will have
+# * An integer (```embedding_size```) representing the length of each embedding vector
 # * A ```torch.Generator``` (```gen```) to provide (pseudo)random initial values for the parameters
 #
 # And returns:
