@@ -265,7 +265,7 @@ test_get_X_and_Y()
 # And returns:
 # * a ```torch.Tensor``` of ```float64``` (```C```) representing the initial (random) embedding vectors for each index.
 #
-# Video: [0:03:01](https://youtu.be/TCH_1BHY58I?t=181)) and [0:12:19](https://youtu.be/TCH_1BHY58I?t=739)
+# Video: [0:03:01](https://youtu.be/TCH_1BHY58I?t=181) and [0:12:19](https://youtu.be/TCH_1BHY58I?t=739)
 
 # %%
 import torch
