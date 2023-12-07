@@ -630,6 +630,8 @@ test_get_loss()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 13: Gradient descent
+#
+# Video: [0:38:23](https://youtu.be/TCH_1BHY58I?t=2303)
 
 # %%
 def descend_gradient(t, learning_rate):
@@ -659,6 +661,8 @@ test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 14: Train model once
+#
+# Video: [0:37:57](https://youtu.be/TCH_1BHY58I?t=2277)
 
 # %%
 def train_once(X, Y, model, learning_rate):
