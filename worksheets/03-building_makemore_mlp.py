@@ -507,41 +507,7 @@ def test_get_logits():
 test_get_logits()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 10: Calculate output softmax activation
-#
-# Write a function that takes the following arguments:
-# * a one-dimensional ```torch.Tensor``` ```logits```
-#   * See step 9
-#
-# And returns:
-# * a one-dimensional ```torch.Tensor``` ```prob``` that represents the probability of each index.
-#
-# Video: [0:29:55](https://youtu.be/TCH_1BHY58I?t=1795)
-# %%
-def get_prob(logits):
-# TODO: Implement solution here
-
-# %% deletable=false editable=false
-from math import log
-
-def test_get_prob():
-    logits = torch.tensor([
-        [log(1), log(2), log(3), log(4)],
-        [ 0.123,  0.123,  0.123,  0.123],
-    ])
-
-    prob = get_prob(logits)
-
-    expected_prob = torch.tensor([
-        [ 0.1,  0.2,  0.3,  0.4],
-        [0.25, 0.25, 0.25, 0.25]
-    ])
-    expect_tensor_close("prob for test case", prob, expected_prob)
-    print("get_prob looks good. Onward!")
-test_get_prob()
-
-# %% [markdown] deletable=false editable=false
-# ### Step 11: Forward propagate from vector embeddings
+# ### Step 10: Forward propagate from vector embeddings
 #
 # Video: [0:32:37](https://youtu.be/TCH_1BHY58I?t=1957)
 
@@ -550,9 +516,8 @@ def forward_prop(X, model):
     emb = get_emb(X, model.C)
     h = get_h(emb, model.W1, model.b1)
     logits = get_logits(h, model.W2, model.b2)
-    y_hat = get_prob(logits)
 
-    return y_hat
+    return logits
 
 # %% deletable=false editable=false
 def test_forward_prop():
@@ -589,47 +554,20 @@ def test_forward_prop():
     ])
 
     model = Model(C, W1, b1, W2, b2)
-    y_hat = forward_prop(X, model)
+    logits = forward_prop(X, model)
 
-    expected_y_hat = torch.tensor([
-        [0.1832, 0.8168],
-        [0.9396, 0.0604],
-        [0.5000, 0.5000],
-        [0.2770, 0.7230],
+    expected_logits = torch.tensor([
+        [-3.6945, -2.1998],
+        [ 4.3266,  1.5829],
+        [-2.8482, -2.8482],
+        [-4.0852, -3.1258],
     ])
-    expect_tensor_close("y_hat", y_hat, expected_y_hat)
+    expect_tensor_close("logits", logits, expected_logits)
     print("forward_prop looks good. Onward!")
 test_forward_prop()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 12: Loss calculation
-#
-# Video: [0:30:45](https://youtu.be/TCH_1BHY58I?t=1845)
-# %%
-def get_loss(Y_hat, Y):
-# TODO: Implement solution here
-
-# %% deletable=false editable=false
-def test_get_loss():
-    Y_hat = torch.tensor([
-        [1.0, 0.0, 0.0, 0.0],
-        [0.0, 0.0, 0.0, 1.0],
-        [0.4512, 0.44933, 0.0, 0.0],
-        [0.05, 0.05, 0.81873, 0.08127],
-    ])
-    Y = torch.tensor([
-        0,
-        3,
-        1,
-        2,
-    ])
-    neg_log_likelihood = get_loss(Y_hat, Y)
-    expect_close("negative loss likelihood", neg_log_likelihood, 0.25)
-    print("get_loss looks good. Onward!")
-test_get_loss()
-
-# %% [markdown] deletable=false editable=false
-# ### Step 13: Gradient descent
+# ### Step 11: Gradient descent
 #
 # Video: [0:38:23](https://youtu.be/TCH_1BHY58I?t=2303)
 
@@ -660,7 +598,7 @@ def test_descend_gradient():
 test_descend_gradient()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Train model once
+# ### Step 12: Train model once
 #
 # Video: [0:37:57](https://youtu.be/TCH_1BHY58I?t=2277)
 
@@ -706,7 +644,7 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Train the model repeatedly
+# ### Step 13: Train the model repeatedly
 #
 # Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318)
 
@@ -714,7 +652,7 @@ test_train_once()
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Get inputs to find probabilities for
+# ### Step 14: Get inputs to find probabilities for
 #
 # Video: [1:13:31](https://youtu.be/TCH_1BHY58I?t=4411)
 
@@ -739,7 +677,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Sample probability distribution
+# ### Step 15: Sample probability distribution
 #
 # Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
@@ -764,7 +702,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 18: Generate a word by sampling
+# ### Step 16: Generate a word by sampling
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
@@ -837,7 +775,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Generate words
+# ### Step 17: Generate words
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
