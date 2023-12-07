@@ -542,6 +542,8 @@ test_get_prob()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 11: Forward propagate from vector embeddings
+#
+# Video: [0:32:37](https://youtu.be/TCH_1BHY58I?t=1957)
 
 # %%
 def forward_prop(X, model):
