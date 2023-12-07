@@ -646,7 +646,8 @@ test_forward_prop()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 12: Loss calculation
-
+#
+# Video: [0:30:45](https://youtu.be/TCH_1BHY58I?t=1845)
 # %%
 def get_loss(Y_hat, Y):
 # Solution code
