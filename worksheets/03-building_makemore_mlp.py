@@ -707,6 +707,8 @@ test_train_once()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 15: Train the model repeatedly
+#
+# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318)
 
 # %%
 # TODO: Implement solution here
