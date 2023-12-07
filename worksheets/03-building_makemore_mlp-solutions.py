@@ -830,57 +830,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Get probability distribution for inputs
-#
-# Video: [1:14:03](https://youtu.be/TCH_1BHY58I?t=4443)
-
-# %%
-def get_distribution(model, inputs):
-    probability_distribution = forward_prop(inputs, model)
-    return probability_distribution
-
-# %% deletable=false editable=false
-def test_get_distribution():
-    inputs = torch.tensor([
-        [1, 3, 0],
-    ])
-    C = torch.tensor([
-        [ 1.0, 0.1],
-        [-0.9, 0.3],
-        [ 0.2, 0.5],
-        [-0.3, 0.6],
-    ])
-    W1 = torch.tensor([
-        [ 2.3,  0.9],
-        [ 0.7, -0.3],
-        [-0.5,  1.4],
-        [-3.2,  0.8],
-        [ 1.3, -0.6],
-        [ 1.4, -0.2],
-    ])
-    b1 = torch.tensor([
-        0.2, 1.1
-    ])
-    W2 = torch.tensor([
-        [ 3.4,  4.5, -1.8,  0.7],
-        [ 0.6,  0.5,  2.1, -0.9],
-    ])
-    b2 = torch.tensor([
-        0.3, -0.4, 0.2, -0.8
-    ])
-
-    model = Model(C, W1, b1, W2, b2)
-    probability_distribution = get_distribution(model, inputs)
-
-    expected_probability_distribution = torch.tensor([
-        [0.0112, 0.0020, 0.9027, 0.0842],
-    ])
-    expect_tensor_close("probability_distribution", probability_distribution, expected_probability_distribution)
-    print("get_distribution looks good. Onward!")
-test_get_distribution()
-
-# %% [markdown] deletable=false editable=false
-# ### Step 18: Sample probability distribution
+# ### Step 17: Sample probability distribution
 #
 # Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
@@ -909,7 +859,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Generate a word by sampling
+# ### Step 18: Generate a word by sampling
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
@@ -919,7 +869,7 @@ def generate_word(model, block_size, stoi, itos, sample_distribution_func, gen):
     word = ""
     while True:
         inputs = get_sampling_inputs(block_size, stoi, word)
-        probability_distribution = get_distribution(model, inputs)
+        probability_distribution = forward_prop(inputs, model)
         sample_idx = sample_distribution_func(probability_distribution, gen)
         sample = itos[sample_idx]
         if sample == '.':
@@ -993,7 +943,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 20: Generate words
+# ### Step 19: Generate words
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
