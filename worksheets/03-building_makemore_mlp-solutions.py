@@ -699,9 +699,9 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Train the model repeatedly in minibatches
+# ### Step 13: Initialize indices and model
 #
-# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318) and [0:42:22](https://youtu.be/TCH_1BHY58I?t=2542)
+# Video: [0:37:56](https://youtu.be/TCH_1BHY58I?t=2276)
 
 # %%
 # Solution code
@@ -714,9 +714,25 @@ embedding_size = 2
 hidden_layer_size = 100
 gen = torch.Generator()
 model = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, gen)
+# End solution code
 
+# %% [markdown] deletable=false editable=false
+# ### Step 14: Initialize samples and labels
+#
+# Video: [0:53:20](https://youtu.be/TCH_1BHY58I?t=3200)
+
+# %%
+# Solution code
 X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+# End solution code
 
+# %% [markdown] deletable=false editable=false
+# ### Step 15: Train the model repeatedly in minibatches
+#
+# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318) and [0:42:22](https://youtu.be/TCH_1BHY58I?t=2542)
+
+# %%
+# Solution code
 learning_rate = .5
 minibatch_size = 32
 
@@ -734,7 +750,7 @@ print(f"Final loss is {loss}")
 # End solution code
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Get inputs to find probabilities for
+# ### Step 16: Get inputs to find probabilities for
 #
 # Video: [1:13:31](https://youtu.be/TCH_1BHY58I?t=4411)
 
@@ -765,7 +781,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 15: Sample probability distribution
+# ### Step 17: Sample probability distribution
 #
 # Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
@@ -794,7 +810,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Generate a word by sampling
+# ### Step 18: Generate a word by sampling
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
@@ -879,7 +895,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Generate words
+# ### Step 19: Generate words
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
