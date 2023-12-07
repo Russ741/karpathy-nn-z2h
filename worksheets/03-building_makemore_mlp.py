@@ -383,7 +383,9 @@ test_initialize_W_b()
 #   * A one-dimensional ```torch.Tensor``` (```b2```) representing the biases of the output layer
 #     * See Step 6
 #
-# Note: Karpathy does not use a namedtuple for these fields; for equivalent video links, see step 4 and 6.
+# Note: Karpathy does not use a namedtuple for these fields.
+#
+# Video: [0:32:27](https://youtu.be/TCH_1BHY58I?t=1947)
 
 # %%
 from collections import namedtuple
