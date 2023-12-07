@@ -715,6 +715,8 @@ test_train_once()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 16: Get inputs to find probabilities for
+#
+# Video: [1:13:31](https://youtu.be/TCH_1BHY58I?t=4411)
 
 # %%
 def get_sampling_inputs(block_size, stoi, word):
@@ -738,6 +740,8 @@ test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 17: Get probability distribution for inputs
+#
+# Video: [1:14:03](https://youtu.be/TCH_1BHY58I?t=4443)
 
 # %%
 def get_distribution(model, inputs):
@@ -786,6 +790,8 @@ test_get_distribution()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 18: Sample probability distribution
+#
+# Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
 # %%
 def sample_distribution(probability_distribution, gen):
@@ -809,6 +815,8 @@ test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 19: Generate a word by sampling
+#
+# Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
 # %%
 def generate_word(model, block_size, stoi, itos, sample_distribution_func, gen):
@@ -880,6 +888,8 @@ test_generate_word()
 
 # %% [markdown] deletable=false editable=false
 # ### Step 20: Generate words
+#
+# Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
 # %%
 # TODO: Implement solution here
