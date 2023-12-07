@@ -644,9 +644,9 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Train the model repeatedly
+# ### Step 13: Train the model repeatedly in minibatches
 #
-# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318)
+# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318) and [0:42:22](https://youtu.be/TCH_1BHY58I?t=2542)
 
 # %%
 # TODO: Implement solution here

@@ -699,9 +699,9 @@ def test_train_once():
 test_train_once()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 13: Train the model repeatedly
+# ### Step 13: Train the model repeatedly in minibatches
 #
-# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318)
+# Video: [0:38:38](https://youtu.be/TCH_1BHY58I?t=2318) and [0:42:22](https://youtu.be/TCH_1BHY58I?t=2542)
 
 # %%
 # Solution code
@@ -718,12 +718,18 @@ model = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, 
 X, Y = get_X_and_Y(loaded_words, stoi, block_size)
 
 learning_rate = .5
+minibatch_size = 32
 
-for i in range(1, 301, 1):
-    loss = train_once(X, Y, model, learning_rate)
-    if i == 1 or i % 10 == 0:
+for i in range(1, 30000, 1):
+    ix = torch.randint(0, X.shape[0], (minibatch_size,), generator=gen)
+    X_mini = X[ix]
+    Y_mini = Y[ix]
+    loss = train_once(X_mini, Y_mini, model, learning_rate)
+    if i == 1 or i % 2000 == 0:
         print(f"{i}: {loss}")
 
+logits = forward_prop(X, model)
+loss = torch.nn.functional.cross_entropy(logits, Y)
 print(f"Final loss is {loss}")
 # End solution code
 
