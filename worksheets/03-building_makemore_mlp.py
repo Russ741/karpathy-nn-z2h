@@ -652,11 +652,13 @@ test_train_once()
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Initialize samples and labels
+# ### Step 14: Initialize examples and labels
 #
 # Video: [0:53:20](https://youtu.be/TCH_1BHY58I?t=3200)
 
 # %%
+import random
+
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false
@@ -668,7 +670,14 @@ test_train_once()
 # TODO: Implement solution here
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Get inputs to find probabilities for
+# ### Step 16: Measure the model's testing loss
+#
+
+# %%
+# TODO: Implement solution here
+
+# %% [markdown] deletable=false editable=false
+# ### Step 17: Get inputs to find probabilities for
 #
 # Video: [1:13:31](https://youtu.be/TCH_1BHY58I?t=4411)
 
@@ -693,7 +702,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Sample probability distribution
+# ### Step 18: Sample probability distribution
 #
 # Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
@@ -718,7 +727,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 18: Generate a word by sampling
+# ### Step 19: Generate a word by sampling
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
@@ -791,7 +800,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Generate words
+# ### Step 20: Generate words
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 

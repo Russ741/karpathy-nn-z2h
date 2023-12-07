@@ -717,13 +717,20 @@ model = initialize_model(idx_ct, block_size, embedding_size, hidden_layer_size, 
 # End solution code
 
 # %% [markdown] deletable=false editable=false
-# ### Step 14: Initialize samples and labels
+# ### Step 14: Initialize examples and labels
 #
 # Video: [0:53:20](https://youtu.be/TCH_1BHY58I?t=3200)
 
 # %%
+import random
+
 # Solution code
-X, Y = get_X_and_Y(loaded_words, stoi, block_size)
+random.shuffle(loaded_words)
+train = int(0.8 * len(loaded_words))
+dev = int(0.9 * len(loaded_words))
+Xtr, Ytr = get_X_and_Y(loaded_words[0:train], stoi, block_size)
+Xdev, Ydev = get_X_and_Y(loaded_words[train:dev], stoi, block_size)
+Xtest, Ytest = get_X_and_Y(loaded_words[dev:], stoi, block_size)
 # End solution code
 
 # %% [markdown] deletable=false editable=false
@@ -737,20 +744,31 @@ learning_rate = .5
 minibatch_size = 32
 
 for i in range(1, 30000, 1):
-    ix = torch.randint(0, X.shape[0], (minibatch_size,), generator=gen)
-    X_mini = X[ix]
-    Y_mini = Y[ix]
+    ix = torch.randint(0, Xtr.shape[0], (minibatch_size,), generator=gen)
+    X_mini = Xtr[ix]
+    Y_mini = Ytr[ix]
     loss = train_once(X_mini, Y_mini, model, learning_rate)
     if i == 1 or i % 2000 == 0:
         print(f"{i}: {loss}")
 
-logits = forward_prop(X, model)
-loss = torch.nn.functional.cross_entropy(logits, Y)
-print(f"Final loss is {loss}")
+logits = forward_prop(Xdev, model)
+loss = torch.nn.functional.cross_entropy(logits, Ydev)
+print(f"Dev loss is {loss}")
 # End solution code
 
 # %% [markdown] deletable=false editable=false
-# ### Step 16: Get inputs to find probabilities for
+# ### Step 16: Measure the model's testing loss
+#
+
+# %%
+# Solution code
+logits = forward_prop(Xtest, model)
+loss = torch.nn.functional.cross_entropy(logits, Ytest)
+print(f"Testing loss is {loss}")
+# End solution code
+
+# %% [markdown] deletable=false editable=false
+# ### Step 17: Get inputs to find probabilities for
 #
 # Video: [1:13:31](https://youtu.be/TCH_1BHY58I?t=4411)
 
@@ -781,7 +799,7 @@ def test_get_sampling_inputs():
 test_get_sampling_inputs()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 17: Sample probability distribution
+# ### Step 18: Sample probability distribution
 #
 # Video: [1:14:18](https://youtu.be/TCH_1BHY58I?t=4458)
 
@@ -810,7 +828,7 @@ def test_sample_distribution():
 test_sample_distribution()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 18: Generate a word by sampling
+# ### Step 19: Generate a word by sampling
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
@@ -895,7 +913,7 @@ def test_generate_word():
 test_generate_word()
 
 # %% [markdown] deletable=false editable=false
-# ### Step 19: Generate words
+# ### Step 20: Generate words
 #
 # Video: [1:13:24](https://youtu.be/TCH_1BHY58I?t=4404)
 
